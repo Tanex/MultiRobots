@@ -1,6 +1,4 @@
-package nu.tanex.data;
-
-import nu.tanex.resources.RobotAiMode;
+package nu.tanex.engine.data;
 
 /**
  * @author      Victor Hedlund
@@ -9,7 +7,6 @@ import nu.tanex.resources.RobotAiMode;
  */
 public class Robot extends GameObject {
     private Player targetPlayer;
-    private RobotAiMode aiMode;
 
     public Robot(){
         

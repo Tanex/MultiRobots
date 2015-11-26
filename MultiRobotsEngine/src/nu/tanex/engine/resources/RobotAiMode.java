@@ -1,4 +1,4 @@
-package nu.tanex.resources;
+package nu.tanex.engine.resources;
 
 /**
  * @author      Victor Hedlund
@@ -6,5 +6,6 @@ package nu.tanex.resources;
  * @since       2015-11-26
  */
 public enum RobotAiMode {
-    ChaseClosest, TargetPlayer
+    ChaseClosest,
+    TargetPlayer
 }

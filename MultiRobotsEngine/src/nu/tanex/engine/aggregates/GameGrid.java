@@ -1,6 +1,6 @@
-package nu.tanex.aggregates;
+package nu.tanex.engine.aggregates;
 
-import nu.tanex.data.GameObject;
+import nu.tanex.engine.data.GameObject;
 
 /**
  * @author      Victor Hedlund

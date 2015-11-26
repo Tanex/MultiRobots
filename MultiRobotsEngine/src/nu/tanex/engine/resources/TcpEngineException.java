@@ -1,4 +1,4 @@
-package nu.tanex.resources;
+package nu.tanex.engine.resources;
 
 /**
  * Exception thrown by ClientTcpEngine and ServerTcpEngine if there are any

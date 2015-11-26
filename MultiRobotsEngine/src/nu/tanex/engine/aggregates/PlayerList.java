@@ -1,6 +1,6 @@
-package nu.tanex.aggregates;
+package nu.tanex.engine.aggregates;
 
-import nu.tanex.data.Player;
+import nu.tanex.engine.data.Player;
 import java.util.ArrayList;
 
 /**

@@ -1,6 +1,6 @@
-package nu.tanex.aggregates;
+package nu.tanex.engine.aggregates;
 
-import nu.tanex.data.Robot;
+import nu.tanex.engine.data.Robot;
 import java.util.ArrayList;
 
 /**

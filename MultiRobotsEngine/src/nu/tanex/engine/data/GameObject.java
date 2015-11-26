@@ -1,4 +1,4 @@
-package nu.tanex.data;
+package nu.tanex.engine.data;
 
 import javafx.scene.paint.Color;
 
@@ -8,12 +8,16 @@ import javafx.scene.paint.Color;
  * @since       2015-11-26
  */
 public abstract class GameObject {
+    //region Member variables
     private int x;
     private int y;
     private Color color;
     private char token;
-    
-    public GameObject(){
-        
+    //endregion
+
+    //region Constructors
+    public GameObject() {
+
     }
+    //endregion
 }
