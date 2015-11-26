@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MultiRobots.iml" filepath="$PROJECT_DIR$/MultiRobots.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MultiRobotsClient/MultiRobotsClient.iml" filepath="$PROJECT_DIR$/MultiRobotsClient/MultiRobotsClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MultiRobotsEngine/MultiRobotsEngine.iml" filepath="$PROJECT_DIR$/MultiRobotsEngine/MultiRobotsEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MultiRobotsServer/MultiRobotsServer.iml" filepath="$PROJECT_DIR$/MultiRobotsServer/MultiRobotsServer.iml" />
+    </modules>
+  </component>
+</project>
