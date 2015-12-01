@@ -1,6 +1,5 @@
 package nu.tanex.server.io;
 
-import nu.tanex.engine.data.Player;
 import nu.tanex.engine.resources.TcpEngineException;
 import nu.tanex.server.core.Client;
 
