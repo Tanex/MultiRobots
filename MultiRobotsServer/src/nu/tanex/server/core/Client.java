@@ -1,11 +1,6 @@
 package nu.tanex.server.core;
 
 import nu.tanex.engine.data.Player;
-import nu.tanex.engine.resources.TcpEngineException;
-
-import java.io.*;
-import java.net.Socket;
-import java.util.Vector;
 
 /**
  * Handles a connected client, is used to keep track of a players gamestate

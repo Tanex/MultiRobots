@@ -1,4 +1,4 @@
-package nu.tanex.engine.resources;
+package nu.tanex.engine.exceptions;
 
 /**
  * Exception thrown by ClientTcpEngine and ServerTcpEngine if there are any
@@ -8,16 +8,16 @@ package nu.tanex.engine.resources;
  * @version     0.1
  * @since       2015-11-26
  */
-public class TcpEngineException extends Exception {
-    public TcpEngineException(String msg){
+public class GameException extends Exception {
+    public GameException(String msg){
         super(msg);
     }
 
-    public TcpEngineException(Throwable cause){
+    public GameException(Throwable cause){
         super(cause);
     }
 
-    public TcpEngineException(String msg, Throwable cause){
+    public GameException(String msg, Throwable cause){
         super(msg, cause);
     }
 }

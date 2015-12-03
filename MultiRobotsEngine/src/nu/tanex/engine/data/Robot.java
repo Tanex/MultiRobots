@@ -9,6 +9,10 @@ public class Robot extends GameObject {
     private Player targetPlayer;
 
     public Robot(){
-        
+        this(null);
+    }
+
+    public Robot(Player targetPlayer) {
+        this.targetPlayer = targetPlayer;
     }
 }

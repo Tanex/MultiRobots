@@ -1,6 +1,6 @@
 package nu.tanex.server.io;
 
-import nu.tanex.engine.resources.TcpEngineException;
+import nu.tanex.engine.exceptions.TcpEngineException;
 import nu.tanex.server.core.Client;
 
 import java.io.*;
@@ -143,6 +143,7 @@ public class ServerTcpEngine extends Thread implements IServerComEngine {
             String buf;
             try {
                 while (true) {
+                    InputStream t = clientSocket.getInputStream();
                     buf = inStream.readLine();
                     System.out.println(buf);
                     ServerComHandler.getInstance().msgReceived(client, buf);

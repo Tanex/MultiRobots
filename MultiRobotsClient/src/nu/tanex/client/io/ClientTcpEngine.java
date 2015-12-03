@@ -1,6 +1,6 @@
 package nu.tanex.client.io;
 
-import nu.tanex.engine.resources.TcpEngineException;
+import nu.tanex.engine.exceptions.TcpEngineException;
 
 import java.io.*;
 import java.net.InetAddress;
