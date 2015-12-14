@@ -1,9 +1,8 @@
 package nu.tanex.engine.aggregates;
 
 import nu.tanex.engine.data.GameObject;
+import nu.tanex.engine.data.Point;
 import nu.tanex.engine.resources.Direction;
-
-import java.util.Random;
 
 /**
  * @author      Victor Hedlund
@@ -15,7 +14,6 @@ public class GameGrid {
     private int height;
     private int width;
     private GameObject[][] grid;
-    private Random rng;
     //endregion
 
     //region Constructor
@@ -26,7 +24,6 @@ public class GameGrid {
     public GameGrid(int width, int height) {
         this.width = width;
         this.height = height;
-        rng = new Random();
         grid = new GameObject[width][height];
     }
     //endregion
@@ -34,12 +31,12 @@ public class GameGrid {
     //region Public methods
 
     /**
-     * Returns the @code GameObject in the @code GameGrid that is adjacent to the point (x,y) in the given direction.
+     * Returns the GameObject in the GameGrid that is adjacent to the point (x,y) in the given direction.
      *
      * @param originX X-coordinate.
      * @param originY Y-coordinate.
      * @param direction Direction to get object from.
-     * @return Adjacent @code GameObject @code direction.
+     * @return Adjacent GameObject direction.
      */
     public GameObject getObjectInDir(int originX, int originY, Direction direction){
         switch (direction) {
@@ -73,37 +70,57 @@ public class GameGrid {
     }
 
     /**
-     * Randomly places a @code GameObject into the grid, will not overwrite anything already in the grid.
+     * Randomly places a {@code GameObject} into the grid, will not overwrite anything already in the grid.
      *
      * @param gameObject Object that should be placed in the grid.
      */
     public void randomlyPlaceGameObject(GameObject gameObject) {
-        int x, y;
+        Point point = new Point();
         //Keep generating new x,y values until the object is successfully placed in the grid
-        do {
-            x = rng.nextInt(width);
-            y = rng.nextInt(height);
-        } while (!placeGameObject(gameObject, x, y, false));
+        while (!placeGameObject(gameObject, Point.newRandomPoint(width, height), false))
+            ;
     }
 
+    public void moveGameObject(GameObject gameObject, Point point, boolean overWriteExisting){
+        grid[gameObject.getPoint().getX()][gameObject.getPoint().getY()] = null;
+        placeGameObject(gameObject, point, overWriteExisting);
+    }
+
+    //endregion
+
+    //region Private methods
     /**
      * Places a @code GameObject in the @code GameGrid at point (x, y).
      *
      * @param gameObject        Object that should be placed in the grid.
-     * @param x                 X-coordinate
-     * @param y                 Y-coordinate
+     * @param point             Point where the @code GameObject should be placed.
      * @param overWriteExisting Whether to overwrite any existing object at (x, y).
      * @return Indicates if the object was successfully placed in the grid or not.
      */
-    public boolean placeGameObject(GameObject gameObject, int x, int y, boolean overWriteExisting) {
+    private boolean placeGameObject(GameObject gameObject, Point point, boolean overWriteExisting) {
         //Space is occupied and we shouldn't overwrite -> abort
-        if (grid[x][y] != null && !overWriteExisting)
+        if (grid[point.getX()][point.getY()] != null && !overWriteExisting)
             return false;
 
-        grid[x][y] = gameObject;
-        gameObject.setX(x);
-        gameObject.setY(y);
+        grid[point.getX()][point.getY()] = gameObject;
+        gameObject.getPoint().set(point);
         return true;
     }
+    //endregion
+
+    //region Object overrides
+
+    @Override
+    public String toString() {
+        String str = "";
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                str += grid[j][i] == null ? "." : grid[j][i].toString();
+            }
+            str += "\n";
+        }
+        return str;
+    }
+
     //endregion
 }

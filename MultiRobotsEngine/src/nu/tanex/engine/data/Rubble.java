@@ -6,4 +6,7 @@ package nu.tanex.engine.data;
  * @since 2015-12-03
  */
 public class Rubble extends GameObject {
+    public Rubble() {
+        super("#");
+    }
 }

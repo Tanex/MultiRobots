@@ -24,6 +24,7 @@ public class Player extends GameObject {
 
     //region Constructors
     public Player() {
+        super("H");
         playerNum = new Random().nextInt(1000);
     }
     //endregion

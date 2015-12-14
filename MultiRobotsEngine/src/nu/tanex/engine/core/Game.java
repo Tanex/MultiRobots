@@ -23,6 +23,11 @@ public class Game {
     private GameSettings settings;
     private PlayerList players;
     private RobotList robots;
+
+    public GameGrid getGameGrid() {
+        return gameGrid;
+    }
+
     private GameGrid gameGrid;
     private int turn;
     //endregion
@@ -68,6 +73,12 @@ public class Game {
 
         for (int i = 0; i < settings.getNumInitialRubble(); i++)
             gameGrid.randomlyPlaceGameObject(new Rubble());
+    }
+
+    public void moveRobots(){
+        for (Robot robot : robots){
+            gameGrid.moveGameObject(robot, robot.calculateMovement(null),false);
+        }
     }
 
     //endregion

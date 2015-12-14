@@ -9,23 +9,35 @@ import javafx.scene.paint.Color;
  */
 public abstract class GameObject {
     //region Member variables
-    private int x;
-    private int y;
+    //private int x;
+    //private int y;
+    protected Point point;
     private Color color;
-    private char token;
+    private String token;
     //endregion
 
     //region Get-/setters
-    public int getX() { return x; }
-    public void setX(int x) { this.x = x; }
-
-    public int getY() { return y; }
-    public void setY(int y) { this.y = y; }
+    public Point getPoint() { return point; }
     //endregion
 
     //region Constructors
     public GameObject() {
-
+        this(".");
     }
+
+    public GameObject(String token) {
+        this.token = token;
+        point = new Point();
+    }
+
+    //endregion
+
+    //region Object overrides
+
+    @Override
+    public String toString() {
+        return token;
+    }
+
     //endregion
 }

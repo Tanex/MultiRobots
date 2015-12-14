@@ -27,20 +27,22 @@ public class Program {
 
         Game g = new Game();
         g.addPlayers(new Player[] {new Player(), new Player()});
-        try {
-            g.createGameGrid();
-        } catch (GameException e) {
-            e.printStackTrace();
-        }
-
-        //g.getSettings().saveSettingsToFile("default");
-
-        BufferedReader kbRdr = new BufferedReader(new InputStreamReader(System.in));
-        //kbRdr.readLine();
 
         g.getSettings().loadSettingsFromFile("default");
         System.out.println(g.getSettings());
 
-        kbRdr.readLine();
+        try {
+            g.createGameGrid();
+            System.out.println(g.getGameGrid());
+        } catch (GameException e) {
+            e.printStackTrace();
+        }
+
+        BufferedReader kbRdr = new BufferedReader(new InputStreamReader(System.in));
+        while(!kbRdr.readLine().contains("quit")){
+            System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+            g.moveRobots();
+            System.out.println(g.getGameGrid());
+        }
     }
 }
