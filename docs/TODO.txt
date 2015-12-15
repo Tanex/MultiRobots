@@ -1,0 +1,2 @@
+Redo gamegrid, tiles are lists, movement is adding/removing from lists.
+	-After each turn check gameboard for all tiles.count() > 1 and resolve collisions.

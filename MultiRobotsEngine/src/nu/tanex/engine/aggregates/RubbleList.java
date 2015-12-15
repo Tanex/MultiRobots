@@ -1,7 +1,7 @@
 package nu.tanex.engine.aggregates;
 
 import nu.tanex.engine.data.GameObject;
-import nu.tanex.engine.data.Robot;
+import nu.tanex.engine.data.Rubble;
 
 import java.util.ArrayList;
 
@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * @version     0.1
  * @since       2015-11-26
  */
-public class RobotList extends ArrayList<Robot> {
-    public RobotList(){
-        
+public class RubbleList extends ArrayList<Rubble> {
+    public RubbleList(){
+
     }
 }

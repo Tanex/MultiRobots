@@ -5,6 +5,8 @@ import nu.tanex.engine.data.Point;
 import nu.tanex.engine.resources.Direction;
 
 /**
+ * @deprecated  No longer used, use Game class instead
+ * @see         nu.tanex.engine.core.Game
  * @author      Victor Hedlund
  * @version     0.1
  * @since       2015-11-26

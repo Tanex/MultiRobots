@@ -33,7 +33,7 @@ public class Program {
 
         try {
             g.createGameGrid();
-            System.out.println(g.getGameGrid());
+            System.out.println(g);
         } catch (GameException e) {
             e.printStackTrace();
         }
@@ -42,7 +42,8 @@ public class Program {
         while(!kbRdr.readLine().contains("quit")){
             System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
             g.moveRobots();
-            System.out.println(g.getGameGrid());
+            g.checkGameState();
+            System.out.println(g);
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.Random;
  * @version 0.1
  * @since 2015-12-14
  */
-public class Point {
+public class Point implements Comparable<Point>{
     //region Member variables
     private int x;
     private int y;
@@ -71,4 +71,25 @@ public class Point {
         return new Point(rng.nextInt(xMax), rng.nextInt(yMax));
     }
     //endregion
+
+
+    //region Object overrides
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Point))
+            return false;
+        return this.x == ((Point)other).x && this.y == ((Point)other).y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(x + y);
+    }
+
+    @Override
+    public int compareTo(Point other) {
+        return Integer.compare(this.x + this.y, other.x + other.y);
+    }
+    //endregion
+
 }

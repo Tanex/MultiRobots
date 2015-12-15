@@ -9,15 +9,16 @@ import javafx.scene.paint.Color;
  */
 public abstract class GameObject {
     //region Member variables
-    //private int x;
-    //private int y;
     protected Point point;
     private Color color;
     private String token;
+    private boolean alive;
     //endregion
 
     //region Get-/setters
     public Point getPoint() { return point; }
+    public boolean isAlive() { return alive; }
+    public void setAlive(boolean alive) { this.alive = alive; }
     //endregion
 
     //region Constructors
@@ -28,6 +29,7 @@ public abstract class GameObject {
     public GameObject(String token) {
         this.token = token;
         point = new Point();
+        alive = true;
     }
 
     //endregion
