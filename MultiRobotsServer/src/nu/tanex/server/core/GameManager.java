@@ -1,6 +1,14 @@
 package nu.tanex.server.core;
 
 import nu.tanex.engine.exceptions.GameException;
+import nu.tanex.engine.resources.PlayerAction;
+import nu.tanex.server.resources.GameState;
+import nu.tanex.server.resources.RegexCheck;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.charset.Charset;
 
 /**
  * @author      Victor Hedlund
@@ -8,49 +16,91 @@ import nu.tanex.engine.exceptions.GameException;
  * @since       2015-12-14
  */
 public class GameManager extends Thread {
+    //region Member variables
     private Game game;
-    private int turn;
     private boolean gameRunning;
+    //endregion
 
+    //region Constructors
     public GameManager() {
         this.game = new Game();
         this.gameRunning = false;
-        turn = 0;
     }
+    //endregion
 
+    //region Public methods
+
+    /**
+     * Starts a thread to handle playing the game with the given clients as players.
+     *
+     * @param players Connected clients that are the players in this game.
+     * @throws GameException Thrown if the game can not be initialized due to improper GameSettings.
+     */
     public void startGame(Client[] players) throws GameException {
-        for(Client player : players)
+        //Make all clients relay their messages to this GameManager instead of the server
+        for (Client player : players)
             player.setMsgHandler(this::msgHandler);
 
+        //Perform initial game setup
         this.game.addPlayers(players);
         this.game.createGameGrid();
+        //Start the game
         this.gameRunning = true;
         this.start();
     }
 
-    private void processTurn(){
-        if (turn == -1)
-            game.moveRobots();
-        else
-            game.handlePlayerTurn(turn);
-        game.checkGameState();
-        incrementTurn();
-    }
-
-    private void incrementTurn(){
-        turn++;
-        if (turn == game.getNumPlayers())
-            turn = -1;
-    }
-
-    public void msgHandler(Client client, String msg){
+    /**
+     * Handles received messages while a client is part of a game on the server.
+     *
+     * @param client Client that sent the message
+     * @param msg The message that was sent.
+     */
+    public void msgHandler(Client client, String msg) {
+        if(RegexCheck.playerAction(msg)){
+            String[] splitMsg = msg.split(":");
+            PlayerAction.valueOf(splitMsg[1]);
+            try {
+                Client c = (Client)((new ObjectInputStream(
+                        new ByteArrayInputStream(
+                                msg.getBytes(Charset.defaultCharset())))).readObject());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         // TODO: 2015-12-19 message handling
     }
+    //endregion
 
+    //region Private methods
+    private void processTurn() {
+        game.handlePlayersTurn();
+        game.checkForCollissions();
+        game.handleRobotsTurn();
+        game.checkForCollissions();
+    }
+    //endregion
+
+    //region Superclass Thread
     @Override
     public void run() {
-        while(gameRunning){
-            processTurn();
+        while (gameRunning) {
+            GameState gameState;
+            do {
+                processTurn();
+                gameState = game.checkGameState();
+            } while (gameState == GameState.Running);
+
+            switch (gameState) {
+                case PlayersWon:
+                    game.nextLevel();
+                    break;
+                case RobotsWon:
+                    game.playersLost();
+                    gameRunning = false;
+                    break;
+            }
         }
+        // TODO: 2015-12-19 return clients to lobby
     }
+    //endregion
 }

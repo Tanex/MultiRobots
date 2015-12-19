@@ -1,6 +1,5 @@
 package nu.tanex.server.core;
 
-import com.sun.corba.se.spi.activation.Server;
 import nu.tanex.engine.data.Player;
 import nu.tanex.engine.exceptions.TcpEngineException;
 import nu.tanex.server.io.IMsgHandler;

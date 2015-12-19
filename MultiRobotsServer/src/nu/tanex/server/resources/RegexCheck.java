@@ -11,4 +11,8 @@ public class RegexCheck {
     public static boolean disconnectMsg(String msg){
         return Pattern.compile("^Disconnect$").matcher(msg).matches();
     }
+
+    public static boolean playerAction(String msg){
+        return Pattern.compile("^PlayerAction:.*$").matcher(msg).matches();
+    }
 }

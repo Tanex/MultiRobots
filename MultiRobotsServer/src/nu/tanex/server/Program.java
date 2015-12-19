@@ -2,7 +2,6 @@ package nu.tanex.server;
 
 import nu.tanex.server.core.Client;
 import nu.tanex.server.core.Game;
-import nu.tanex.engine.data.Player;
 import nu.tanex.engine.exceptions.GameException;
 import nu.tanex.engine.exceptions.TcpEngineException;
 import nu.tanex.server.io.ServerComHandler;
@@ -42,8 +41,8 @@ public class Program {
         BufferedReader kbRdr = new BufferedReader(new InputStreamReader(System.in));
         while(!kbRdr.readLine().contains("quit")){
             System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-            g.moveRobots();
-            g.checkGameState();
+            g.handleRobotsTurn();
+            g.checkForCollissions();
             System.out.println(g);
         }
     }

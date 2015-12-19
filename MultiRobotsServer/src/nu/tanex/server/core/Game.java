@@ -9,6 +9,7 @@ import nu.tanex.engine.resources.CollisionBehaviour;
 import nu.tanex.engine.resources.GameSettings;
 import nu.tanex.engine.resources.RobotAiMode;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.resources.GameState;
 
 import java.util.HashMap;
 
@@ -26,6 +27,7 @@ public class Game {
     private ClientList players;
     private RobotList robots;
     private RubbleList rubblePiles;
+    private int level;
     //endregion
 
     //region Get-/Setters
@@ -39,16 +41,32 @@ public class Game {
         players = new ClientList();
         robots = new RobotList();
         rubblePiles = new RubbleList();
+        level = 0;
     }
     //endregion
 
     //region Public methods
-    public void handlePlayerTurn(int playerNum){
+
+    /**
+     * Handles letting all players perform their actions for a turn.
+     */
+    public void handlePlayersTurn(){
         // TODO: 2015-12-15 get player input over TCP
-        moveGameObject(players.get(playerNum), Point.newRandomPoint(settings.getGridWidth(), settings.getGridHeight()),true);
+        //for now just randomly move players
+        for(Player player : players)
+            moveGameObject(player, Point.newRandomPoint(settings.getGridWidth(), settings.getGridHeight()),true);
     }
 
-    public void checkGameState(){
+    /**
+     * Handles letting all robots perform their moves for a turn.
+     */
+    public void handleRobotsTurn(){
+        for (Robot robot : robots){
+            moveGameObject(robot, robot.calculateMovement(null), true);
+        }
+    }
+
+    public void checkForCollissions(){
         HashMap<Point,GameObject> spaces = new HashMap<>();
         players.forEach(p -> checkForCollision(p, spaces));
         robots.forEach(r -> checkForCollision(r, spaces));
@@ -56,6 +74,15 @@ public class Game {
 
         players.removeIf(p -> !p.isAlive());
         robots.removeIf(p -> !p.isAlive());
+    }
+
+    public GameState checkGameState(){
+        if (robots.size() == 0)
+            return GameState.PlayersWon;
+        else if (players.stream().allMatch(p -> !p.isAlive()))
+            return GameState.RobotsWon;
+        else
+            return GameState.Running;
     }
 
     public void addPlayers(Client[] players){
@@ -72,26 +99,7 @@ public class Game {
             throw new GameException("Grid overfilled: " + (players.size() + settings.getNumInitialRobots() + settings.getNumInitialRubble())
                     + " objects for " + (settings.getGridHeight()*settings.getGridWidth()) + "size grid.");
 
-        //Create robots
-        for (int i = 0; i < settings.getNumInitialRobots(); i++) {
-            if(settings.getRobotAiMode() == RobotAiMode.TargetPlayer)
-                robots.add(new Robot(players.get(i % players.size())));
-            else
-                robots.add(new Robot());
-        }
-        for (int i = 0; i < settings.getNumInitialRubble(); i++)
-            rubblePiles.add(new Rubble());
-
-        //Randomly place all the robots and players
-        robots.forEach(this::randomlyPlaceGameObject);
-        players.forEach(this::randomlyPlaceGameObject);
-        rubblePiles.forEach(this::randomlyPlaceGameObject);
-    }
-
-    public void moveRobots(){
-        for (Robot robot : robots){
-            moveGameObject(robot, robot.calculateMovement(null), true);
-        }
+        generateGrid(settings.getNumInitialRobots());
     }
 
     /**
@@ -180,6 +188,23 @@ public class Game {
         else
             spaces.put(gameObject.getPoint(),gameObject);
     }
+
+    private void generateGrid(int initialRobots){
+        //Create robots
+        for (int i = 0; i < initialRobots; i++) {
+            if(settings.getRobotAiMode() == RobotAiMode.TargetPlayer)
+                robots.add(new Robot(players.get(i % players.size())));
+            else
+                robots.add(new Robot());
+        }
+        for (int i = 0; i < settings.getNumInitialRubble(); i++)
+            rubblePiles.add(new Rubble());
+
+        //Randomly place all the robots and players
+        robots.forEach(this::randomlyPlaceGameObject);
+        players.forEach(this::randomlyPlaceGameObject);
+        rubblePiles.forEach(this::randomlyPlaceGameObject);
+    }
     //endregion
 
     //region Object overrides
@@ -205,6 +230,21 @@ public class Game {
         for (StringBuilder row : rows)
             str += row;
         return str;
+    }
+
+    public void nextLevel() {
+        level++;
+        for (Player player : players){
+            if (player.isAlive())
+                ;//Player rewards per level
+            else
+                player.setAlive(true);
+        }
+        generateGrid(settings.getNumInitialRobots() + settings.getNumAdditionalRobotsPerLevel() * level);
+    }
+
+    public void playersLost() {
+        // TODO: 2015-12-19 tell players they lost.
     }
 
     //endregion

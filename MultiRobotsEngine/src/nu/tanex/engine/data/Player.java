@@ -1,5 +1,6 @@
 package nu.tanex.engine.data;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -7,16 +8,19 @@ import java.util.Random;
  * @version     0.1
  * @since       2015-11-26
  */
-public class Player extends GameObject {
+public class Player extends GameObject implements Serializable{
     //region Member variables
     private int playerNum;
     private int numAttacks;
     private int numRandomTeleports;
     private int numSafeTeleports;
     private int score;
+    private String name;
     //endregion
 
     //region Get-/Setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
     public int getPlayerNum() {
         return playerNum;
     }

@@ -1,2 +1,5 @@
-Redo gamegrid, tiles are lists, movement is adding/removing from lists.
-	-After each turn check gameboard for all tiles.count() > 1 and resolve collisions.
+All players take turn simultaneously, update grid for all clients as quickly as possible.
+After all player movement is done, move robots.
+
+next thing to do:
+    start basic work on client e.g. login or similar.
