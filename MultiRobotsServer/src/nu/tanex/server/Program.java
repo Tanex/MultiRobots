@@ -1,6 +1,7 @@
 package nu.tanex.server;
 
-import nu.tanex.engine.core.Game;
+import nu.tanex.server.core.Client;
+import nu.tanex.server.core.Game;
 import nu.tanex.engine.data.Player;
 import nu.tanex.engine.exceptions.GameException;
 import nu.tanex.engine.exceptions.TcpEngineException;
@@ -23,10 +24,10 @@ public class Program {
      * Main entry point of server program
      * */
     public static void main(String[] args) throws TcpEngineException, IOException {
-        //ServerComHandler.getInstance().setComEngine(new ServerTcpEngine());
+        ServerComHandler.getInstance().setTcpEngine(new ServerTcpEngine());
 
         Game g = new Game();
-        g.addPlayers(new Player[] {new Player(), new Player()});
+        g.addPlayers(new Client[] {new Client(null), new Client(null)});
 
         g.getSettings().loadSettingsFromFile("default");
         System.out.println(g.getSettings());

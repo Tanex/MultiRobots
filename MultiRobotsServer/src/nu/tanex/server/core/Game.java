@@ -1,6 +1,5 @@
-package nu.tanex.engine.core;
+package nu.tanex.server.core;
 
-import nu.tanex.engine.aggregates.GameGrid;
 import nu.tanex.engine.aggregates.PlayerList;
 import nu.tanex.engine.aggregates.RobotList;
 import nu.tanex.engine.aggregates.RubbleList;
@@ -9,10 +8,9 @@ import nu.tanex.engine.exceptions.GameException;
 import nu.tanex.engine.resources.CollisionBehaviour;
 import nu.tanex.engine.resources.GameSettings;
 import nu.tanex.engine.resources.RobotAiMode;
+import nu.tanex.server.aggregates.ClientList;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.TreeSet;
 
 /**
  * @author      Victor Hedlund
@@ -25,7 +23,7 @@ public class Game {
 
     //region Member variables
     private GameSettings settings;
-    private PlayerList players;
+    private ClientList players;
     private RobotList robots;
     private RubbleList rubblePiles;
     //endregion
@@ -38,7 +36,7 @@ public class Game {
     //region Constructors
     public Game() {
         settings = new GameSettings();
-        players = new PlayerList();
+        players = new ClientList();
         robots = new RobotList();
         rubblePiles = new RubbleList();
     }
@@ -60,8 +58,8 @@ public class Game {
         robots.removeIf(p -> !p.isAlive());
     }
 
-    public void addPlayers(Player[] players){
-        for (Player player : players){
+    public void addPlayers(Client[] players){
+        for (Client player : players){
             if(!this.players.contains(player))
                 this.players.add(player);
         }
