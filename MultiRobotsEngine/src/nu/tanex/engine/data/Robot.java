@@ -16,7 +16,7 @@ public class Robot extends GameObject {
     }
 
     public Robot(Player targetPlayer) {
-        super("@");
+        super("@", CollisionBehaviour.getRobotCollisionBehaviour());
         this.targetPlayer = targetPlayer;
     }
 

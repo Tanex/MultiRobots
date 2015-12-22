@@ -1,9 +1,8 @@
 package nu.tanex.server;
 
-import nu.tanex.server.core.Client;
-import nu.tanex.server.core.Game;
 import nu.tanex.engine.exceptions.GameException;
 import nu.tanex.engine.exceptions.TcpEngineException;
+import nu.tanex.server.core.Game;
 import nu.tanex.server.io.ServerComHandler;
 import nu.tanex.server.io.ServerTcpEngine;
 
@@ -26,7 +25,10 @@ public class Program {
         ServerComHandler.getInstance().setTcpEngine(new ServerTcpEngine());
 
         Game g = new Game();
-        g.addPlayers(new Client[] {new Client(null), new Client(null)});
+        //g.addPlayers(new Client[] {new Client(null), new Client(null)});
+        while(ServerComHandler.getInstance().getConnectedClients().size() == 0)
+            ;
+        g.addPlayers(ServerComHandler.getInstance().getConnectedClients());
 
         g.getSettings().loadSettingsFromFile("default");
         System.out.println(g.getSettings());
@@ -41,6 +43,7 @@ public class Program {
         BufferedReader kbRdr = new BufferedReader(new InputStreamReader(System.in));
         while(!kbRdr.readLine().contains("quit")){
             System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+            g.handlePlayersTurn();
             g.handleRobotsTurn();
             g.checkForCollissions();
             System.out.println(g);

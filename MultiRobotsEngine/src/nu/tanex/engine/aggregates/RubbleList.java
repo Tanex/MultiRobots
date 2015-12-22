@@ -1,6 +1,5 @@
 package nu.tanex.engine.aggregates;
 
-import nu.tanex.engine.data.GameObject;
 import nu.tanex.engine.data.Rubble;
 
 import java.util.ArrayList;

@@ -16,10 +16,10 @@ public class GameSettings {
     private int numInitialRobots = 10;
     private int numAdditionalRobotsPerLevel = 5;
     private int numInitialRubble = 2;
-    private CollisionBehaviour collisionBehaviour = CollisionBehaviour.Merge;
+    private RobotCollisions robotCollisions = RobotCollisions.Merge;
     private int numSafeTeleportsAwarded = 1;
     private int numAttacksAwarded = 1;
-    private AttackBehaviour attackBehaviour = AttackBehaviour.KillOne;
+    private PlayerAttacks playerAttacks = PlayerAttacks.KillOne;
     private RobotAiMode robotAiMode = RobotAiMode.ChaseClosest;
     private int gridWidth = 30;
     private int gridHeight = 20;
@@ -58,12 +58,12 @@ public class GameSettings {
         this.numInitialRubble = numInitialRubble;
     }
 
-    public CollisionBehaviour getCollisionBehaviour() {
-        return this.collisionBehaviour;
+    public RobotCollisions getRobotCollisions() {
+        return this.robotCollisions;
     }
 
-    public void setCollisionBehaviour(CollisionBehaviour collisionBehaviour) {
-        this.collisionBehaviour = collisionBehaviour;
+    public void setRobotCollisions(RobotCollisions robotCollisions) {
+        this.robotCollisions = robotCollisions;
     }
 
     public int getNumSafeTeleportsAwarded() {
@@ -82,12 +82,12 @@ public class GameSettings {
         this.numAttacksAwarded = numAttacksAwarded;
     }
 
-    public AttackBehaviour getAttackBehaviour() {
-        return this.attackBehaviour;
+    public PlayerAttacks getPlayerAttacks() {
+        return this.playerAttacks;
     }
 
-    public void setAttackBehaviour(AttackBehaviour attackBehaviour) {
-        this.attackBehaviour = attackBehaviour;
+    public void setPlayerAttacks(PlayerAttacks playerAttacks) {
+        this.playerAttacks = playerAttacks;
     }
 
     public RobotAiMode getRobotAiMode() {
@@ -176,10 +176,10 @@ public class GameSettings {
                 "numInitialRobots=" + numInitialRobots+ ";\n" +
                 "numAdditionalRobotsPerLevel=" + numAdditionalRobotsPerLevel+ ";\n" +
                 "numInitialRubble=" + numInitialRubble+ ";\n" +
-                "collisionBehaviour=" + collisionBehaviour+ ";\n" +
+                "robotCollisions=" + robotCollisions + ";\n" +
                 "numSafeTeleportsAwarded=" + numSafeTeleportsAwarded+ ";\n" +
                 "numAttacksAwarded=" + numAttacksAwarded+ ";\n" +
-                "attackBehaviour=" + attackBehaviour+ ";\n" +
+                "playerAttacks=" + playerAttacks + ";\n" +
                 "robotAiMode=" + robotAiMode+ ";\n" +
                 "gridWidth=" + gridWidth+ ";\n" +
                 "gridHeight=" + gridHeight + ";";
@@ -191,10 +191,10 @@ public class GameSettings {
             case "numInitialRobots": numInitialRobots = Integer.parseInt(value); break;
             case "numAdditionalRobotsPerLevel": numAdditionalRobotsPerLevel = Integer.parseInt(value); break;
             case "numInitialRubble": numInitialRubble = Integer.parseInt(value); break;
-            case "collisionBehaviour": collisionBehaviour = CollisionBehaviour.valueOf(value); break;
+            case "robotCollisions": robotCollisions = RobotCollisions.valueOf(value); break;
             case "numSafeTeleportsAwarded": numSafeTeleportsAwarded = Integer.parseInt(value); break;
             case "numAttacksAwarded": numAttacksAwarded = Integer.parseInt(value); break;
-            case "attackBehaviour": attackBehaviour = AttackBehaviour.valueOf(value); break;
+            case "playerAttacks": playerAttacks = PlayerAttacks.valueOf(value); break;
             case "robotAiMode": robotAiMode = RobotAiMode.valueOf(value); break;
             case "gridWidth": gridWidth = Integer.parseInt(value); break;
             case "gridHeight": gridHeight = Integer.parseInt(value); break;

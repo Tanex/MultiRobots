@@ -22,6 +22,12 @@ public class Client extends Player {
     private ClientThread clientThread;
 
     //region Get-/setters
+
+    /**
+     * Set what function this Client should pass along its messages to.
+     *
+     * @param msgHandler Function that will handle the messages.
+     */
     public void setMsgHandler(IMsgHandler msgHandler) { this.clientThread.msgHandler = msgHandler; }
     //endregion
 
@@ -38,6 +44,10 @@ public class Client extends Player {
 
     public void disconnect(){
         this.clientThread.alive = false;
+    }
+
+    public void sendMessage(String msg){
+        (new Thread(() -> this.clientThread.outStream.println(msg))).start();
     }
 
     //region Innerclass ClientThread
@@ -110,13 +120,6 @@ public class Client extends Player {
                     e.printStackTrace();
                 }
             }
-        }
-        //endregion
-
-        //Public methods
-        //public Client getClient() { return Client.this; }
-        public void sendMsg(String msg) {
-            outStream.println(msg);
         }
         //endregion
     }

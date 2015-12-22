@@ -1,4 +1,11 @@
-// Formatting for this file:
-//
-// command @variable
-//
+-----From Client-----
+PlayerAction:<PlayerAction action>
+PlayerLogin:<String name>,<String password>
+
+-----From Server-----
+InputEnabled
+InputDisabled
+GameLost
+NewLevel
+NewPlayerPos: ???
+NewRobotPos: ???

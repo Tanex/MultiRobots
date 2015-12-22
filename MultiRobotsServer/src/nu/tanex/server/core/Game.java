@@ -1,12 +1,12 @@
 package nu.tanex.server.core;
 
-import nu.tanex.engine.aggregates.PlayerList;
 import nu.tanex.engine.aggregates.RobotList;
 import nu.tanex.engine.aggregates.RubbleList;
 import nu.tanex.engine.data.*;
 import nu.tanex.engine.exceptions.GameException;
-import nu.tanex.engine.resources.CollisionBehaviour;
+import nu.tanex.engine.resources.RobotCollisions;
 import nu.tanex.engine.resources.GameSettings;
+import nu.tanex.engine.resources.PlayerAction;
 import nu.tanex.engine.resources.RobotAiMode;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
@@ -52,7 +52,16 @@ public class Game {
      */
     public void handlePlayersTurn(){
         // TODO: 2015-12-15 get player input over TCP
-        //for now just randomly move players
+        sendMsgToAllPlayers("GiveInput");
+
+        try {
+            Thread.sleep(11000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        sendMsgToAllPlayers("NoMoreInput");
+
         for(Player player : players)
             moveGameObject(player, Point.newRandomPoint(settings.getGridWidth(), settings.getGridHeight()),true);
     }
@@ -85,7 +94,7 @@ public class Game {
             return GameState.Running;
     }
 
-    public void addPlayers(Client[] players){
+    public void addPlayers(ClientList players){
         for (Client player : players){
             if(!this.players.contains(player))
                 this.players.add(player);
@@ -121,6 +130,10 @@ public class Game {
     //endregion
 
     //region Private methods
+    private void sendMsgToAllPlayers(String msg){
+        players.forEach(p -> p.sendMessage(msg));
+    }
+
     /**
      * Places a @code GameObject in the @code GameGrid at point (x, y).
      *
@@ -152,32 +165,29 @@ public class Game {
     }
 
     private void handleCollision(GameObject object1, GameObject object2){
-        Class obj1Class = object1.getClass();
-        Class obj2Class = object2.getClass();
-
-        //A player is involved
-        if(obj1Class.equals(Player.class))
-            object1.setAlive(false);
-        else if (obj2Class.equals(Player.class))
-            object2.setAlive(false);
-        //if no player involved
-        else {
-            if (obj1Class.equals(Rubble.class))
-                object2.setAlive(false);
-            else if (obj2Class.equals(Player.class))
+        switch (object1.getCollisionBehaviour().collideWith(object2)) {
+            case NA: // TODO: 2015-12-21 throw exception....
+                break;
+            case Object1Death:
                 object1.setAlive(false);
-            else {
-                if (settings.getCollisionBehaviour() == CollisionBehaviour.Merge){
+                break;
+            case Object2Death:
+                object2.setAlive(false);
+                break;
+            case RobotCollision:
+                if (settings.getRobotCollisions() == RobotCollisions.Merge){
                     object1.setAlive(false);
                 }
-                else {//if (settings.getCollisionBehaviour() == CollisionBehaviour.Rubble)
+                else {//if (settings.getRobotCollisions() == RobotCollisions.Rubble)
                     Rubble spawnedRubble = new Rubble();
                     placeGameObject(spawnedRubble, object1.getPoint(), true);
                     rubblePiles.add(spawnedRubble);
                     object1.setAlive(false);
                     object2.setAlive(false);
                 }
-            }
+                break;
+            case PlayerCollision: // TODO: 2015-12-21 what should happen?
+                break;
         }
     }
 
@@ -244,7 +254,36 @@ public class Game {
     }
 
     public void playersLost() {
-        // TODO: 2015-12-19 tell players they lost.
+        sendMsgToAllPlayers("You lost, suck it losers");
+    }
+
+    public void playerPerformAction(Client client, PlayerAction playerAction) {
+        switch (playerAction) {
+            case Attack:
+                break;
+            case MoveUp:
+                break;
+            case MoveRight:
+                break;
+            case MoveLeft:
+                break;
+            case MoveDown:
+                break;
+            case MoveUpRight:
+                break;
+            case MoveUpLeft:
+                break;
+            case MoveDownRight:
+                break;
+            case MoveDownLeft:
+                break;
+            case Wait:
+                break;
+            case RandomTeleport:
+                break;
+            case SafeTeleport:
+                break;
+        }
     }
 
     //endregion

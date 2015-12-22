@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
  * @version     0.1
  * @since       2015-11-26
  */
-public class ClientTcpEngine extends Thread implements IClientComEngine {
+public class ClientTcpEngine extends Thread {
     //region Member variables
     private Socket socket = null;
     private BufferedReader inStream = null;
@@ -85,7 +85,7 @@ public class ClientTcpEngine extends Thread implements IClientComEngine {
     }
     //endregion
 
-    //region Interface IClientComEngine
+    //region Innerclass ServerListener
     private class ServerListener extends Thread {
         @Override
         public void run() {

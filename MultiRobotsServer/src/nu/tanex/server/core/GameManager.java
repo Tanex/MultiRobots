@@ -2,13 +2,9 @@ package nu.tanex.server.core;
 
 import nu.tanex.engine.exceptions.GameException;
 import nu.tanex.engine.resources.PlayerAction;
+import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
 import nu.tanex.server.resources.RegexCheck;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.charset.Charset;
 
 /**
  * @author      Victor Hedlund
@@ -36,7 +32,7 @@ public class GameManager extends Thread {
      * @param players Connected clients that are the players in this game.
      * @throws GameException Thrown if the game can not be initialized due to improper GameSettings.
      */
-    public void startGame(Client[] players) throws GameException {
+    public void startGame(ClientList players) throws GameException {
         //Make all clients relay their messages to this GameManager instead of the server
         for (Client player : players)
             player.setMsgHandler(this::msgHandler);
@@ -58,14 +54,14 @@ public class GameManager extends Thread {
     public void msgHandler(Client client, String msg) {
         if(RegexCheck.playerAction(msg)){
             String[] splitMsg = msg.split(":");
-            PlayerAction.valueOf(splitMsg[1]);
-            try {
-                Client c = (Client)((new ObjectInputStream(
-                        new ByteArrayInputStream(
-                                msg.getBytes(Charset.defaultCharset())))).readObject());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            game.playerPerformAction(client, PlayerAction.valueOf(splitMsg[1]));
+//            try {
+//                Client c = (Client)((new ObjectInputStream(
+//                        new ByteArrayInputStream(
+//                                msg.getBytes(Charset.defaultCharset())))).readObject());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
         // TODO: 2015-12-19 message handling
     }

@@ -6,5 +6,9 @@ package nu.tanex.client.io;
  * @since       2015-11-26
  */
 public class ClientComHandler {
-    private IClientComEngine clientComEngine;
+    private ClientTcpEngine tcpEngine;
+
+    public void handleMsg(String msg){
+        System.out.println(msg);
+    }
 }

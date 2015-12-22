@@ -7,6 +7,6 @@ package nu.tanex.engine.data;
  */
 public class Rubble extends GameObject {
     public Rubble() {
-        super("#");
+        super("#", CollisionBehaviour.getRubbleCollisionBehaviour());
     }
 }

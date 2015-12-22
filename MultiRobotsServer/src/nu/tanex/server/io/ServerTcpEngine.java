@@ -1,12 +1,9 @@
 package nu.tanex.server.io;
 
 import nu.tanex.engine.exceptions.TcpEngineException;
-import nu.tanex.server.core.Client;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Vector;
 
 /**
  * Handles keep a thread for clients to connect to that creates a new

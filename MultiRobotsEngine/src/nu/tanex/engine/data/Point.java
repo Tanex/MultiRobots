@@ -1,7 +1,5 @@
 package nu.tanex.engine.data;
 
-import nu.tanex.engine.resources.Direction;
-
 import java.util.Random;
 
 /**

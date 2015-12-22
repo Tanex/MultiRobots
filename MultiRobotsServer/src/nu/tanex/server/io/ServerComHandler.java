@@ -1,11 +1,11 @@
 package nu.tanex.server.io;
 
 import nu.tanex.engine.exceptions.TcpEngineException;
+import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.core.Client;
 import nu.tanex.server.resources.RegexCheck;
 
 import java.net.Socket;
-import java.util.Vector;
 
 /**
  * Singleton that handles communication between client and server, needs to get its
@@ -24,13 +24,18 @@ public class ServerComHandler {
     }
 
     private ServerComHandler() {
-        this.connectedClients = new Vector<>();
+        this.connectedClients = new ClientList();
         this.tcpEngine = null;
     }
     //endregion
 
     //region Member variables
-    private Vector<Client> connectedClients;
+    private ClientList connectedClients;
+
+    public ClientList getConnectedClients() {
+        return connectedClients;
+    }
+
     private ServerTcpEngine tcpEngine;
     //endregion
 

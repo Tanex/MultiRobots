@@ -5,7 +5,7 @@ package nu.tanex.engine.resources;
  * @version 0.1
  * @since 2015-11-26
  */
-public enum AttackBehaviour {
-    KillAll,
-    KillOne
+public enum RobotCollisions {
+    Merge,
+    Rubble
 }

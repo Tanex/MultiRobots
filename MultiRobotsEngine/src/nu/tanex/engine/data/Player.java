@@ -28,7 +28,7 @@ public class Player extends GameObject implements Serializable{
 
     //region Constructors
     public Player() {
-        super("H");
+        super("H", CollisionBehaviour.getPlayerCollisionBehaviour());
         playerNum = new Random().nextInt(1000);
     }
     //endregion
