@@ -1,13 +1,13 @@
 package nu.tanex.server.core;
 
-import nu.tanex.engine.aggregates.RobotList;
-import nu.tanex.engine.aggregates.RubbleList;
-import nu.tanex.engine.data.*;
-import nu.tanex.engine.exceptions.GameException;
-import nu.tanex.engine.resources.RobotCollisions;
-import nu.tanex.engine.resources.GameSettings;
-import nu.tanex.engine.resources.PlayerAction;
-import nu.tanex.engine.resources.RobotAiMode;
+import nu.tanex.core.aggregates.RobotList;
+import nu.tanex.core.aggregates.RubbleList;
+import nu.tanex.core.data.*;
+import nu.tanex.core.exceptions.GameException;
+import nu.tanex.core.resources.RobotCollisions;
+import nu.tanex.core.resources.GameSettings;
+import nu.tanex.core.resources.PlayerAction;
+import nu.tanex.core.resources.RobotAiMode;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
 
@@ -33,6 +33,7 @@ public class Game {
     //region Get-/Setters
     public GameSettings getSettings() { return settings; }
     public int getNumPlayers() { return players.size(); }
+    public ClientList getPlayers() { return players; }
     //endregion
 
     //region Constructors
@@ -46,26 +47,6 @@ public class Game {
     //endregion
 
     //region Public methods
-
-    /**
-     * Handles letting all players perform their actions for a turn.
-     */
-    public void handlePlayersTurn(){
-        // TODO: 2015-12-15 get player input over TCP
-        sendMsgToAllPlayers("GiveInput");
-
-        try {
-            Thread.sleep(11000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        sendMsgToAllPlayers("NoMoreInput");
-
-        for(Player player : players)
-            moveGameObject(player, Point.newRandomPoint(settings.getGridWidth(), settings.getGridHeight()),true);
-    }
-
     /**
      * Handles letting all robots perform their moves for a turn.
      */
@@ -130,10 +111,6 @@ public class Game {
     //endregion
 
     //region Private methods
-    private void sendMsgToAllPlayers(String msg){
-        players.forEach(p -> p.sendMessage(msg));
-    }
-
     /**
      * Places a @code GameObject in the @code GameGrid at point (x, y).
      *
@@ -251,10 +228,6 @@ public class Game {
                 player.setAlive(true);
         }
         generateGrid(settings.getNumInitialRobots() + settings.getNumAdditionalRobotsPerLevel() * level);
-    }
-
-    public void playersLost() {
-        sendMsgToAllPlayers("You lost, suck it losers");
     }
 
     public void playerPerformAction(Client client, PlayerAction playerAction) {

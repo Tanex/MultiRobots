@@ -1,8 +1,9 @@
 package nu.tanex.server.core;
 
-import nu.tanex.engine.exceptions.GameException;
-import nu.tanex.engine.resources.PlayerAction;
+import nu.tanex.core.exceptions.GameException;
+import nu.tanex.core.resources.PlayerAction;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.io.ServerEngine;
 import nu.tanex.server.resources.GameState;
 import nu.tanex.server.resources.RegexCheck;
 
@@ -55,6 +56,7 @@ public class GameManager extends Thread {
         if(RegexCheck.playerAction(msg)){
             String[] splitMsg = msg.split(":");
             game.playerPerformAction(client, PlayerAction.valueOf(splitMsg[1]));
+            System.out.println(PlayerAction.valueOf(splitMsg[1]));
 //            try {
 //                Client c = (Client)((new ObjectInputStream(
 //                        new ByteArrayInputStream(
@@ -69,10 +71,31 @@ public class GameManager extends Thread {
 
     //region Private methods
     private void processTurn() {
-        game.handlePlayersTurn();
+        playersTurn();
         game.checkForCollissions();
         game.handleRobotsTurn();
         game.checkForCollissions();
+    }
+
+    private void playersTurn(){
+        // TODO: 2015-12-15 get player input over TCP
+        sendMsgToAllPlayers("GiveInput");
+
+        try {
+            Thread.sleep(11000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        sendMsgToAllPlayers("NoMoreInput");
+    }
+
+    public void playersLost() {
+        sendMsgToAllPlayers("You lost, suck it losers");
+    }
+
+    private void sendMsgToAllPlayers(String msg){
+        game.getPlayers().forEach(p -> p.sendMessage(msg));
     }
     //endregion
 
@@ -91,12 +114,12 @@ public class GameManager extends Thread {
                     game.nextLevel();
                     break;
                 case RobotsWon:
-                    game.playersLost();
+                    playersLost();
                     gameRunning = false;
                     break;
             }
         }
-        // TODO: 2015-12-19 return clients to lobby
+        ServerEngine.getInstance().returnClientsToServer(game.getPlayers());
     }
     //endregion
 }

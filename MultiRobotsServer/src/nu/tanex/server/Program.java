@@ -1,9 +1,10 @@
 package nu.tanex.server;
 
-import nu.tanex.engine.exceptions.GameException;
-import nu.tanex.engine.exceptions.TcpEngineException;
+import nu.tanex.core.exceptions.GameException;
+import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.core.Game;
-import nu.tanex.server.io.ServerComHandler;
+import nu.tanex.server.core.ServerThread;
+import nu.tanex.server.io.ServerEngine;
 import nu.tanex.server.io.ServerTcpEngine;
 
 import java.io.BufferedReader;
@@ -21,14 +22,22 @@ public class Program {
     /**
      * Main entry point of server program
      * */
-    public static void main(String[] args) throws TcpEngineException, IOException {
-        ServerComHandler.getInstance().setTcpEngine(new ServerTcpEngine());
+    public static void main(String[] args) throws TcpEngineException {
+        ServerEngine.getInstance().setTcpEngine(new ServerTcpEngine());
+        ServerEngine.getInstance().setServerThread(new ServerThread("serverDefault"));
+        while(true)
+            ;
+    }
+
+    public static void mainOld(String[] args) throws TcpEngineException, IOException {
+        ServerEngine.getInstance().setTcpEngine(new ServerTcpEngine());
+        //ServerEngine.getInstance().setServerThread(new ServerThread("serverDefault"));
 
         Game g = new Game();
         //g.addPlayers(new Client[] {new Client(null), new Client(null)});
-        while(ServerComHandler.getInstance().getConnectedClients().size() == 0)
+        while(ServerEngine.getInstance().getConnectedClients().size() == 0)
             ;
-        g.addPlayers(ServerComHandler.getInstance().getConnectedClients());
+        g.addPlayers(ServerEngine.getInstance().getConnectedClients());
 
         g.getSettings().loadSettingsFromFile("default");
         System.out.println(g.getSettings());
@@ -43,7 +52,7 @@ public class Program {
         BufferedReader kbRdr = new BufferedReader(new InputStreamReader(System.in));
         while(!kbRdr.readLine().contains("quit")){
             System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-            g.handlePlayersTurn();
+            //g.handlePlayersTurn();
             g.handleRobotsTurn();
             g.checkForCollissions();
             System.out.println(g);

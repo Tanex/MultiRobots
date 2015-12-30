@@ -1,6 +1,6 @@
 package nu.tanex.server.io;
 
-import nu.tanex.engine.exceptions.TcpEngineException;
+import nu.tanex.core.exceptions.TcpEngineException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -65,7 +65,7 @@ public class ServerTcpEngine extends Thread {
         while (true) {
             try {
                 //Block on accept and when a client connects create a new ClientThread object
-                ServerComHandler.getInstance().clientConnected(serverSocket.accept());
+                ServerEngine.getInstance().clientConnected(serverSocket.accept());
                 System.out.println("Client connected");
             }
             catch (IOException e) {

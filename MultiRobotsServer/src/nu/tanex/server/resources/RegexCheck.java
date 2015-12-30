@@ -15,4 +15,8 @@ public class RegexCheck {
     public static boolean playerAction(String msg){
         return Pattern.compile("^PlayerAction:.*$").matcher(msg).matches();
     }
+
+    public static boolean queueForGame(String msg) {
+        return Pattern.compile("^QueueForGame:[0-9]+$").matcher(msg).matches();
+    }
 }

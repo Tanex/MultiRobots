@@ -1,9 +1,6 @@
 package nu.tanex.client;
 
-import nu.tanex.engine.data.Player;
-
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Class containing the main method.

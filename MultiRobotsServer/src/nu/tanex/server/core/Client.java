@@ -1,9 +1,9 @@
 package nu.tanex.server.core;
 
-import nu.tanex.engine.data.Player;
-import nu.tanex.engine.exceptions.TcpEngineException;
+import nu.tanex.core.data.Player;
+import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.io.IMsgHandler;
-import nu.tanex.server.io.ServerComHandler;
+import nu.tanex.server.io.ServerEngine;
 
 import java.io.*;
 import java.net.Socket;
@@ -33,7 +33,7 @@ public class Client extends Player {
 
     //region Constructors
     public Client(Socket clientSocket) throws TcpEngineException {
-        this(clientSocket, ServerComHandler.getInstance()::msgHandler);
+        this(clientSocket, ServerEngine.getInstance()::msgHandler);
     }
 
     public Client(Socket clientSocket, IMsgHandler msgHandler) throws TcpEngineException {
@@ -85,7 +85,7 @@ public class Client extends Player {
                         inStream.close();
                     if (outStream != null)
                         outStream.close();
-                    ServerComHandler.getInstance().clientDisconnected(Client.this);
+                    ServerEngine.getInstance().clientDisconnected(Client.this);
                 } catch (IOException ie) {
                     //At this point...
                     System.out.println("Just give up...");
@@ -113,7 +113,7 @@ public class Client extends Player {
             finally {
                 try {
                     clientSocket.close();
-                    ServerComHandler.getInstance().clientDisconnected(Client.this);
+                    ServerEngine.getInstance().clientDisconnected(Client.this);
                 }
                 catch (IOException e) {
                     System.out.println("Error closing client socket");

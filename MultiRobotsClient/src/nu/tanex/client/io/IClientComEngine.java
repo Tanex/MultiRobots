@@ -1,7 +1,7 @@
 package nu.tanex.client.io;
 
 /**
- * Interface for a generic communication engine for the client.
+ * Interface for a generic communication core for the client.
  *
  * @author      Victor Hedlund
  * @version     0.1
