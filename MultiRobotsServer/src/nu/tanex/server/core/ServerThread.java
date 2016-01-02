@@ -4,6 +4,7 @@ import nu.tanex.core.exceptions.GameException;
 import nu.tanex.core.exceptions.ServerThreadException;
 import nu.tanex.core.resources.ServerSettings;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.io.ServerEngine;
 
 import java.util.Vector;
 
@@ -42,6 +43,7 @@ public class ServerThread {
             } catch (GameException e) {
                 throw new ServerThreadException("Game could not be started", e);
             }
+            ServerEngine.getInstance().getConnectedClients().removeAll(clientsQueuedForGame[gameNum]);
             clientsQueuedForGame[gameNum].clear();
         }
     }

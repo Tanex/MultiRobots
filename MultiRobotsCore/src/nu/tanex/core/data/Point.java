@@ -1,5 +1,7 @@
 package nu.tanex.core.data;
 
+import nu.tanex.core.resources.Direction;
+
 import java.util.Random;
 
 /**
@@ -67,6 +69,38 @@ public class Point implements Comparable<Point>{
      */
     public static Point newRandomPoint(int xMax, int yMax) {
         return new Point(rng.nextInt(xMax), rng.nextInt(yMax));
+    }
+
+    /**
+     * Calculates linear distance from this point to the one given.
+     *
+     * @param other Point to measure distance to.
+     * @return The linear distance.
+     */
+    public double distanceTo(Point other) {
+        return Math.sqrt(Math.pow(this.getX() + other.getX(), 2.0) + Math.pow(this.getY() + other.getY(), 2.0));
+    }
+
+    public Point getPointInDirection(Direction direction){
+        switch (direction) {
+            case Up:
+                return new Point(this.x, this.y - 1);
+            case Right:
+                return new Point(this.x + 1, this.y);
+            case Left:
+                return new Point(this.x - 1, this.y);
+            case Down:
+                return new Point(this.x, this.y + 1);
+            case UpRight:
+                return new Point(this.x + 1, this.y - 1);
+            case UpLeft:
+                return new Point(this.x - 1, this.y - 1);
+            case DownRight:
+                return new Point(this.x + 1, this.y + 1);
+            case DownLeft:
+                return new Point(this.x - 1, this.y + 1);
+        }
+        return null;
     }
     //endregion
 

@@ -20,6 +20,7 @@ import java.net.Socket;
 public class Client extends Player {
 
     private ClientThread clientThread;
+    private boolean awaitingAction;
 
     //region Get-/setters
 
@@ -29,6 +30,14 @@ public class Client extends Player {
      * @param msgHandler Function that will handle the messages.
      */
     public void setMsgHandler(IMsgHandler msgHandler) { this.clientThread.msgHandler = msgHandler; }
+
+    public boolean isAwaitingAction() {
+        return awaitingAction;
+    }
+
+    public void setAwaitingAction(boolean awaitingAction) {
+        this.awaitingAction = awaitingAction;
+    }
     //endregion
 
     //region Constructors
@@ -37,8 +46,20 @@ public class Client extends Player {
     }
 
     public Client(Socket clientSocket, IMsgHandler msgHandler) throws TcpEngineException {
+        super();
         if (clientSocket != null)
             this.clientThread = new ClientThread(clientSocket, msgHandler);
+        awaitingAction = false;
+    }
+
+    public void requestAction(){
+        this.awaitingAction = true;
+        this.sendMessage("GiveInput");
+    }
+
+    public void blockActions(){
+        this.awaitingAction = false;
+        this.sendMessage("NoMoreInput");
     }
     //endregion
 
@@ -46,7 +67,7 @@ public class Client extends Player {
         this.clientThread.alive = false;
     }
 
-    public void sendMessage(String msg){
+    public synchronized void sendMessage(String msg){
         (new Thread(() -> this.clientThread.outStream.println(msg))).start();
     }
 
@@ -122,6 +143,12 @@ public class Client extends Player {
             }
         }
         //endregion
+
+
+        @Override
+        public String toString() {
+            return getPlayerNum() + super.toString();
+        }
     }
     //endregion
 }

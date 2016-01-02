@@ -49,6 +49,7 @@ public class ServerEngine {
      * @param msg The message that was received
      * */
     public void msgHandler(Client client, String msg) {
+        System.out.println("ServerEngine: " + client + " sent " + msg);
         // TODO: 2015-12-19 add msg handling
         if (RegexCheck.disconnectMsg(msg))
             clientDisconnected(client);
@@ -59,7 +60,6 @@ public class ServerEngine {
                 e.printStackTrace();
             }
         }
-        System.out.println(client.getPlayerNum() + " sent " + msg);
     }
 
     /**

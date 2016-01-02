@@ -7,6 +7,8 @@ import nu.tanex.server.io.ServerEngine;
 import nu.tanex.server.resources.GameState;
 import nu.tanex.server.resources.RegexCheck;
 
+import java.util.function.Predicate;
+
 /**
  * @author      Victor Hedlund
  * @version     0.2
@@ -53,17 +55,11 @@ public class GameManager extends Thread {
      * @param msg The message that was sent.
      */
     public void msgHandler(Client client, String msg) {
+        System.out.println("GameManager: " + client + " sent " + msg);
         if(RegexCheck.playerAction(msg)){
+            client.blockActions();
             String[] splitMsg = msg.split(":");
             game.playerPerformAction(client, PlayerAction.valueOf(splitMsg[1]));
-            System.out.println(PlayerAction.valueOf(splitMsg[1]));
-//            try {
-//                Client c = (Client)((new ObjectInputStream(
-//                        new ByteArrayInputStream(
-//                                msg.getBytes(Charset.defaultCharset())))).readObject());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
         }
         // TODO: 2015-12-19 message handling
     }
@@ -72,14 +68,14 @@ public class GameManager extends Thread {
     //region Private methods
     private void processTurn() {
         playersTurn();
-        game.checkForCollissions();
+        game.checkForCollisions();
         game.handleRobotsTurn();
-        game.checkForCollissions();
+        game.checkForCollisions();
     }
 
     private void playersTurn(){
-        // TODO: 2015-12-15 get player input over TCP
-        sendMsgToAllPlayers("GiveInput");
+        // TODO: 2015-12-15 get player input over TCP, seems to work now?
+        game.getPlayers().stream().filter(Client::isAlive).forEach(Client::requestAction);
 
         try {
             Thread.sleep(11000);
@@ -87,7 +83,7 @@ public class GameManager extends Thread {
             e.printStackTrace();
         }
 
-        sendMsgToAllPlayers("NoMoreInput");
+        game.getPlayers().stream().filter(Client::isAwaitingAction).forEach(Client::blockActions);
     }
 
     public void playersLost() {
@@ -97,6 +93,10 @@ public class GameManager extends Thread {
     private void sendMsgToAllPlayers(String msg){
         game.getPlayers().forEach(p -> p.sendMessage(msg));
     }
+
+    private void sendMsgToAllPlayersMatching(String msg, Predicate<? super Client> predicate){
+        game.getPlayers().stream().filter(predicate).forEach(p -> p.sendMessage(msg));
+    }
     //endregion
 
     //region Superclass Thread
@@ -104,9 +104,13 @@ public class GameManager extends Thread {
     public void run() {
         while (gameRunning) {
             GameState gameState;
+            System.out.println(game);
             do {
                 processTurn();
                 gameState = game.checkGameState();
+                //Debug printout
+                System.out.println(game);
+                System.out.println("GameState: " + gameState);
             } while (gameState == GameState.Running);
 
             switch (gameState) {

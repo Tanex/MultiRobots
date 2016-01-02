@@ -4,10 +4,7 @@ import nu.tanex.core.aggregates.RobotList;
 import nu.tanex.core.aggregates.RubbleList;
 import nu.tanex.core.data.*;
 import nu.tanex.core.exceptions.GameException;
-import nu.tanex.core.resources.RobotCollisions;
-import nu.tanex.core.resources.GameSettings;
-import nu.tanex.core.resources.PlayerAction;
-import nu.tanex.core.resources.RobotAiMode;
+import nu.tanex.core.resources.*;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
 
@@ -52,17 +49,30 @@ public class Game {
      */
     public void handleRobotsTurn(){
         for (Robot robot : robots){
-            moveGameObject(robot, robot.calculateMovement(null), true);
+            if (settings.getRobotAiMode() == RobotAiMode.ChaseClosest)
+                moveGameObject(robot, robot.calculateMovement(getClosestPlayersPos(robot)), true);
+            else
+                moveGameObject(robot, robot.calculateMovement(null), true);
         }
     }
 
-    public void checkForCollissions(){
+    private Point getClosestPlayersPos(Robot robot) {
+        Point targetPoint = null;
+        double distance = 0.0;
+        for (Client player : players) {
+            if (robot.getPoint().distanceTo(player.getPoint()) > distance && player.isAlive())
+                targetPoint = player.getPoint();
+        }
+        return targetPoint;
+    }
+
+    public void checkForCollisions(){
         HashMap<Point,GameObject> spaces = new HashMap<>();
         players.forEach(p -> checkForCollision(p, spaces));
         robots.forEach(r -> checkForCollision(r, spaces));
         rubblePiles.forEach(r -> checkForCollision(r, spaces));
 
-        players.removeIf(p -> !p.isAlive());
+        players.stream().filter(p -> !p.isAlive()).forEach(p -> p.sendMessage("YouDied"));
         robots.removeIf(p -> !p.isAlive());
     }
 
@@ -104,8 +114,12 @@ public class Game {
             ;
     }
 
-    public void moveGameObject(GameObject gameObject, Point point, boolean overWriteExisting){
-        placeGameObject(gameObject, point, overWriteExisting);
+    public boolean moveGameObject(GameObject gameObject, Point point, boolean overWriteExisting){
+        if (point.getX() < 0 && point.getX() >= settings.getGridWidth() &&
+                point.getY() <0 && point.getY() >= settings.getGridHeight()){
+            return false;
+        }
+        return placeGameObject(gameObject, point, overWriteExisting);
     }
 
     //endregion
@@ -231,24 +245,33 @@ public class Game {
     }
 
     public void playerPerformAction(Client client, PlayerAction playerAction) {
+        // TODO: 2015-12-30 Add handling of actions
         switch (playerAction) {
             case Attack:
                 break;
             case MoveUp:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Up), true);
                 break;
             case MoveRight:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Right), true);
                 break;
             case MoveLeft:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Left), true);
                 break;
             case MoveDown:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Down), true);
                 break;
             case MoveUpRight:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.UpRight), true);
                 break;
             case MoveUpLeft:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.UpLeft), true);
                 break;
             case MoveDownRight:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.DownRight), true);
                 break;
             case MoveDownLeft:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.DownLeft), true);
                 break;
             case Wait:
                 break;
@@ -257,6 +280,7 @@ public class Game {
             case SafeTeleport:
                 break;
         }
+        System.out.println(client + " performed action: " + playerAction);
     }
 
     //endregion

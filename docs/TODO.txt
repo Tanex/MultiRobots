@@ -3,3 +3,13 @@ After all player movement is done, move robots.
 
 next thing to do:
     start basic work on client e.g. login or similar.
+
+
+
+    //            try {
+    //                Client c = (Client)((new ObjectInputStream(
+    //                        new ByteArrayInputStream(
+    //                                msg.getBytes(Charset.defaultCharset())))).readObject());
+    //            } catch (Exception e) {
+    //                e.printStackTrace();
+    //            }

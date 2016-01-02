@@ -54,7 +54,7 @@ public class Program {
             System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
             //g.handlePlayersTurn();
             g.handleRobotsTurn();
-            g.checkForCollissions();
+            g.checkForCollisions();
             System.out.println(g);
         }
     }
