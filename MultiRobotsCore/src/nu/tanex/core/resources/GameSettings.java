@@ -105,8 +105,8 @@ public class GameSettings {
         this.gridHeight = gridHeight;
     }
     //endregion
-    
-    public GameSettings(){
+
+        public GameSettings(){
 
     }
 

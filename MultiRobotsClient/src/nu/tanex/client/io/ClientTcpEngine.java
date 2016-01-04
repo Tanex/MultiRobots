@@ -5,40 +5,28 @@ import nu.tanex.core.exceptions.TcpEngineException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
- * Handles contacting the server and establishing a TCP connection
- * and spawn a thread to listen for messages from the server.
- *
- * @author      Victor Hedlund
- * @version     0.1
- * @since       2015-11-26
+ * @author Victor Hedlund
+ * @version 0.1
+ * @since 2015-12-30
  */
 public class ClientTcpEngine extends Thread {
+
     //region Member variables
     private Socket socket = null;
     private BufferedReader inStream = null;
     private PrintWriter outStream = null;
     //endregion
 
-    //region Constructors
-
-    /**
-     * Default constructor, tries to connect to localhost on port 2000
-     */
-    public ClientTcpEngine() throws TcpEngineException, UnknownHostException {
-        this(InetAddress.getLocalHost(), 2000);
+    public ClientTcpEngine() {
     }
 
-    /**
-     * Tries to connect to a server att @code address : @code port and starts a
-     * thread for receiving messages from the server.
-     *
-     * @param address InetAddress where the server can be found
-     * @param port    port that the server listens on
-     */
-    public ClientTcpEngine(InetAddress address, int port) throws TcpEngineException {
+    public synchronized void sendMsg(String msg){
+        (new Thread(() -> this.outStream.println(msg))).start();
+    }
+
+    public void connectToServer(InetAddress address, int port) throws TcpEngineException {
         try {
             socket = new Socket(address, port);
             inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -60,45 +48,31 @@ public class ClientTcpEngine extends Thread {
             throw new TcpEngineException("Error setting up in/out streams for client thread", e);
         }
     }
-    //endregion
 
-    //region Superclass Thread
+    public void disconnectFromServer(){
+        this.interrupt();
+        try {
+            this.socket.close();
+
+            if (inStream != null)
+                inStream.close();
+            if (outStream != null)
+                outStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
-        ServerListener serverListener = new ServerListener();
         try {
             while (true) {
-                // TODO: 2015-11-26 Add sending logic
-                outStream.println();
+                inStream.readLine();
+                // TODO: 2015-11-26 Add receiving logic
             }
-        } catch (Exception e) {
-
-        } finally {
-            try {
-                serverListener.interrupt();
-                socket.close();
-            } catch (IOException e) {
-                System.out.println("Error sending message");
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            System.out.println("Error receiving from server");
+            e.printStackTrace();
         }
     }
-    //endregion
-
-    //region Innerclass ServerListener
-    private class ServerListener extends Thread {
-        @Override
-        public void run() {
-            try {
-                while (true) {
-                    inStream.readLine();
-                    // TODO: 2015-11-26 Add receiving logic
-                }
-            } catch (IOException e) {
-                System.out.println("Error receiving from server");
-                e.printStackTrace();
-            }
-        }
-    }
-    //endregion
 }
