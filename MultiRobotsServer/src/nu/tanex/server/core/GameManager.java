@@ -3,7 +3,6 @@ package nu.tanex.server.core;
 import nu.tanex.core.exceptions.GameException;
 import nu.tanex.core.resources.PlayerAction;
 import nu.tanex.server.aggregates.ClientList;
-import nu.tanex.server.io.ServerEngine;
 import nu.tanex.server.resources.GameState;
 import nu.tanex.server.resources.RegexCheck;
 
@@ -60,6 +59,10 @@ public class GameManager extends Thread {
             client.blockActions();
             String[] splitMsg = msg.split(":");
             game.playerPerformAction(client, PlayerAction.valueOf(splitMsg[1]));
+            game.checkForCollisions();
+            sendGameState();
+            if (game.getPlayers().stream().allMatch((p) -> !p.isAwaitingAction()))
+                interrupt();
         }
         // TODO: 2015-12-19 message handling
     }
@@ -67,6 +70,7 @@ public class GameManager extends Thread {
 
     //region Private methods
     private void processTurn() {
+        sendGameState();
         playersTurn();
         game.checkForCollisions();
         game.handleRobotsTurn();
@@ -80,7 +84,7 @@ public class GameManager extends Thread {
         try {
             Thread.sleep(11000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         game.getPlayers().stream().filter(Client::isAwaitingAction).forEach(Client::blockActions);
@@ -88,6 +92,10 @@ public class GameManager extends Thread {
 
     public void playersLost() {
         sendMsgToAllPlayers("You lost, suck it losers");
+    }
+
+    private void sendGameState(){
+        sendMsgToAllPlayers("GameState:" + game);
     }
 
     private void sendMsgToAllPlayers(String msg){

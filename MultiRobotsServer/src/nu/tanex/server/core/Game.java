@@ -218,7 +218,7 @@ public class Game {
             rows[i] = new StringBuilder("");
             for (int j = 0; j < settings.getGridWidth(); j++)
                 rows[i].append(".");
-            rows[i].append("\n");
+            rows[i].append(">");
         }
         for (Player player : players)
             rows[player.getPoint().getY()].setCharAt(player.getPoint().getX(), player.toString().charAt(0));

@@ -1,4 +1,4 @@
-package nu.tanex.core.exceptions;
+package nu.tanex.server.exceptions;
 
 /**
  * @author Victor Hedlund

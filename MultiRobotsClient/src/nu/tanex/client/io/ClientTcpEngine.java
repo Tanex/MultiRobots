@@ -1,5 +1,6 @@
 package nu.tanex.client.io;
 
+import nu.tanex.client.core.ClientEngine;
 import nu.tanex.core.exceptions.TcpEngineException;
 
 import java.io.*;
@@ -67,8 +68,7 @@ public class ClientTcpEngine extends Thread {
     public void run() {
         try {
             while (true) {
-                inStream.readLine();
-                // TODO: 2015-11-26 Add receiving logic
+                ClientEngine.getInstance().handleMsg(inStream.readLine());
             }
         } catch (IOException e) {
             System.out.println("Error receiving from server");

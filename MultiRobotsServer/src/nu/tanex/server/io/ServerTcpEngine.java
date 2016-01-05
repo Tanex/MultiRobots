@@ -1,6 +1,7 @@
 package nu.tanex.server.io;
 
 import nu.tanex.core.exceptions.TcpEngineException;
+import nu.tanex.server.core.ServerEngine;
 
 import java.io.IOException;
 import java.net.ServerSocket;

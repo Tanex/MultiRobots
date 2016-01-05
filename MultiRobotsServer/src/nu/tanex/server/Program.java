@@ -4,7 +4,7 @@ import nu.tanex.core.exceptions.GameException;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.core.Game;
 import nu.tanex.server.core.ServerThread;
-import nu.tanex.server.io.ServerEngine;
+import nu.tanex.server.core.ServerEngine;
 import nu.tanex.server.io.ServerTcpEngine;
 
 import java.io.BufferedReader;

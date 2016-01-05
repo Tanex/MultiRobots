@@ -1,10 +1,9 @@
-package nu.tanex.server.io;
+package nu.tanex.server.core;
 
-import nu.tanex.core.exceptions.ServerThreadException;
+import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.aggregates.ClientList;
-import nu.tanex.server.core.Client;
-import nu.tanex.server.core.ServerThread;
+import nu.tanex.server.io.ServerTcpEngine;
 import nu.tanex.server.resources.RegexCheck;
 
 import java.net.Socket;

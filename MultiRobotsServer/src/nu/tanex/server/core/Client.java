@@ -3,7 +3,6 @@ package nu.tanex.server.core;
 import nu.tanex.core.data.Player;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.io.IMsgHandler;
-import nu.tanex.server.io.ServerEngine;
 
 import java.io.*;
 import java.net.Socket;
