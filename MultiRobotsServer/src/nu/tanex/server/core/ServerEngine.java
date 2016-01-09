@@ -55,9 +55,15 @@ public class ServerEngine {
         else if(RegexCheck.queueForGame(msg)) {
             try {
                 serverThread.clientQueueForGame(client, Integer.parseInt(msg.split(":")[1]));
+                connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
             } catch (ServerThreadException e) {
                 e.printStackTrace();
             }
+        }
+        else if (RegexCheck.clientLogin(msg)){
+            client.setName(msg.split(":")[1]);
+            client.sendMessage("Welcome");
+            client.sendMessage("GamesList:" + serverThread.getGamesInfo());
         }
     }
 
@@ -91,7 +97,11 @@ public class ServerEngine {
             client.setMsgHandler(this::msgHandler);
             if(!connectedClients.contains(client))
                 this.connectedClients.add(client);
+            client.sendMessage("Welcome");
+            client.sendMessage("GamesList:" + serverThread.getGamesInfo());
         }
+        clients.clear();
+        connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
     //endregion
 }

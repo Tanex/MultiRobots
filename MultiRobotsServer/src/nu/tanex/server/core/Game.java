@@ -4,11 +4,13 @@ import nu.tanex.core.aggregates.RobotList;
 import nu.tanex.core.aggregates.RubbleList;
 import nu.tanex.core.data.*;
 import nu.tanex.core.exceptions.GameException;
+import nu.tanex.core.exceptions.TargetPlayerDeadException;
 import nu.tanex.core.resources.*;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * @author      Victor Hedlund
@@ -49,10 +51,23 @@ public class Game {
      */
     public void handleRobotsTurn(){
         for (Robot robot : robots){
-            if (settings.getRobotAiMode() == RobotAiMode.ChaseClosest)
-                moveGameObject(robot, robot.calculateMovement(getClosestPlayersPos(robot)), true);
-            else
-                moveGameObject(robot, robot.calculateMovement(null), true);
+            if (settings.getRobotAiMode() == RobotAiMode.ChaseClosest){
+                Point closestPlayerPos = null;
+                closestPlayerPos = getClosestPlayersPos(robot);
+                if (closestPlayerPos == null)
+                    return; //Last player committed suicide
+                try { moveGameObject(robot, robot.calculateMovement(closestPlayerPos), true);} catch (TargetPlayerDeadException e) {}
+            }
+            else {
+                try {
+                    moveGameObject(robot, robot.calculateMovement(null), true);
+                } catch (TargetPlayerDeadException te) {
+                    Optional<Client> newPlayer = players.stream().filter(Client::isAlive).findAny();
+                    if (newPlayer.isPresent())
+                        robot.setTargetPlayer(newPlayer.get());
+                    try { moveGameObject(robot, robot.calculateMovement(null), true); } catch (TargetPlayerDeadException e) {}
+                }
+            }
         }
     }
 
@@ -177,7 +192,9 @@ public class Game {
                     object2.setAlive(false);
                 }
                 break;
-            case PlayerCollision: // TODO: 2015-12-21 what should happen?
+            case PlayerCollision:
+                moveGameObject(object1, object1.getPoint().getPointInRandomDirection(), true);
+                moveGameObject(object2, object2.getPoint().getPointInRandomDirection(), true);
                 break;
         }
     }
@@ -220,8 +237,8 @@ public class Game {
                 rows[i].append(".");
             rows[i].append(">");
         }
-        for (Player player : players)
-            rows[player.getPoint().getY()].setCharAt(player.getPoint().getX(), player.toString().charAt(0));
+        for (int i = 0; i < players.size(); i++)
+            rows[players.get(i).getPoint().getY()].setCharAt(players.get(i).getPoint().getX(), (char)('0' + i));
         for (Rubble rubble : rubblePiles)
             rows[rubble.getPoint().getY()].setCharAt(rubble.getPoint().getX(), rubble.toString().charAt(0));
         for (Robot robot : robots)
@@ -245,9 +262,15 @@ public class Game {
     }
 
     public void playerPerformAction(Client client, PlayerAction playerAction) {
-        // TODO: 2015-12-30 Add handling of actions
         switch (playerAction) {
             case Attack:
+                for (Robot robot : robots) {
+                    if (robot.getPoint().isWithinOneMove(client.getPoint())) {
+                        robot.setAlive(false);
+                        if (settings.getPlayerAttacks() == PlayerAttacks.KillOne)
+                            break;
+                    }
+                }
                 break;
             case MoveUp:
                 moveGameObject(client, client.getPoint().getPointInDirection(Direction.Up), true);
@@ -276,11 +299,23 @@ public class Game {
             case Wait:
                 break;
             case RandomTeleport:
+                randomlyPlaceGameObject(client);
                 break;
             case SafeTeleport:
+                do{
+                    randomlyPlaceGameObject(client);
+                } while(!isPlayerSafe(client));
                 break;
         }
         System.out.println(client + " performed action: " + playerAction);
+    }
+
+    private boolean isPlayerSafe(Client client) {
+        for (Robot robot : robots) {
+            if (client.getPoint().isWithinOneMove(robot.getPoint()))
+                return false;
+        }
+        return true;
     }
 
     //endregion

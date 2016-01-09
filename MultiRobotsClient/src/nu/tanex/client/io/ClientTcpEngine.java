@@ -51,6 +51,12 @@ public class ClientTcpEngine extends Thread {
     }
 
     public void disconnectFromServer(){
+        outStream.println("Disconnect");
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.interrupt();
         try {
             this.socket.close();

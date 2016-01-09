@@ -38,5 +38,8 @@ public class Program extends Application {
         //System.out.println("Hello World!");
         ClientEngine.getInstance().setTcpEngine(new ClientTcpEngine());
         launch(args);
+
+        ClientEngine.getInstance().exit();
+        System.exit(1);
     }
 }

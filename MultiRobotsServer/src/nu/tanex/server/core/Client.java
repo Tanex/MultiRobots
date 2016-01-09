@@ -30,6 +30,10 @@ public class Client extends Player {
      */
     public void setMsgHandler(IMsgHandler msgHandler) { this.clientThread.msgHandler = msgHandler; }
 
+    public void sendPlayerInfo(){
+        sendMessage("PlayerInfo:" + this.getNumAttacks() + ","+ this.getNumRandomTeleports() + ","+ this.getNumSafeTeleports() + ","+ this.getScore());
+    }
+
     public boolean isAwaitingAction() {
         return awaitingAction;
     }

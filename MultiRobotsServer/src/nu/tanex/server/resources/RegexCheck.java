@@ -19,4 +19,8 @@ public abstract class RegexCheck {
     public static boolean queueForGame(String msg) {
         return Pattern.compile("^QueueForGame:[0-9]+$").matcher(msg).matches();
     }
+
+    public static boolean clientLogin(String msg) {
+        return Pattern.compile("^ClientLogin:[A-Z]{3}$").matcher(msg).matches();
+    }
 }

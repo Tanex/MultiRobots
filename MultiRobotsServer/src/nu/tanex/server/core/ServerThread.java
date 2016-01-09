@@ -33,6 +33,8 @@ public class ServerThread {
     }
 
     public void clientQueueForGame(Client client, int gameNum) throws ServerThreadException{
+        if (gameManagers.get(gameNum).isGameRunning())
+            return; //do not queue while game is running.
         if (gameNum < 0 || gameNum >= settings.getNumGamesToRun())
             throw new ServerThreadException("gameNum out of range");
         clientsQueuedForGame[gameNum].add(client);
@@ -45,5 +47,17 @@ public class ServerThread {
             ServerEngine.getInstance().getConnectedClients().removeAll(clientsQueuedForGame[gameNum]);
             clientsQueuedForGame[gameNum].clear();
         }
+    }
+
+    public String getGamesInfo() {
+        String str = "";
+        for (int i = 0; i < gameManagers.size(); i++) {
+            //gameId,clientsQueued,clientsNeeded,gameSettings@
+            if (gameManagers.get(i).isGameRunning())
+                str += i + "," + settings.getNumPlayersToStartGame() + "," + settings.getNumPlayersToStartGame() + "," + gameManagers.get(i).getGameSettings() + "@";
+            else
+                str += i + "," + clientsQueuedForGame[i].size() + "," + settings.getNumPlayersToStartGame() + "," + gameManagers.get(i).getGameSettings() + "@";
+        }
+        return str;
     }
 }

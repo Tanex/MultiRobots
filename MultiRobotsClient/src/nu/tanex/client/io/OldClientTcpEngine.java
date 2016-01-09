@@ -70,7 +70,6 @@ public class OldClientTcpEngine extends Thread {
         ServerListener serverListener = new ServerListener();
         try {
             while (true) {
-                // TODO: 2015-11-26 Add sending logic
                 outStream.println();
             }
         } catch (Exception e) {
@@ -94,7 +93,6 @@ public class OldClientTcpEngine extends Thread {
             try {
                 while (true) {
                     inStream.readLine();
-                    // TODO: 2015-11-26 Add receiving logic
                 }
             } catch (IOException e) {
                 System.out.println("Error receiving from server");

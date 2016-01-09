@@ -1,6 +1,7 @@
 package nu.tanex.server.core;
 
 import nu.tanex.core.exceptions.GameException;
+import nu.tanex.core.resources.GameSettings;
 import nu.tanex.core.resources.PlayerAction;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
@@ -13,10 +14,11 @@ import java.util.function.Predicate;
  * @version     0.2
  * @since       2015-12-14
  */
-public class GameManager extends Thread {
+public class GameManager {
     //region Member variables
     private Game game;
     private boolean gameRunning;
+    private Thread threadInstance;
     //endregion
 
     //region Constructors
@@ -25,6 +27,10 @@ public class GameManager extends Thread {
         this.gameRunning = false;
     }
     //endregion
+
+    public boolean isGameRunning() {
+        return gameRunning;
+    }
 
     //region Public methods
 
@@ -36,15 +42,21 @@ public class GameManager extends Thread {
      */
     public void startGame(ClientList players) throws GameException {
         //Make all clients relay their messages to this GameManager instead of the server
-        for (Client player : players)
+        for (Client player : players) {
             player.setMsgHandler(this::msgHandler);
+            player.setAlive(true);
+        }
 
         //Perform initial game setup
         this.game.addPlayers(players);
         this.game.createGameGrid();
         //Start the game
+        sendMsgToAllPlayers("GameStart");
+        sendPlayerList();
+        game.getPlayers().stream().forEach(Client::sendPlayerInfo);
         this.gameRunning = true;
-        this.start();
+        threadInstance = new Thread(this::threadFunc);
+        threadInstance.start();
     }
 
     /**
@@ -61,8 +73,10 @@ public class GameManager extends Thread {
             game.playerPerformAction(client, PlayerAction.valueOf(splitMsg[1]));
             game.checkForCollisions();
             sendGameState();
+            sendPlayerList();
+            client.sendPlayerInfo();
             if (game.getPlayers().stream().allMatch((p) -> !p.isAwaitingAction()))
-                interrupt();
+                threadInstance.interrupt();
         }
         // TODO: 2015-12-19 message handling
     }
@@ -70,7 +84,6 @@ public class GameManager extends Thread {
 
     //region Private methods
     private void processTurn() {
-        sendGameState();
         playersTurn();
         game.checkForCollisions();
         game.handleRobotsTurn();
@@ -78,8 +91,8 @@ public class GameManager extends Thread {
     }
 
     private void playersTurn(){
-        // TODO: 2015-12-15 get player input over TCP, seems to work now?
         game.getPlayers().stream().filter(Client::isAlive).forEach(Client::requestAction);
+        sendPlayerList();
 
         try {
             Thread.sleep(11000);
@@ -91,7 +104,21 @@ public class GameManager extends Thread {
     }
 
     public void playersLost() {
-        sendMsgToAllPlayers("You lost, suck it losers");
+        sendMsgToAllPlayers("PlayersLost");
+    }
+
+    private void sendPlayerList(){
+        String str = "PlayerList:";
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            Client player = game.getPlayers().get(i);
+            //#<playerNum>,<playerName>,<playerStatus>@
+            str += "#" + i + "," + player.getName() + ",";
+            if (player.isAlive())
+                str += player.isAwaitingAction() ? "Acting@" : "Done@";
+            else
+                str += "Dead@";
+        }
+        sendMsgToAllPlayers(str);
     }
 
     private void sendGameState(){
@@ -107,13 +134,13 @@ public class GameManager extends Thread {
     }
     //endregion
 
-    //region Superclass Thread
-    @Override
-    public void run() {
+    //region Threading
+    public void threadFunc() {
         while (gameRunning) {
             GameState gameState;
             System.out.println(game);
             do {
+                sendGameState();
                 processTurn();
                 gameState = game.checkGameState();
                 //Debug printout
@@ -121,6 +148,7 @@ public class GameManager extends Thread {
                 System.out.println("GameState: " + gameState);
             } while (gameState == GameState.Running);
 
+            sendGameState();
             switch (gameState) {
                 case PlayersWon:
                     game.nextLevel();
@@ -132,6 +160,19 @@ public class GameManager extends Thread {
             }
         }
         ServerEngine.getInstance().returnClientsToServer(game.getPlayers());
+    }
+
+    public String getGameSettings() {
+        GameSettings gs = game.getSettings();
+        return "\tInitial Robots - " + gs.getNumInitialRobots() + ">" +
+                "\tInitial Rubble - " + gs.getNumInitialRubble() + ">" +
+                "\tAdditional Robots Per Level - " + gs.getNumAdditionalRobotsPerLevel() + ">" +
+                "\tRobot Collision Mode - " + gs.getRobotCollisions() + ">" +
+                "\tSafe Teleports Awarded - " + gs.getNumSafeTeleportsAwarded() + ">" +
+                "\tAttacks Awarded - " + gs.getNumAttacksAwarded() + ">" +
+                "\tAttack Mode - " + gs.getPlayerAttacks() + ">" +
+                "\tRobot AI Mode - " + gs.getRobotAiMode() + ">" +
+                "\tGrid Size - " + gs.getGridWidth() + " x " + gs.getGridHeight();
     }
     //endregion
 }

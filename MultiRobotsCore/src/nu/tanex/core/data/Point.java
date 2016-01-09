@@ -81,6 +81,16 @@ public class Point implements Comparable<Point>{
         return Math.sqrt(Math.pow(this.getX() + other.getX(), 2.0) + Math.pow(this.getY() + other.getY(), 2.0));
     }
 
+    public boolean isWithinOneMove(Point other){
+        return !(Math.abs(this.x - other.x) > 1 || Math.abs(this.y - other.y) > 1);
+    }
+
+    public Point getPointInRandomDirection(){
+        int xChange = (rng.nextInt() % 3) - 1;
+        int yChange = (rng.nextInt() % 3) - 1;
+        return new Point(this.x + xChange, this.y + yChange);
+    }
+
     public Point getPointInDirection(Direction direction){
         switch (direction) {
             case Up:
