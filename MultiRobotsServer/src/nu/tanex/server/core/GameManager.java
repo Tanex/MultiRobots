@@ -8,7 +8,6 @@ import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
 import nu.tanex.server.resources.RegexCheck;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 
 /**
@@ -21,12 +20,14 @@ public class GameManager {
     private Game game;
     private boolean gameRunning;
     private Thread threadInstance;
+    private ClientList playerQueue;
     //endregion
 
     //region Constructors
     public GameManager() {
         this.game = new Game();
         this.gameRunning = false;
+        playerQueue = new ClientList();
     }
     //endregion
 
@@ -37,21 +38,26 @@ public class GameManager {
     public Game getGame() {
         return game;
     }
+
+    public ClientList getPlayerQueue() {
+        return playerQueue;
+    }
+
     //region Public methods
 
     /**
      * Starts a thread to handle playing the game with the given clients as players.
      *
-     * @param players Connected clients that are the players in this game.
      * @throws GameException Thrown if the game can not be initialized due to improper GameSettings.
      */
-    public void startGame(ClientList players) throws GameException {
+    public void startGame() throws GameException {
         //Make all clients relay their messages to this GameManager instead of the server
-        for (Client player : players)
+        for (Client player : playerQueue)
             player.setMsgHandler(this::msgHandler);
 
         //Perform initial game setup
-        this.game.addPlayers(players);
+        this.game.addPlayers(playerQueue);
+        playerQueue.clear();
         this.game.createGameGrid();
         //Start the game
         sendMsgToAllPlayers("GameStart");
