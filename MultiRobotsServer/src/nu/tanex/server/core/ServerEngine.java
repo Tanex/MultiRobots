@@ -3,6 +3,7 @@ package nu.tanex.server.core;
 import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.gui.IServerGuiController;
 import nu.tanex.server.io.ServerTcpEngine;
 import nu.tanex.server.resources.RegexCheck;
 
@@ -31,6 +32,7 @@ public class ServerEngine {
 
     private ServerTcpEngine tcpEngine;
     private ServerThread serverThread;
+    private IServerGuiController guiController;
     //endregion
 
     //region Get-/setters
@@ -102,6 +104,14 @@ public class ServerEngine {
         }
         clients.clear();
         connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
+    }
+
+    public void setGuiController(IServerGuiController guiController) {
+        this.guiController = guiController;
+    }
+
+    public void exit() {
+
     }
     //endregion
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane id="basePane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nu.tanex.server.gui.ServerController">
+   <children>
+      <SplitPane dividerPositions="0.34" prefHeight="720.0" prefWidth="1280.0">
+        <items>
+            <ListView fx:id="gamesList">
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </ListView>
+            <VBox layoutX="219.0" layoutY="204.0" prefHeight="278.0" prefWidth="233.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label fx:id="gameNameLabel" text="Settings for Game #0" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label contentDisplay="RIGHT" text="PlayerAttack Mode">
+                     <graphic>
+                        <ComboBox prefWidth="150.0" />
+                     </graphic>
+                  </Label>
+                  <Label contentDisplay="RIGHT" layoutX="10.0" layoutY="10.0" text="Robot AI Mode">
+                     <graphic>
+                        <ComboBox prefWidth="150.0" />
+                     </graphic>
+                  </Label>
+                  <HBox>
+                     <children>
+                        <Label contentDisplay="RIGHT" text="Label">
+                           <graphic>
+                              <Slider prefHeight="14.0" prefWidth="150.0" />
+                           </graphic>
+                        </Label>
+                        <TextField prefHeight="25.0" prefWidth="51.0" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="5.0">
+                     <children>
+                        <Button fx:id="saveButton" mnemonicParsing="false" text="Save">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="discardButton" mnemonicParsing="false" text="Discard" />
+                     </children>
+                     <padding>
+                        <Insets top="25.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+        </items>
+      </SplitPane>
+   </children>
+</Pane>
