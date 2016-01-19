@@ -74,7 +74,8 @@ public class ClientTcpEngine extends Thread {
     public void run() {
         try {
             while (true) {
-                ClientEngine.getInstance().handleMsg(inStream.readLine());
+                String buf = inStream.readLine();
+                ClientEngine.getInstance().handleMsg(buf);
             }
         } catch (IOException e) {
             System.out.println("Error receiving from server");

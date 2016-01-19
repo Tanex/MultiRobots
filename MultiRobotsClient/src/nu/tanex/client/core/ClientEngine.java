@@ -1,5 +1,6 @@
 package nu.tanex.client.core;
 
+import nu.tanex.client.Program;
 import nu.tanex.client.gui.IClientGuiController;
 import nu.tanex.client.io.ClientTcpEngine;
 import nu.tanex.client.resources.GuiState;
@@ -42,7 +43,7 @@ public class ClientEngine {
     }
 
     public void handleMsg(String msg){
-        System.out.println(msg);
+        Program.debug(msg);
 
         if (RegexCheck.GameState(msg))
             guiController.updateGameState(msg.split(":")[1]);

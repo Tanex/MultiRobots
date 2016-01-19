@@ -208,6 +208,10 @@ public class Game {
     }
 
     private void generateGrid(int initialRobots){
+        robots.clear();
+        rubblePiles.clear();
+        players.forEach(p -> p.setAlive(true));
+
         //Create robots
         for (int i = 0; i < initialRobots; i++) {
             if(settings.getRobotAiMode() == RobotAiMode.TargetPlayer)

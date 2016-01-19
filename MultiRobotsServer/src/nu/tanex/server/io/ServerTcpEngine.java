@@ -1,6 +1,7 @@
 package nu.tanex.server.io;
 
 import nu.tanex.core.exceptions.TcpEngineException;
+import nu.tanex.server.Program;
 import nu.tanex.server.core.ServerEngine;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class ServerTcpEngine extends Thread {
             throw new TcpEngineException("Error opening server socket", e);
         }
         this.start();
-        System.out.println("Server started");
+        Program.debug("Server started");
     }
     //endregion
 
@@ -67,10 +68,10 @@ public class ServerTcpEngine extends Thread {
             try {
                 //Block on accept and when a client connects create a new ClientThread object
                 ServerEngine.getInstance().clientConnected(serverSocket.accept());
-                System.out.println("Client connected");
+                Program.debug("Client connected");
             }
             catch (IOException e) {
-                System.out.println("Error start client thread");
+                Program.debug("Error start client thread");
                 e.printStackTrace();
             }
         }

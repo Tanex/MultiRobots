@@ -2,7 +2,6 @@ package nu.tanex.core.data;
 
 import nu.tanex.core.exceptions.TargetPlayerDeadException;
 
-import java.util.Optional;
 import java.util.Random;
 
 /**

@@ -1,9 +1,10 @@
 package nu.tanex.server.core;
 
 import nu.tanex.core.exceptions.GameException;
-import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.core.resources.ServerSettings;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.aggregates.GameManagerList;
+import nu.tanex.server.exceptions.ServerThreadException;
 
 import java.util.Vector;
 
@@ -14,7 +15,7 @@ import java.util.Vector;
  */
 public class ServerThread {
     private ServerSettings settings;
-    private Vector<GameManager> gameManagers;
+    private GameManagerList gameManagers;
     private ClientList clientsQueuedForGame[];
 
     public ServerSettings getSettings() {
@@ -24,7 +25,7 @@ public class ServerThread {
     public ServerThread(String settingsFile) {
         settings = new ServerSettings();
         settings.loadSettingsFromFile(settingsFile);
-        gameManagers = new Vector<>();
+        gameManagers = new GameManagerList();
         clientsQueuedForGame = new ClientList[settings.getNumGamesToRun()];
         for (int i = 0; i < settings.getNumGamesToRun(); i++) {
             gameManagers.add(new GameManager());
@@ -47,6 +48,11 @@ public class ServerThread {
             ServerEngine.getInstance().getConnectedClients().removeAll(clientsQueuedForGame[gameNum]);
             clientsQueuedForGame[gameNum].clear();
         }
+    }
+
+    public void clientLeaveGame(Client client){
+        for (ClientList clientList : clientsQueuedForGame)
+            clientList.remove(client);
     }
 
     public String getGamesInfo() {

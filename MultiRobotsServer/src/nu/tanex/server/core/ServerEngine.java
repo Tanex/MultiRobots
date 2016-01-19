@@ -1,8 +1,9 @@
 package nu.tanex.server.core;
 
-import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.core.exceptions.TcpEngineException;
+import nu.tanex.server.Program;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.server.gui.IServerGuiController;
 import nu.tanex.server.io.ServerTcpEngine;
 import nu.tanex.server.resources.RegexCheck;
@@ -50,7 +51,7 @@ public class ServerEngine {
      * @param msg The message that was received
      * */
     public void msgHandler(Client client, String msg) {
-        System.out.println("ServerEngine: " + client + " sent " + msg);
+        Program.debug("ServerEngine: " + client + " sent " + msg);
         // TODO: 2015-12-19 add msg handling
         if (RegexCheck.disconnectMsg(msg))
             clientDisconnected(client);
@@ -66,6 +67,9 @@ public class ServerEngine {
             client.setName(msg.split(":")[1]);
             client.sendMessage("Welcome");
             client.sendMessage("GamesList:" + serverThread.getGamesInfo());
+        }
+        else if (RegexCheck.leaveGame(msg)){
+            clientDisconnected(client);
         }
     }
 
@@ -90,19 +94,24 @@ public class ServerEngine {
      * @param client The client that disconnected.
      */
     public void clientDisconnected(Client client){
+        serverThread.clientLeaveGame(client);
         client.disconnect();
         connectedClients.remove(client);
     }
 
     public void returnClientsToServer(ClientList clients){
-        for (Client client : clients){
+        clients.forEach(this::returnClientToServer);
+        clients.clear();
+    }
+
+    public void returnClientToServer(Client client){
+        if (!client.isDummy()) {
             client.setMsgHandler(this::msgHandler);
-            if(!connectedClients.contains(client))
+            if (!connectedClients.contains(client) && !client.isDummy())
                 this.connectedClients.add(client);
             client.sendMessage("Welcome");
             client.sendMessage("GamesList:" + serverThread.getGamesInfo());
         }
-        clients.clear();
         connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
 
@@ -111,7 +120,7 @@ public class ServerEngine {
     }
 
     public void exit() {
-
+        // TODO: 2016-01-19 add exit logic
     }
     //endregion
 }

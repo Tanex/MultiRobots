@@ -1,7 +1,4 @@
-package nu.tanex.client.data;
-
-import com.sun.org.apache.xpath.internal.operations.Equals;
-import nu.tanex.core.resources.GameSettings;
+package nu.tanex.client.gui.data;
 
 /**
  * @author Victor Hedlund

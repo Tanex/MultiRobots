@@ -18,10 +18,13 @@ import java.net.Socket;
  */
 public class Client extends Player {
 
-    private ClientThread clientThread;
+    private ClientThread clientThread = null;
     private boolean awaitingAction;
 
     //region Get-/setters
+    public boolean isDummy() {
+        return clientThread == null;
+    }
 
     /**
      * Set what function this Client should pass along its messages to.
@@ -55,6 +58,13 @@ public class Client extends Player {
         awaitingAction = false;
     }
 
+    public Client(Client other){
+        this.setName(other.getName());
+        this.setAlive(false);
+        this.blockActions();
+    }
+    //endregion
+
     public void requestAction(){
         this.awaitingAction = true;
         this.sendMessage("GiveInput");
@@ -64,13 +74,15 @@ public class Client extends Player {
         this.awaitingAction = false;
         this.sendMessage("NoMoreInput");
     }
-    //endregion
 
     public void disconnect(){
         this.clientThread.alive = false;
     }
 
     public synchronized void sendMessage(String msg){
+        if (this.clientThread == null)
+            return;
+
         (new Thread(() -> this.clientThread.outStream.println(msg))).start();
     }
 
@@ -127,7 +139,6 @@ public class Client extends Player {
             try {
                 while (alive) {
                     buf = inStream.readLine();
-                    System.out.println(buf);
                     msgHandler.handleMsg(Client.this, buf);
                 }
             }
@@ -137,7 +148,8 @@ public class Client extends Player {
             finally {
                 try {
                     clientSocket.close();
-                    ServerEngine.getInstance().clientDisconnected(Client.this);
+                    if (alive)
+                        ServerEngine.getInstance().clientDisconnected(Client.this);
                 }
                 catch (IOException e) {
                     System.out.println("Error closing client socket");

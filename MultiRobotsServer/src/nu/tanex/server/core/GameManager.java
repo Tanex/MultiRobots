@@ -3,10 +3,12 @@ package nu.tanex.server.core;
 import nu.tanex.core.exceptions.GameException;
 import nu.tanex.core.resources.GameSettings;
 import nu.tanex.core.resources.PlayerAction;
+import nu.tanex.server.Program;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.resources.GameState;
 import nu.tanex.server.resources.RegexCheck;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 /**
@@ -32,6 +34,9 @@ public class GameManager {
         return gameRunning;
     }
 
+    public Game getGame() {
+        return game;
+    }
     //region Public methods
 
     /**
@@ -42,10 +47,8 @@ public class GameManager {
      */
     public void startGame(ClientList players) throws GameException {
         //Make all clients relay their messages to this GameManager instead of the server
-        for (Client player : players) {
+        for (Client player : players)
             player.setMsgHandler(this::msgHandler);
-            player.setAlive(true);
-        }
 
         //Perform initial game setup
         this.game.addPlayers(players);
@@ -66,7 +69,7 @@ public class GameManager {
      * @param msg The message that was sent.
      */
     public void msgHandler(Client client, String msg) {
-        System.out.println("GameManager: " + client + " sent " + msg);
+        Program.debug("GameManager: " + client + " sent " + msg);
         if(RegexCheck.playerAction(msg)){
             client.blockActions();
             String[] splitMsg = msg.split(":");
@@ -77,6 +80,16 @@ public class GameManager {
             client.sendPlayerInfo();
             if (game.getPlayers().stream().allMatch((p) -> !p.isAwaitingAction()))
                 threadInstance.interrupt();
+        }
+        else if (RegexCheck.leaveGame(msg)){
+            game.getPlayers().remove(client);
+            game.getPlayers().add(new Client(client));
+            ServerEngine.getInstance().returnClientToServer(client);
+        }
+        else if (RegexCheck.disconnectMsg(msg)){
+            game.getPlayers().remove(client);
+            game.getPlayers().add(new Client(client));
+            ServerEngine.getInstance().clientDisconnected(client);
         }
         // TODO: 2015-12-19 message handling
     }
@@ -144,8 +157,8 @@ public class GameManager {
                 processTurn();
                 gameState = game.checkGameState();
                 //Debug printout
-                System.out.println(game);
-                System.out.println("GameState: " + gameState);
+                Program.debug(game.toString());
+                Program.debug("GameState: " + gameState);
             } while (gameState == GameState.Running);
 
             sendGameState();

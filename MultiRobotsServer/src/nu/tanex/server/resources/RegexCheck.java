@@ -23,4 +23,8 @@ public abstract class RegexCheck {
     public static boolean clientLogin(String msg) {
         return Pattern.compile("^ClientLogin:[A-Z]{3}$").matcher(msg).matches();
     }
+
+    public static boolean leaveGame(String msg){
+        return Pattern.compile("^LeaveGame$").matcher(msg).matches();
+    }
 }
