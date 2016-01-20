@@ -3,20 +3,26 @@ package nu.tanex.client.gui;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import nu.tanex.client.Program;
 import nu.tanex.client.core.ClientEngine;
+import nu.tanex.client.gui.data.ConnectScreenInfo;
 import nu.tanex.client.gui.data.GameInfo;
 import nu.tanex.client.resources.GuiState;
 import nu.tanex.client.resources.RegexCheck;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.core.resources.PlayerAction;
 
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ResourceBundle;
 
 /**
  * @author Victor Hedlund
@@ -27,7 +33,6 @@ public class ClientController implements IClientGuiController {
     private static final int CELL_SIZE = 15;
 
     //region GUI controls
-    public Label textLabel;
     public Button buttonMoveUpLeft;
     public Button buttonMoveUp;
     public Button buttonMoveUpRight;
@@ -63,13 +68,14 @@ public class ClientController implements IClientGuiController {
     public Label playerListLabel;
     public Label playerInfoLabel;
     public Canvas gameCanvas;
+    public Button connectButton;
     //endregion
 
     //region Interface IClientGuiController
     @Override
     public void updateGameState(String gameState) {
         Platform.runLater(() -> {
-            textLabel.setText(gameState.replace('>', '\n'));
+            // TODO: 2016-01-20 try to center canvas somewhat
             drawGameBoard(gameCanvas.getGraphicsContext2D(), gameState);
         });
     }
@@ -79,6 +85,16 @@ public class ClientController implements IClientGuiController {
         Platform.runLater(() -> playerControls.setDisable(disabled));
     }
 
+    @Override
+    public void loadConnectScreenInfo(ConnectScreenInfo info) {
+        Platform.runLater(() -> {
+            ipText.setText(info.getIPAddress());
+            nick1.setText(info.getLetterOne());
+            nick2.setText(info.getLetterTwo());
+            nick3.setText(info.getLetterThree());
+            connectButton.requestFocus();
+        });
+    }
 
     @Override
     public void updateGamesList(String gameList) {
@@ -150,6 +166,26 @@ public class ClientController implements IClientGuiController {
                                     "Score: " + info[3]);
         });
     }
+    @Override
+    public void keyPressed(KeyCode code){
+        if (!GameGroup.isVisible() || playerControls.isDisabled())
+            return;
+
+        switch (code){
+            case NUMPAD1: buttonMoveDownLeft.fire(); break;
+            case NUMPAD2: buttonMoveDown.fire(); break;
+            case NUMPAD3: buttonMoveDownRight.fire(); break;
+            case NUMPAD4: buttonMoveLeft.fire(); break;
+            case NUMPAD5: buttonWait.fire(); break;
+            case NUMPAD6: buttonMoveRight.fire(); break;
+            case NUMPAD7: buttonMoveUpLeft.fire(); break;
+            case NUMPAD8: buttonMoveUp.fire(); break;
+            case NUMPAD9: buttonMoveUpRight.fire(); break;
+            case NUMPAD0: buttonAttack.fire(); break;
+            case ENTER: buttonTeleport.fire(); break;
+            case PLUS: buttonSafeTeleport.fire(); break;
+        }
+    }
 
     //endregion
 
@@ -207,14 +243,14 @@ public class ClientController implements IClientGuiController {
 
             ClientEngine.getInstance().queueForGame(selectedGame.getGameId());
             waitingForPlayersLabel.setVisible(true);
-            queueForGame.setDisable(false);
-            leaveQueue.setDisable(true);
+            queueForGame.setDisable(true);
+            leaveQueue.setDisable(false);
             gamesList.setDisable(true);
         } else if (actionEvent.getSource().equals(leaveQueue)) {
             ClientEngine.getInstance().leaveGame();
             waitingForPlayersLabel.setVisible(false);
-            queueForGame.setDisable(true);
-            leaveQueue.setDisable(false);
+            queueForGame.setDisable(false);
+            leaveQueue.setDisable(true);
             gamesList.setDisable(false);
         }
     }
@@ -234,10 +270,13 @@ public class ClientController implements IClientGuiController {
             return;
         }
 
-        ClientEngine.getInstance().loginToServer(nick1.getText() + nick2.getText() + nick3.getText());
+        ClientEngine.getInstance().loginToServer(nick1.getText(), nick2.getText(), nick3.getText(), ipText.getText());
     }
 
     public void gameBoardClicked(MouseEvent mouseEvent) {
+        // TODO: 2016-01-20 actually do something with this
+        int xCoordClicked = (int)(mouseEvent.getX() / CELL_SIZE);
+        int yCoordClicked = (int)(mouseEvent.getY() / CELL_SIZE);
 
     }
     //endregion
@@ -249,7 +288,7 @@ public class ClientController implements IClientGuiController {
     public void gamesListClicked(Event event) {
         if (!event.getSource().equals(gamesList))
             return;
-        GameInfo selectedGame = gamesList.getSelectionModel().getSelectedItems().get(0);
+        GameInfo selectedGame = gamesList.getSelectionModel().getSelectedItem();
         if (selectedGame == null)
             return;
         gameInfoLabel.setText(selectedGame.getGameInfoString());
@@ -276,6 +315,10 @@ public class ClientController implements IClientGuiController {
     private void drawGameBoard(GraphicsContext gc, String gameState){
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         int x = 0, y = 0;
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(1.0);
+
+        // TODO: 2016-01-20 redo the whole fucking thing
         for (int i = 0; i < gameState.length(); i++) {
             switch (gameState.charAt(i)){
                 case '>': //newline
@@ -283,21 +326,24 @@ public class ClientController implements IClientGuiController {
                     x = 0;
                     break;
                 case '.': //empty space
-                    x++;
+                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                     break;
                 case '@': //robot
                     gc.setFill(Color.RED);
-                    gc.fillRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    gc.fillRect(x * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                     break;
                 case '#': //rubble
                     gc.setFill(Color.BLUE);
-                    gc.fillRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    gc.fillRect(x * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                     break;
                 default: //players
                     gc.setFill(Color.GREEN);
                     gc.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                     gc.setFill(Color.RED);
-                    gc.fillText(Character.toString(gameState.charAt(i)), x++ * CELL_SIZE + CELL_SIZE / 3, y * CELL_SIZE + CELL_SIZE);
+                    gc.fillText(Character.toString(gameState.charAt(i)), x * CELL_SIZE + CELL_SIZE / 3, y * CELL_SIZE + CELL_SIZE);
+                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                     break;
             }
         }

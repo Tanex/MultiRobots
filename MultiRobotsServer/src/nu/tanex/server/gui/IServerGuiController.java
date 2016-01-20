@@ -8,5 +8,5 @@ import nu.tanex.server.aggregates.GameManagerList;
  * @since 2016-01-19
  */
 public interface IServerGuiController {
-    void updateGameList(GameManagerList games);
+    void updateGameList(GameManagerList games, int numConnectedClients);
 }

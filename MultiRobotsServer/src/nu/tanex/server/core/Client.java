@@ -20,6 +20,7 @@ public class Client extends Player {
 
     private ClientThread clientThread = null;
     private boolean awaitingAction;
+    private String playerIP;
 
     //region Get-/setters
     public boolean isDummy() {
@@ -53,8 +54,9 @@ public class Client extends Player {
 
     public Client(Socket clientSocket, IMsgHandler msgHandler) throws TcpEngineException {
         super();
-        if (clientSocket != null)
-            this.clientThread = new ClientThread(clientSocket, msgHandler);
+        //if (clientSocket != null)
+        this.playerIP = clientSocket.getInetAddress().getHostAddress();
+        this.clientThread = new ClientThread(clientSocket, msgHandler);
         awaitingAction = false;
     }
 
@@ -84,6 +86,10 @@ public class Client extends Player {
             return;
 
         (new Thread(() -> this.clientThread.outStream.println(msg))).start();
+    }
+
+    public String getPlayerIP() {
+        return playerIP;
     }
 
     //region Innerclass ClientThread
@@ -158,12 +164,6 @@ public class Client extends Player {
             }
         }
         //endregion
-
-
-        @Override
-        public String toString() {
-            return getPlayerNum() + super.toString();
-        }
     }
     //endregion
 }

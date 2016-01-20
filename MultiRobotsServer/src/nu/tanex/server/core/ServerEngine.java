@@ -3,6 +3,7 @@ package nu.tanex.server.core;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.Program;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.aggregates.GameManagerList;
 import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.server.gui.IServerGuiController;
 import nu.tanex.server.io.ServerTcpEngine;
@@ -40,7 +41,16 @@ public class ServerEngine {
     public void setTcpEngine(ServerTcpEngine tcpEngine){
         this.tcpEngine = tcpEngine;
     }
-    public void setServerThread(ServerThread serverThread) {this.serverThread = serverThread; }
+    public void setServerThread(ServerThread serverThread) {
+        this.serverThread = serverThread;
+        if (guiController != null)
+            updateGui();
+    }
+    public void setGuiController(IServerGuiController guiController) {
+        this.guiController = guiController;
+        if (serverThread != null)
+            updateGui();
+    }
     //endregion
 
     //region Public methods
@@ -62,14 +72,21 @@ public class ServerEngine {
             } catch (ServerThreadException e) {
                 e.printStackTrace();
             }
+            updateGui();
         }
         else if (RegexCheck.clientLogin(msg)){
             client.setName(msg.split(":")[1]);
             client.sendMessage("Welcome");
             client.sendMessage("GamesList:" + serverThread.getGamesInfo());
         }
-        else if (RegexCheck.leaveGame(msg)){
+        else if (RegexCheck.leaveGame(msg)) {
+            serverThread.clientLeaveGame(client);
+            connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
+            updateGui();
+        }
+        else if (RegexCheck.disconnectMsg(msg)) {
             clientDisconnected(client);
+            updateGui();
         }
     }
 
@@ -83,6 +100,7 @@ public class ServerEngine {
         try {
             Client newClient = new Client(clientSocket);
             connectedClients.add(newClient);
+            updateGui();
         } catch (TcpEngineException tcpE){
             tcpE.printStackTrace();
         }
@@ -102,6 +120,7 @@ public class ServerEngine {
     public void returnClientsToServer(ClientList clients){
         clients.forEach(this::returnClientToServer);
         clients.clear();
+        updateGui();
     }
 
     public void returnClientToServer(Client client){
@@ -115,12 +134,12 @@ public class ServerEngine {
         connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
 
-    public void setGuiController(IServerGuiController guiController) {
-        this.guiController = guiController;
-    }
-
     public void exit() {
         // TODO: 2016-01-19 add exit logic
+    }
+
+    public void updateGui() {
+        guiController.updateGameList(serverThread.getGameManagers(), connectedClients.size());
     }
     //endregion
 }

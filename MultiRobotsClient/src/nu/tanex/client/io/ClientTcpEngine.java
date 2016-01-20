@@ -18,6 +18,7 @@ public class ClientTcpEngine extends Thread {
     private Socket socket = null;
     private BufferedReader inStream = null;
     private PrintWriter outStream = null;
+    private boolean alive;
     //endregion
 
     public ClientTcpEngine() {
@@ -32,6 +33,7 @@ public class ClientTcpEngine extends Thread {
             socket = new Socket(address, port);
             inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+            alive = true;
             this.start();
         } catch (IOException e) {
             //Cleanup if construction failed
@@ -53,18 +55,7 @@ public class ClientTcpEngine extends Thread {
     public void disconnectFromServer(){
         outStream.println("Disconnect");
         try {
-            Thread.sleep(2500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.interrupt();
-        try {
-            this.socket.close();
-
-            if (inStream != null)
-                inStream.close();
-            if (outStream != null)
-                outStream.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,13 +64,19 @@ public class ClientTcpEngine extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (alive) {
                 String buf = inStream.readLine();
                 ClientEngine.getInstance().handleMsg(buf);
             }
         } catch (IOException e) {
-            System.out.println("Error receiving from server");
-            e.printStackTrace();
+            try {
+                if (inStream != null)
+                    inStream.close();
+                if (outStream != null)
+                    outStream.close();
+            } catch (IOException se) {
+                e.printStackTrace();
+            }
         }
     }
 }

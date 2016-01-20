@@ -43,6 +43,9 @@ public class GameManager {
         return playerQueue;
     }
 
+    public int numPlayersQueued(){
+        return playerQueue.size();
+    }
     //region Public methods
 
     /**

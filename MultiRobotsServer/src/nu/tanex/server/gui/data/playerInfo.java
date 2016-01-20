@@ -8,6 +8,26 @@ import nu.tanex.server.core.Client;
  * @since 2016-01-19
  */
 public class PlayerInfo {
-    public PlayerInfo(Client player) {
+    private String name;
+    private int score;
+    private int playerNum;
+    private String IPAddress;
+
+    public PlayerInfo(int playerNum, Client player) {
+        this.playerNum = playerNum;
+        this.name = player.getName();
+        this.score = player.getScore();
+        this.IPAddress = player.getPlayerIP();
+    }
+
+    @Override
+    public String toString() {
+        return name + " : " + IPAddress;
+    }
+
+    public String getInfoString(){
+        return "Name: " + name + "\n" +
+                "IP: " + IPAddress + "\n" +
+                "Score: " + score;
     }
 }

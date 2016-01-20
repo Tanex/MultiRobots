@@ -258,7 +258,7 @@ public class Game {
         level++;
         for (Player player : players){
             if (player.isAlive())
-                ;//Player rewards per level
+                ;// TODO: 2016-01-20 Player rewards per level
             else
                 player.setAlive(true);
         }
@@ -320,6 +320,18 @@ public class Game {
                 return false;
         }
         return true;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getNumRobots() {
+        return robots.size();
+    }
+
+    public int getNumRubble() {
+        return rubblePiles.size();
     }
 
     //endregion

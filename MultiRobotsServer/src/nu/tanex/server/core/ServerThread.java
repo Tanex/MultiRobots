@@ -5,6 +5,7 @@ import nu.tanex.core.resources.ServerSettings;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.aggregates.GameManagerList;
 import nu.tanex.server.exceptions.ServerThreadException;
+import nu.tanex.server.gui.data.GameInfo;
 
 import java.util.Vector;
 
@@ -21,6 +22,10 @@ public class ServerThread {
         return settings;
     }
 
+    public GameManagerList getGameManagers(){
+        return gameManagers;
+    }
+
     public ServerThread(String settingsFile) {
         settings = new ServerSettings();
         settings.loadSettingsFromFile(settingsFile);
@@ -28,15 +33,17 @@ public class ServerThread {
         for (int i = 0; i < settings.getNumGamesToRun(); i++) {
             gameManagers.add(new GameManager());
         }
+        GameInfo.setPlayersToStart(settings.getNumPlayersToStartGame());
     }
 
     public void clientQueueForGame(Client client, int gameNum) throws ServerThreadException{
-        if (gameManagers.get(gameNum).isGameRunning())
-            return; //do not queue while game is running.
         if (gameNum < 0 || gameNum >= settings.getNumGamesToRun())
             throw new ServerThreadException("gameNum out of range");
+        if (gameManagers.get(gameNum).isGameRunning() || gameManagers.get(gameNum).getPlayerQueue().contains(client))
+            return; //do not queue while game is running and do not queue multiple times.
+
         gameManagers.get(gameNum).getPlayerQueue().add(client);
-        if (gameManagers.get(gameNum).getPlayerQueue().size() == settings.getNumPlayersToStartGame()) {
+        if (gameManagers.get(gameNum).numPlayersQueued() == settings.getNumPlayersToStartGame()) {
             try {
                 ServerEngine.getInstance().getConnectedClients().removeAll(gameManagers.get(gameNum).getPlayerQueue());
                 gameManagers.get(gameNum).startGame();

@@ -1,13 +1,17 @@
 package nu.tanex.client.core;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import nu.tanex.client.Program;
 import nu.tanex.client.gui.IClientGuiController;
+import nu.tanex.client.gui.data.ConnectScreenInfo;
 import nu.tanex.client.io.ClientTcpEngine;
 import nu.tanex.client.resources.GuiState;
 import nu.tanex.client.resources.RegexCheck;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.core.resources.PlayerAction;
 
+import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -17,12 +21,24 @@ import java.net.UnknownHostException;
  * @since       2015-11-26
  */
 public class ClientEngine {
+    private static final String CONNECT_INFO_FILE = "connectInfo.bin";
+
     private ClientTcpEngine tcpEngine;
     private IClientGuiController guiController;
     private boolean canSendActions;
 
     public void setGuiController(IClientGuiController guiController) {
         this.guiController = guiController;
+        File fin = new File(CONNECT_INFO_FILE);
+        if (fin.isFile()){
+            try {
+                ObjectInputStream oin = new ObjectInputStream(new FileInputStream(fin));
+                ConnectScreenInfo info = (ConnectScreenInfo)oin.readObject();
+                guiController.loadConnectScreenInfo(info);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         guiController.changeGuiState(GuiState.ConnectScreen);
     }
 
@@ -87,8 +103,16 @@ public class ClientEngine {
         tcpEngine.connectToServer(InetAddress.getByName(ipAndPort.split(":")[0]), Integer.parseInt(ipAndPort.split(":")[1]));
     }
 
-    public void loginToServer(String nick) {
-        tcpEngine.sendMsg("ClientLogin:" + nick);
+    public void loginToServer(String letterOne, String letterTwo, String letterThree, String IPAddress) {
+        tcpEngine.sendMsg("ClientLogin:" + letterOne + letterTwo + letterThree);
+
+        File fout = new File(CONNECT_INFO_FILE);
+        try {
+            ObjectOutputStream oin = new ObjectOutputStream(new FileOutputStream(fout));
+            oin.writeObject(new ConnectScreenInfo(letterOne, letterTwo, letterThree, IPAddress));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void exit() {
@@ -97,5 +121,9 @@ public class ClientEngine {
 
     public void leaveGame() {
         tcpEngine.sendMsg("LeaveGame");
+    }
+
+    public void keyboardInput(KeyEvent key){
+        guiController.keyPressed(key.getCode());
     }
 }

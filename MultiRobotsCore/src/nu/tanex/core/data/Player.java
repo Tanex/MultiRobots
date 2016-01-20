@@ -10,7 +10,6 @@ import java.util.Random;
  */
 public class Player extends GameObject implements Serializable{
     //region Member variables
-    private int playerNum;
     private int numAttacks = 10;
     private int numRandomTeleports = 10;
     private int numSafeTeleports = 10;
@@ -21,7 +20,6 @@ public class Player extends GameObject implements Serializable{
     //region Get-/Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public int getPlayerNum() { return playerNum; }
     public int getNumAttacks() { return numAttacks; }
     public int getNumRandomTeleports() { return numRandomTeleports; }
     public int getNumSafeTeleports() { return numSafeTeleports; }
@@ -31,7 +29,6 @@ public class Player extends GameObject implements Serializable{
     //region Constructors
     public Player() {
         super("H", CollisionBehaviour.getPlayerCollisionBehaviour());
-        playerNum = new Random().nextInt(1000);
         name = null;
     }
     //endregion
