@@ -73,6 +73,13 @@
                                           <TextField fx:id="safeTeleportsTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
                                        </children>
                                     </HBox>
+                                    <HBox layoutX="25.0" layoutY="195.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="RandomTeleports Awarded" />
+                                          <Slider fx:id="randomTeleportsSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="randomTeleportsTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
                                     <HBox>
                                        <children>
                                           <Label contentDisplay="RIGHT" prefWidth="175.0" text="Additional Robots per Level" />

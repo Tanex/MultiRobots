@@ -24,6 +24,35 @@ public class Player extends GameObject implements Serializable{
     public int getNumRandomTeleports() { return numRandomTeleports; }
     public int getNumSafeTeleports() { return numSafeTeleports; }
     public int getScore() { return score; }
+    public void setNumAttacks(int numAttacks) { this.numAttacks = numAttacks; }
+    public void setNumRandomTeleports(int numRandomTeleports) { this.numRandomTeleports = numRandomTeleports; }
+    public void setNumSafeTeleports(int numSafeTeleports) { this.numSafeTeleports = numSafeTeleports; }
+    public void setScore(int score) { this.score = score; }
+    //endregion
+
+    //region Public Methods
+    public void addRandomTeleports(int additionalTeleports){
+        this.numRandomTeleports += additionalTeleports;
+    }
+    public void addSafeeleports(int additionalTeleports){
+        this.numSafeTeleports += additionalTeleports;
+    }
+    public void addAttacks(int additionalAttacks){
+        this.numAttacks += additionalAttacks;
+    }
+    public void addScore(int additionalScore){
+        this.score += additionalScore;
+    }
+
+    public void takeRandomTeleports(int teleportCost){
+        this.numRandomTeleports -= teleportCost;
+    }
+    public void takeSafeTeleports(int teleportCost){
+        this.numSafeTeleports -= teleportCost;
+    }
+    public void takeAttacks(int attackCost){
+        this.numAttacks -= attackCost;
+    }
     //endregion
 
     //region Constructors

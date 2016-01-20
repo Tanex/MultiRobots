@@ -79,12 +79,16 @@ public class ClientEngine {
         }
         else if(RegexCheck.GameStart(msg)){
             guiController.changeGuiState(GuiState.GameScreen);
+            guiController.setPlayerNum(Integer.parseInt(msg.split(":")[1]));
         }
         else if(RegexCheck.PlayerList(msg)){
             guiController.updatePlayerList(msg.split(":")[1]);
         }
         else if(RegexCheck.PlayerInfo(msg)){
             guiController.updatePlayerInfo(msg.split(":")[1]);
+        }
+        else if(RegexCheck.Kicked(msg)){
+            guiController.changeGuiState(GuiState.LobbyScreen);
         }
     }
 

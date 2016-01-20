@@ -22,7 +22,10 @@ import nu.tanex.core.resources.PlayerAction;
 
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 /**
  * @author Victor Hedlund
@@ -32,7 +35,14 @@ import java.util.ResourceBundle;
 public class ClientController implements IClientGuiController {
     private static final int CELL_SIZE = 15;
 
+    private int playerNum = -1;
+    private int playerX = -1;
+    private int playerY = -1;
+
+    private HashMap<Integer, Color> playerColors = new HashMap<>();
+
     //region GUI controls
+    public Canvas playerListCanvas;
     public Button buttonMoveUpLeft;
     public Button buttonMoveUp;
     public Button buttonMoveUpRight;
@@ -45,7 +55,6 @@ public class ClientController implements IClientGuiController {
     public Button buttonAttack;
     public Button buttonTeleport;
     public Button buttonSafeTeleport;
-    public Button buttonDebug;
     public SplitPane playerControls;
     public TextField ipText;
     public Label nick1;
@@ -65,7 +74,6 @@ public class ClientController implements IClientGuiController {
     public Label waitingForPlayersLabel;
     public Button queueForGame;
     public Button leaveQueue;
-    public Label playerListLabel;
     public Label playerInfoLabel;
     public Canvas gameCanvas;
     public Button connectButton;
@@ -145,15 +153,40 @@ public class ClientController implements IClientGuiController {
     @Override
     public void updatePlayerList(String playerList) {
         Platform.runLater(() -> {
-            String text = "";
-            String players[] = playerList.split("@");
-            for(String player : players){
-                //#<playerNum>,<playerName>,<playerStatus>@
-                String info[] = player.split(",");
-                text += info[0] + " "+ info[1] +  " - " + info[2] + "\n";
-            }
-            playerListLabel.setText(text);
+            if (playerColors.size() == 0)
+                generatePlayerColors(playerList);
+            drawPlayerList(playerListCanvas.getGraphicsContext2D(), playerList);
         });
+    }
+
+    private void drawPlayerList(GraphicsContext gc, String playerList) {
+        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
+        String players[] = playerList.split("@");
+        gc.setStroke(Color.BLACK);
+        for (int i = 0; i < players.length; i++) {
+            //<playerNum>,<playerName>,<playerStatus>@
+            String info[] = players[i].split(",");
+            gc.setFill(playerColors.get(Integer.parseInt(info[0])));
+            gc.fillOval(5, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            gc.strokeOval(5, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            gc.setFill(Color.BLACK);
+            gc.fillText(info[1] +  " - " + info[2], 10 + CELL_SIZE, (i + 1) * CELL_SIZE );
+        }
+    }
+
+    private void generatePlayerColors(String playerList) {
+        String players[] = playerList.split("@");
+        for (String player : players) {
+            //<playerNum>,<playerName>,<playerStatus>@
+            String info[] = player.split(",");
+            Color newColor;
+            Random rng = new Random(System.currentTimeMillis());
+            do {
+                newColor = Color.rgb(Math.abs(rng.nextInt() % 256), Math.abs(rng.nextInt() % 256), Math.abs(rng.nextInt() % 256));
+            } while (newColor.equals(Color.BLACK) || playerColors.containsValue(newColor));
+            playerColors.put(Integer.parseInt(info[0]), newColor);
+        }
     }
 
     @Override
@@ -187,6 +220,10 @@ public class ClientController implements IClientGuiController {
         }
     }
 
+    @Override
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
+    }
     //endregion
 
     //region Button-handlers
@@ -274,15 +311,33 @@ public class ClientController implements IClientGuiController {
     }
 
     public void gameBoardClicked(MouseEvent mouseEvent) {
-        // TODO: 2016-01-20 actually do something with this
         int xCoordClicked = (int)(mouseEvent.getX() / CELL_SIZE);
         int yCoordClicked = (int)(mouseEvent.getY() / CELL_SIZE);
+        Program.debug("Mouse clicked game board at X: " + xCoordClicked + ", Y: " + yCoordClicked);
+        int xDist = xCoordClicked - playerX;
+        int yDist = yCoordClicked - playerY;
+        Program.debug("xDist = " + xDist + ", yDist = " + yDist);
+        if (Math.abs(xDist) > 1 || Math.abs(yDist) > 1)
+            return;
 
+        int squareClicked = xDist * 3 + yDist * 7; //math with primes gives unique values for squares.
+        switch (squareClicked){
+            case -10: buttonMoveUpLeft.fire(); break;
+            case -3: buttonMoveLeft.fire(); break;
+            case 4: buttonMoveDownLeft.fire(); break;
+            case -7: buttonMoveUp.fire(); break;
+            case 0: buttonWait.fire(); break;
+            case 7: buttonMoveDown.fire(); break;
+            case -4: buttonMoveUpRight.fire(); break;
+            case 3: buttonMoveRight.fire(); break;
+            case 10: buttonMoveDownRight.fire(); break;
+        }
     }
     //endregion
 
-    public void debugButton(ActionEvent actionEvent) {
-        ClientEngine.getInstance().queueForGame(0);
+    public void leaveGameHandler(ActionEvent actionEvent) {
+        ClientEngine.getInstance().leaveGame();
+        //changeGuiState();
     }
 
     public void gamesListClicked(Event event) {
@@ -316,35 +371,46 @@ public class ClientController implements IClientGuiController {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         int x = 0, y = 0;
         gc.setStroke(Color.BLACK);
-        gc.setLineWidth(1.0);
 
-        // TODO: 2016-01-20 redo the whole fucking thing
         for (int i = 0; i < gameState.length(); i++) {
-            switch (gameState.charAt(i)){
-                case '>': //newline
-                    y++;
-                    x = 0;
-                    break;
-                case '.': //empty space
-                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    break;
-                case '@': //robot
-                    gc.setFill(Color.RED);
-                    gc.fillRect(x * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    break;
-                case '#': //rubble
-                    gc.setFill(Color.BLUE);
-                    gc.fillRect(x * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    break;
-                default: //players
-                    gc.setFill(Color.GREEN);
-                    gc.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    gc.setFill(Color.RED);
-                    gc.fillText(Character.toString(gameState.charAt(i)), x * CELL_SIZE + CELL_SIZE / 3, y * CELL_SIZE + CELL_SIZE);
-                    gc.strokeRect(x++ * CELL_SIZE,y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    break;
+            if (gameState.charAt(i) == '>'){
+                y++;
+                x = 0;
+            }
+            else {
+                if (gameState.charAt(i) == '[') {
+                    String buf = "";
+                    i++;
+                    do {
+                        buf += gameState.charAt(i++);
+                    } while (gameState.charAt(i) != ']');
+                    int playerId = Integer.parseInt(buf);
+
+                    if (playerId == playerNum) {
+                        playerX = x;
+                        playerY = y;
+                    }
+                    gc.setFill(playerColors.get(playerId));
+                    gc.fillOval(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    gc.strokeOval(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                }
+                else {
+                    switch (gameState.charAt(i)) {
+                        case '@': //robot
+                            gc.setFill(Color.RED);
+                            gc.fillPolygon(new double[]{ x * CELL_SIZE, x * CELL_SIZE + CELL_SIZE, x * CELL_SIZE + CELL_SIZE / 2},
+                                            new double[]{ y * CELL_SIZE, y * CELL_SIZE , y * CELL_SIZE + CELL_SIZE }, 3);
+                            break;
+                        case '#': //rubble
+                            gc.setFill(Color.BLACK);
+                            gc.setLineWidth(3.0);
+                            gc.strokeLine(x * CELL_SIZE, y * CELL_SIZE, x * CELL_SIZE + CELL_SIZE, y * CELL_SIZE + CELL_SIZE);
+                            gc.strokeLine(x * CELL_SIZE, y * CELL_SIZE + CELL_SIZE, x * CELL_SIZE + CELL_SIZE, y * CELL_SIZE);
+                            gc.setLineWidth(1.0);
+                            break;
+                    }
+                }
+                gc.strokeRect(x++ * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
         }
     }

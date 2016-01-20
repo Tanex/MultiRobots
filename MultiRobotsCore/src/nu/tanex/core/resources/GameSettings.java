@@ -17,6 +17,7 @@ public class GameSettings {
     private int numInitialRubble = 2;
     private RobotCollisions robotCollisions = RobotCollisions.Merge;
     private int numSafeTeleportsAwarded = 1;
+    private int numRandomTeleportsAwarded = 1;
     private int numAttacksAwarded = 1;
     private PlayerAttacks playerAttacks = PlayerAttacks.KillOne;
     private RobotAiMode robotAiMode = RobotAiMode.ChaseClosest;
@@ -63,6 +64,13 @@ public class GameSettings {
 
     public void setNumSafeTeleportsAwarded(int numSafeTeleportsAwarded) {
         this.numSafeTeleportsAwarded = numSafeTeleportsAwarded;
+    }
+    public int getNumRandomTeleportsAwarded() {
+        return this.numRandomTeleportsAwarded;
+    }
+
+    public void setNumRandomTeleportsAwarded(int numRandomTeleportsAwarded) {
+        this.numRandomTeleportsAwarded = numRandomTeleportsAwarded;
     }
 
     public int getNumAttacksAwarded() {
@@ -116,6 +124,7 @@ public class GameSettings {
         this.numInitialRubble = other.numInitialRubble;
         this.robotCollisions = other.robotCollisions;
         this.numSafeTeleportsAwarded = other.numSafeTeleportsAwarded;
+        this.numRandomTeleportsAwarded = other.numRandomTeleportsAwarded;
         this.numAttacksAwarded = other.numAttacksAwarded;
         this.playerAttacks = other.playerAttacks;
         this.robotAiMode = other.robotAiMode;
@@ -182,6 +191,7 @@ public class GameSettings {
                 "numInitialRubble=" + numInitialRubble+ ";\n" +
                 "robotCollisions=" + robotCollisions + ";\n" +
                 "numSafeTeleportsAwarded=" + numSafeTeleportsAwarded+ ";\n" +
+                "numRandomTeleportsAwarded=" + numRandomTeleportsAwarded+ ";\n" +
                 "numAttacksAwarded=" + numAttacksAwarded+ ";\n" +
                 "playerAttacks=" + playerAttacks + ";\n" +
                 "robotAiMode=" + robotAiMode+ ";\n" +
@@ -196,6 +206,7 @@ public class GameSettings {
             case "numInitialRubble": numInitialRubble = Integer.parseInt(value); break;
             case "robotCollisions": robotCollisions = RobotCollisions.valueOf(value); break;
             case "numSafeTeleportsAwarded": numSafeTeleportsAwarded = Integer.parseInt(value); break;
+            case "numRandomTeleportsAwarded": numRandomTeleportsAwarded = Integer.parseInt(value); break;
             case "numAttacksAwarded": numAttacksAwarded = Integer.parseInt(value); break;
             case "playerAttacks": playerAttacks = PlayerAttacks.valueOf(value); break;
             case "robotAiMode": robotAiMode = RobotAiMode.valueOf(value); break;

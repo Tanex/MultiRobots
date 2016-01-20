@@ -6,6 +6,9 @@ import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.aggregates.GameManagerList;
 import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.server.gui.IServerGuiController;
+import nu.tanex.server.gui.data.GameInfo;
+import nu.tanex.server.gui.data.PlayerInfo;
+import nu.tanex.server.gui.data.SettingsInfo;
 import nu.tanex.server.io.ServerTcpEngine;
 import nu.tanex.server.resources.RegexCheck;
 
@@ -129,7 +132,7 @@ public class ServerEngine {
             if (!connectedClients.contains(client) && !client.isDummy())
                 this.connectedClients.add(client);
             client.sendMessage("Welcome");
-            client.sendMessage("GamesList:" + serverThread.getGamesInfo());
+            //client.sendMessage("GamesList:" + serverThread.getGamesInfo());
         }
         connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
@@ -140,6 +143,16 @@ public class ServerEngine {
 
     public void updateGui() {
         guiController.updateGameList(serverThread.getGameManagers(), connectedClients.size());
+    }
+
+    public void updateGameSetting(GameInfo game, SettingsInfo newSettings) {
+        serverThread.getGameManagers().get(game.getGameNum()).updateGameSettings(newSettings);
+    }
+
+    public void kickPlayer(PlayerInfo player, GameInfo game) {
+        Program.debug("Kicking player " + player);
+        serverThread.getGameManagers().get(game.getGameNum()).kickPlayer(player);
+        connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
     //endregion
 }

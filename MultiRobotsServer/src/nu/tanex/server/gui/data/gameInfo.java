@@ -37,6 +37,8 @@ public class GameInfo {
         return gameRunning ? 0 : playersQueued;
     }
 
+    public int getGameNum(){ return this.gameNum; }
+
     public GameInfo(int gameNum, GameManager gm) {
         this.gameNum = gameNum;
         settings = new SettingsInfo(gm.getGame().getSettings());

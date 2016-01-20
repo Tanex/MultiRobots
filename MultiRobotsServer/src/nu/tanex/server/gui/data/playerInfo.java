@@ -30,4 +30,14 @@ public class PlayerInfo {
                 "IP: " + IPAddress + "\n" +
                 "Score: " + score;
     }
+
+    public int getPlayerNum() { return playerNum; }
+
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

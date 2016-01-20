@@ -113,8 +113,15 @@ public class Game {
                 > settings.getGridHeight()*settings.getGridWidth()*MAX_GRID_FILL_ALLOWED)
             throw new GameException("Grid overfilled: " + (players.size() + settings.getNumInitialRobots() + settings.getNumInitialRubble())
                     + " objects for " + (settings.getGridHeight()*settings.getGridWidth()) + "size grid.");
-
+        players.forEach(this::initPlayer);
         generateGrid(settings.getNumInitialRobots());
+    }
+
+    private void initPlayer(Client player){
+        player.setNumAttacks(settings.getNumAttacksAwarded());
+        player.setNumRandomTeleports(settings.getNumRandomTeleportsAwarded());
+        player.setNumSafeTeleports(settings.getNumSafeTeleportsAwarded());
+        player.setScore(0);
     }
 
     /**
@@ -241,12 +248,13 @@ public class Game {
                 rows[i].append(".");
             rows[i].append(">");
         }
-        for (int i = 0; i < players.size(); i++)
-            rows[players.get(i).getPoint().getY()].setCharAt(players.get(i).getPoint().getX(), (char)('0' + i));
         for (Rubble rubble : rubblePiles)
             rows[rubble.getPoint().getY()].setCharAt(rubble.getPoint().getX(), rubble.toString().charAt(0));
         for (Robot robot : robots)
                 rows[robot.getPoint().getY()].setCharAt(robot.getPoint().getX(), robot.toString().charAt(0));
+        for (int i = 0; i < players.size(); i++)
+            rows[players.get(i).getPoint().getY()].replace(players.get(i).getPoint().getX(), players.get(i).getPoint().getX() + 1, "[" + Integer.toString(i) + "]");
+        //rows[players.get(i).getPoint().getY()].setCharAt(players.get(i).getPoint().getX(), (char)('0' + i));
 
         String str = "";
         for (StringBuilder row : rows)
@@ -257,8 +265,12 @@ public class Game {
     public void nextLevel() {
         level++;
         for (Player player : players){
-            if (player.isAlive())
-                ;// TODO: 2016-01-20 Player rewards per level
+            if (player.isAlive()){
+                player.addAttacks(settings.getNumAttacksAwarded());
+                player.addRandomTeleports(settings.getNumRandomTeleportsAwarded());
+                player.addSafeeleports(settings.getNumSafeTeleportsAwarded());
+                player.addScore(25);
+            }
             else
                 player.setAlive(true);
         }
@@ -268,8 +280,12 @@ public class Game {
     public void playerPerformAction(Client client, PlayerAction playerAction) {
         switch (playerAction) {
             case Attack:
+                if (client.getNumAttacks() < 1)
+                    break;
+                client.takeAttacks(1);
                 for (Robot robot : robots) {
                     if (robot.getPoint().isWithinOneMove(client.getPoint())) {
+                        client.addScore(10);
                         robot.setAlive(false);
                         if (settings.getPlayerAttacks() == PlayerAttacks.KillOne)
                             break;
@@ -303,12 +319,19 @@ public class Game {
             case Wait:
                 break;
             case RandomTeleport:
+                if (client.getNumRandomTeleports() < 1)
+                    break;
+                client.takeRandomTeleports(1);
                 randomlyPlaceGameObject(client);
                 break;
             case SafeTeleport:
+                if (client.getNumSafeTeleports() < 1)
+                    break;
+                // TODO: 2016-01-20 smarter system for this
                 do{
                     randomlyPlaceGameObject(client);
                 } while(!isPlayerSafe(client));
+                client.takeSafeTeleports(1);
                 break;
         }
         System.out.println(client + " performed action: " + playerAction);

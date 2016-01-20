@@ -33,7 +33,7 @@ public abstract class RegexCheck {
     }
 
     public static boolean GameStart(String msg){
-        return Pattern.compile("^GameStart$").matcher(msg).matches();
+        return Pattern.compile("^GameStart:.*$").matcher(msg).matches();
     }
 
     public static boolean PlayerList(String msg){
@@ -42,5 +42,9 @@ public abstract class RegexCheck {
 
     public static boolean PlayerInfo(String msg){
         return Pattern.compile("^PlayerInfo:.*$").matcher(msg).matches();
+    }
+
+    public static boolean Kicked(String msg){
+        return Pattern.compile("^Kicked$").matcher(msg).matches();
     }
 }

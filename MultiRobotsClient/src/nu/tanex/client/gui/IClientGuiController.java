@@ -18,4 +18,5 @@ public interface IClientGuiController {
     void updatePlayerList(String playerList);
     void keyPressed(KeyCode code);
     void loadConnectScreenInfo(ConnectScreenInfo info);
+    void setPlayerNum(int playerNum);
 }

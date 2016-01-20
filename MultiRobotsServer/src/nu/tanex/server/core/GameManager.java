@@ -5,6 +5,8 @@ import nu.tanex.core.resources.GameSettings;
 import nu.tanex.core.resources.PlayerAction;
 import nu.tanex.server.Program;
 import nu.tanex.server.aggregates.ClientList;
+import nu.tanex.server.gui.data.PlayerInfo;
+import nu.tanex.server.gui.data.SettingsInfo;
 import nu.tanex.server.resources.GameState;
 import nu.tanex.server.resources.RegexCheck;
 
@@ -63,7 +65,8 @@ public class GameManager {
         playerQueue.clear();
         this.game.createGameGrid();
         //Start the game
-        sendMsgToAllPlayers("GameStart");
+        for (int i = 0; i < game.getNumPlayers(); i++)
+            game.getPlayers().get(i).sendMessage("GameStart:" + i);
         sendPlayerList();
         game.getPlayers().stream().forEach(Client::sendPlayerInfo);
         this.gameRunning = true;
@@ -134,7 +137,7 @@ public class GameManager {
         for (int i = 0; i < game.getPlayers().size(); i++) {
             Client player = game.getPlayers().get(i);
             //#<playerNum>,<playerName>,<playerStatus>@
-            str += "#" + i + "," + player.getName() + ",";
+            str += i + "," + player.getName() + ",";
             if (player.isAlive())
                 str += player.isAwaitingAction() ? "Acting@" : "Done@";
             else
@@ -195,6 +198,33 @@ public class GameManager {
                 "\tAttack Mode - " + gs.getPlayerAttacks() + ">" +
                 "\tRobot AI Mode - " + gs.getRobotAiMode() + ">" +
                 "\tGrid Size - " + gs.getGridWidth() + " x " + gs.getGridHeight();
+    }
+
+    public void updateGameSettings(SettingsInfo newSettings) {
+        game.getSettings().setNumInitialRobots(newSettings.numInitialRobots);
+        game.getSettings().setNumAdditionalRobotsPerLevel(newSettings.numAdditionalRobotsPerLevel);
+        game.getSettings().setNumInitialRubble(newSettings.numInitialRubble);
+        game.getSettings().setRobotCollisions(newSettings.robotCollisions);
+        game.getSettings().setNumSafeTeleportsAwarded(newSettings.numSafeTeleportsAwarded);
+        game.getSettings().setNumRandomTeleportsAwarded(newSettings.numRandomTeleportsAwarded);
+        game.getSettings().setNumAttacksAwarded(newSettings.numAttacksAwarded);
+        game.getSettings().setPlayerAttacks(newSettings.playerAttacks);
+        game.getSettings().setRobotAiMode(newSettings.robotAiMode);
+        game.getSettings().setGridWidth(newSettings.gridWidth);
+        game.getSettings().setGridHeight(newSettings.gridHeight);
+    }
+
+    public void kickPlayer(PlayerInfo player){
+        Client playerToKick = null;
+        if (isGameRunning())
+            playerToKick = game.getPlayers().find(p -> p.getPlayerIP().equals(player.getIPAddress()) && p.getName().equals(player.getName()));
+        else
+            playerToKick = playerQueue.find(p -> p.getPlayerIP().equals(player.getIPAddress()) && p.getName().equals(player.getName()));
+
+        if (playerToKick != null) {
+            playerToKick.sendMessage("Kicked");
+            msgHandler(playerToKick, "LeaveGame");
+        }
     }
     //endregion
 }

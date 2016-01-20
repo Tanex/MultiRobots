@@ -9,6 +9,7 @@ import nu.tanex.core.resources.PlayerAttacks;
 import nu.tanex.core.resources.RobotAiMode;
 import nu.tanex.core.resources.RobotCollisions;
 import nu.tanex.server.aggregates.GameManagerList;
+import nu.tanex.server.core.ServerEngine;
 import nu.tanex.server.gui.data.GameInfo;
 import nu.tanex.server.gui.data.PlayerInfo;
 import nu.tanex.server.gui.data.SettingsInfo;
@@ -32,13 +33,15 @@ public class ServerController implements IServerGuiController, Initializable {
     public Label gridFillLabel;
     public ListView<PlayerInfo> playerList;
     public Label serverInfoLabel;
-    public ComboBox attackModeComboBox;
-    public ComboBox robotAIModeComboBox;
-    public ComboBox robotCollisionModeComboBox;
+    public ComboBox<PlayerAttacks> attackModeComboBox;
+    public ComboBox<RobotAiMode> robotAIModeComboBox;
+    public ComboBox<RobotCollisions> robotCollisionModeComboBox;
     public Slider attacksAwardedSlider;
     public TextField attacksAwardedTextField;
     public Slider safeTeleportsSlider;
     public TextField safeTeleportsTextField;
+    public Slider randomTeleportsSlider;
+    public TextField randomTeleportsTextField;
     public Slider additionalRobotsSlider;
     public TextField additionalRobotsTextField;
     public Slider initialRobotsSlider;
@@ -53,6 +56,7 @@ public class ServerController implements IServerGuiController, Initializable {
 
     @Override
     public void updateGameList(GameManagerList games, int numConnectedClients) {
+        // TODO: 2016-01-20 follow through and update everything else too
         Platform.runLater(() -> {
             //Perform all the hacks
             GameInfo selected = gamesList.getSelectionModel().getSelectedItem();
@@ -75,6 +79,7 @@ public class ServerController implements IServerGuiController, Initializable {
 
         setupSliderAndTextField(attacksAwardedSlider, attacksAwardedTextField);
         setupSliderAndTextField(safeTeleportsSlider, safeTeleportsTextField);
+        setupSliderAndTextField(randomTeleportsSlider, randomTeleportsTextField);
         setupSliderAndTextField(additionalRobotsSlider, additionalRobotsTextField);
         setupSliderAndTextField(initialRobotsSlider, initialRobotsTextField);
         setupSliderAndTextField(initialRubbleSlider, initialRubbleTextField);
@@ -135,7 +140,8 @@ public class ServerController implements IServerGuiController, Initializable {
         robotCollisionModeComboBox.setValue(settingsInfo.robotCollisions);
         attacksAwardedSlider.setValue(settingsInfo.numAttacksAwarded);
         safeTeleportsSlider.setValue(settingsInfo.numSafeTeleportsAwarded);
-        additionalRobotsSlider.setValue(settingsInfo.numAdditionalRobotsPerLevel);
+        randomTeleportsSlider.setValue(settingsInfo.numRandomTeleportsAwarded);
+        initialRobotsSlider.setValue(settingsInfo.numAdditionalRobotsPerLevel);
         initialRobotsSlider.setValue(settingsInfo.numInitialRobots);
         initialRubbleSlider.setValue(settingsInfo.numInitialRubble);
         gridWidthSlider.setValue(settingsInfo.gridWidth);
@@ -143,15 +149,31 @@ public class ServerController implements IServerGuiController, Initializable {
     }
 
     public void buttonClicked(ActionEvent actionEvent) {
-        // TODO: 2016-01-20 add button logic
         if (actionEvent.getSource().equals(kickButton)){
-
+            PlayerInfo selectedPlayer = playerList.getSelectionModel().getSelectedItem();
+            if (selectedPlayer == null)
+                return;
+            ServerEngine.getInstance().kickPlayer(selectedPlayer, gamesList.getSelectionModel().getSelectedItem());
         }
         else if (actionEvent.getSource().equals(saveButton)){
+            SettingsInfo newSettings = new SettingsInfo();
+            
+            newSettings.numInitialRobots = (int)initialRobotsSlider.getValue();
+            newSettings.numAdditionalRobotsPerLevel = (int)initialRobotsSlider.getValue();
+            newSettings.numInitialRubble = (int)initialRubbleSlider.getValue();
+            newSettings.robotCollisions = robotCollisionModeComboBox.getValue();
+            newSettings.numSafeTeleportsAwarded = (int)safeTeleportsSlider.getValue();
+            newSettings.numRandomTeleportsAwarded = (int)randomTeleportsSlider.getValue();
+            newSettings.numAttacksAwarded = (int)attacksAwardedSlider.getValue();
+            newSettings.playerAttacks = attackModeComboBox.getValue();
+            newSettings.robotAiMode = robotAIModeComboBox.getValue();
+            newSettings.gridWidth = (int)gridWidthSlider.getValue();
+            newSettings.gridHeight = (int)gridHeightSlider.getValue();
 
+            ServerEngine.getInstance().updateGameSetting(gamesList.getSelectionModel().getSelectedItem(), newSettings);
         }
         else if (actionEvent.getSource().equals(discardButton)){
-
+            loadGameSettings(gamesList.getSelectionModel().getSelectedItem().getSettingsInfo());
         }
     }
 }

@@ -16,6 +16,7 @@ public class SettingsInfo {
     public int numInitialRubble;
     public RobotCollisions robotCollisions;
     public int numSafeTeleportsAwarded;
+    public int numRandomTeleportsAwarded;
     public int numAttacksAwarded;
     public PlayerAttacks playerAttacks;
     public RobotAiMode robotAiMode;
@@ -28,11 +29,15 @@ public class SettingsInfo {
         this.numInitialRubble = settings.getNumInitialRubble();
         this.robotCollisions = settings.getRobotCollisions();
         this.numSafeTeleportsAwarded = settings.getNumSafeTeleportsAwarded();
+        this.numRandomTeleportsAwarded = settings.getNumRandomTeleportsAwarded();
         this.numAttacksAwarded = settings.getNumAttacksAwarded();
         this.playerAttacks = settings.getPlayerAttacks();
         this.robotAiMode = settings.getRobotAiMode();
         this.gridWidth = settings.getGridWidth();
         this.gridHeight = settings.getGridHeight();
+    }
+
+    public SettingsInfo() {
     }
 
     public int getGridSize() {
