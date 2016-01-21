@@ -33,7 +33,7 @@ public abstract class RegexCheck {
     }
 
     public static boolean GameStart(String msg){
-        return Pattern.compile("^GameStart:.*$").matcher(msg).matches();
+        return Pattern.compile("^GameStart:[0-9]+:[0-9]+:[0-9]+$").matcher(msg).matches();
     }
 
     public static boolean PlayerList(String msg){

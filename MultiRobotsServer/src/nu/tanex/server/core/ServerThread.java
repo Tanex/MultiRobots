@@ -2,12 +2,9 @@ package nu.tanex.server.core;
 
 import nu.tanex.core.exceptions.GameException;
 import nu.tanex.core.resources.ServerSettings;
-import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.aggregates.GameManagerList;
 import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.server.gui.data.GameInfo;
-
-import java.util.Vector;
 
 /**
  * @author Victor Hedlund

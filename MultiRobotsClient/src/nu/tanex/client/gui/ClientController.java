@@ -3,7 +3,6 @@ package nu.tanex.client.gui;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,12 +19,9 @@ import nu.tanex.client.resources.RegexCheck;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.core.resources.PlayerAction;
 
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.Vector;
 
 /**
  * @author Victor Hedlund
@@ -38,6 +34,8 @@ public class ClientController implements IClientGuiController {
     private int playerNum = -1;
     private int playerX = -1;
     private int playerY = -1;
+    private int xOffset = 0;
+    private int yOffset = 0;
 
     private HashMap<Integer, Color> playerColors = new HashMap<>();
 
@@ -80,10 +78,21 @@ public class ClientController implements IClientGuiController {
     //endregion
 
     //region Interface IClientGuiController
+
+
+    @Override
+    public void setBoardHeight(int height) {
+        yOffset = (int)gameCanvas.getHeight() / 2 - height * CELL_SIZE / 2;
+    }
+
+    @Override
+    public void setBoardWidth(int width) {
+        xOffset = (int)gameCanvas.getWidth() / 2 - width * CELL_SIZE / 2;
+    }
+
     @Override
     public void updateGameState(String gameState) {
         Platform.runLater(() -> {
-            // TODO: 2016-01-20 try to center canvas somewhat
             drawGameBoard(gameCanvas.getGraphicsContext2D(), gameState);
         });
     }
@@ -216,7 +225,7 @@ public class ClientController implements IClientGuiController {
             case NUMPAD9: buttonMoveUpRight.fire(); break;
             case NUMPAD0: buttonAttack.fire(); break;
             case ENTER: buttonTeleport.fire(); break;
-            case PLUS: buttonSafeTeleport.fire(); break;
+            case ADD: buttonSafeTeleport.fire(); break;
         }
     }
 
@@ -390,29 +399,74 @@ public class ClientController implements IClientGuiController {
                         playerX = x;
                         playerY = y;
                     }
-                    gc.setFill(playerColors.get(playerId));
-                    gc.fillOval(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                    gc.strokeOval(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    renderPlayer(gc, x, y, playerColors.get(playerId));
                 }
                 else {
                     switch (gameState.charAt(i)) {
                         case '@': //robot
-                            gc.setFill(Color.RED);
-                            gc.fillPolygon(new double[]{ x * CELL_SIZE, x * CELL_SIZE + CELL_SIZE, x * CELL_SIZE + CELL_SIZE / 2},
-                                            new double[]{ y * CELL_SIZE, y * CELL_SIZE , y * CELL_SIZE + CELL_SIZE }, 3);
+                            renderRobot(gc, x, y);
                             break;
                         case '#': //rubble
-                            gc.setFill(Color.BLACK);
-                            gc.setLineWidth(3.0);
-                            gc.strokeLine(x * CELL_SIZE, y * CELL_SIZE, x * CELL_SIZE + CELL_SIZE, y * CELL_SIZE + CELL_SIZE);
-                            gc.strokeLine(x * CELL_SIZE, y * CELL_SIZE + CELL_SIZE, x * CELL_SIZE + CELL_SIZE, y * CELL_SIZE);
-                            gc.setLineWidth(1.0);
+                            renderRubble(gc, x, y);
                             break;
                     }
                 }
-                gc.strokeRect(x++ * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                gc.strokeRect(x++ * CELL_SIZE + xOffset,    //top left X
+                              y * CELL_SIZE + yOffset,      //top left Y
+                              CELL_SIZE,                    //width
+                              CELL_SIZE);                   //height
             }
         }
+    }
+
+    private void renderRubble(GraphicsContext gc, int x, int y){
+        gc.setFill(Color.BLACK);
+        gc.setLineWidth(3.0);
+        //diagonal 1
+        gc.strokeLine(x * CELL_SIZE + xOffset,              //top left X
+                      y * CELL_SIZE + yOffset,              //top left Y
+                      x * CELL_SIZE + CELL_SIZE + xOffset,  //bottom right X
+                      y * CELL_SIZE + CELL_SIZE + yOffset); //bottom right Y
+        //diagonal 2
+        gc.strokeLine(x * CELL_SIZE + xOffset,              //bottom left X
+                      y * CELL_SIZE + CELL_SIZE + yOffset,  //bottom left Y
+                      x * CELL_SIZE + CELL_SIZE + xOffset,  //top right X
+                      y * CELL_SIZE + yOffset);             //top right Y
+        gc.setLineWidth(1.0);
+    }
+
+    private void renderRobot(GraphicsContext gc, int x, int y){
+        gc.setFill(Color.RED);
+        //color fill
+        gc.fillPolygon(new double[]{ x * CELL_SIZE + xOffset,                   //top left X
+                                     x * CELL_SIZE + CELL_SIZE + xOffset,       //top right X
+                                     x * CELL_SIZE + CELL_SIZE / 2 + xOffset},  //bottom center X
+                       new double[]{ y * CELL_SIZE + yOffset,                   //top left Y
+                                     y * CELL_SIZE + yOffset,                   //top right Y
+                                     y * CELL_SIZE + CELL_SIZE  + yOffset},     //bottom center Y
+                       3);                                                      //num vertices
+        //outline
+        gc.strokePolygon(new double[]{ x * CELL_SIZE + xOffset,                 //top left X
+                                       x * CELL_SIZE + CELL_SIZE + xOffset,     //top right X
+                                       x * CELL_SIZE + CELL_SIZE / 2 + xOffset},//bottom center X
+                         new double[]{ y * CELL_SIZE + yOffset,                 //top left Y
+                                       y * CELL_SIZE + yOffset,                 //top right Y
+                                       y * CELL_SIZE + CELL_SIZE  + yOffset},   //bottom center Y
+                         3);                                                    //num vertices
+    }
+
+    private void renderPlayer(GraphicsContext gc, int x, int y, Color playerColor){
+        gc.setFill(playerColor);
+        //color fill
+        gc.fillOval(x * CELL_SIZE + xOffset,    //top left X
+                    y * CELL_SIZE + yOffset,    //top left Y
+                    CELL_SIZE,                  //X-radius
+                    CELL_SIZE);                 //Y-radius
+        //outline
+        gc.strokeOval(x * CELL_SIZE + xOffset,  //top left X
+                      y * CELL_SIZE + yOffset,  //top left Y
+                      CELL_SIZE,                //X-radius
+                      CELL_SIZE);               //Y-radius
     }
     //endregion
 }

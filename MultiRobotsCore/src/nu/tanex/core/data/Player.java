@@ -1,7 +1,6 @@
 package nu.tanex.core.data;
 
 import java.io.Serializable;
-import java.util.Random;
 
 /**
  * @author      Victor Hedlund

@@ -19,4 +19,6 @@ public interface IClientGuiController {
     void keyPressed(KeyCode code);
     void loadConnectScreenInfo(ConnectScreenInfo info);
     void setPlayerNum(int playerNum);
+    void setBoardWidth(int width);
+    void setBoardHeight(int height);
 }

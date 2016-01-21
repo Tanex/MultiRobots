@@ -3,7 +3,6 @@ package nu.tanex.server.core;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.server.Program;
 import nu.tanex.server.aggregates.ClientList;
-import nu.tanex.server.aggregates.GameManagerList;
 import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.server.gui.IServerGuiController;
 import nu.tanex.server.gui.data.GameInfo;
@@ -65,7 +64,6 @@ public class ServerEngine {
      * */
     public void msgHandler(Client client, String msg) {
         Program.debug("ServerEngine: " + client + " sent " + msg);
-        // TODO: 2015-12-19 add msg handling
         if (RegexCheck.disconnectMsg(msg))
             clientDisconnected(client);
         else if(RegexCheck.queueForGame(msg)) {
@@ -138,7 +136,7 @@ public class ServerEngine {
     }
 
     public void exit() {
-        // TODO: 2016-01-19 add exit logic
+        // TODO: 2016-01-21 add exit logic
     }
 
     public void updateGui() {

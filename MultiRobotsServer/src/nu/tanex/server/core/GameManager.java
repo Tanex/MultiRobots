@@ -66,7 +66,7 @@ public class GameManager {
         this.game.createGameGrid();
         //Start the game
         for (int i = 0; i < game.getNumPlayers(); i++)
-            game.getPlayers().get(i).sendMessage("GameStart:" + i);
+            game.getPlayers().get(i).sendMessage("GameStart:" + i + ":" + game.getGridDimensions());
         sendPlayerList();
         game.getPlayers().stream().forEach(Client::sendPlayerInfo);
         this.gameRunning = true;
@@ -103,7 +103,6 @@ public class GameManager {
             game.getPlayers().add(new Client(client));
             ServerEngine.getInstance().clientDisconnected(client);
         }
-        // TODO: 2015-12-19 message handling
     }
     //endregion
 

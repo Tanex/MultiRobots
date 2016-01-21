@@ -137,8 +137,8 @@ public class Game {
     }
 
     public boolean moveGameObject(GameObject gameObject, Point point, boolean overWriteExisting){
-        if (point.getX() < 0 && point.getX() >= settings.getGridWidth() &&
-                point.getY() <0 && point.getY() >= settings.getGridHeight()){
+        if (point.getX() < 0 || point.getX() >= settings.getGridWidth() ||
+                point.getY() < 0 || point.getY() >= settings.getGridHeight()) {
             return false;
         }
         return placeGameObject(gameObject, point, overWriteExisting);
@@ -355,6 +355,10 @@ public class Game {
 
     public int getNumRubble() {
         return rubblePiles.size();
+    }
+
+    public String getGridDimensions() {
+        return settings.getGridWidth() + ":" + settings.getGridHeight();
     }
 
     //endregion

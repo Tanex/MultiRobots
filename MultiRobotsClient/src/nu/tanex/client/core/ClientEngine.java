@@ -1,6 +1,5 @@
 package nu.tanex.client.core;
 
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nu.tanex.client.Program;
 import nu.tanex.client.gui.IClientGuiController;
@@ -80,6 +79,8 @@ public class ClientEngine {
         else if(RegexCheck.GameStart(msg)){
             guiController.changeGuiState(GuiState.GameScreen);
             guiController.setPlayerNum(Integer.parseInt(msg.split(":")[1]));
+            guiController.setBoardWidth(Integer.parseInt(msg.split(":")[2]));
+            guiController.setBoardHeight(Integer.parseInt(msg.split(":")[3]));
         }
         else if(RegexCheck.PlayerList(msg)){
             guiController.updatePlayerList(msg.split(":")[1]);
