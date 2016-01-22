@@ -10,35 +10,57 @@ import java.nio.file.Paths;
  * @since 2015-12-23
  */
 public class ServerSettings {
-    private int numPlayersToStartGame = 2;
-    private int numGamesToRun = 1;
+    //region Member variables
+    private int numGamesToRun = Resources.NUM_GAMES_TO_RUN;
+    private int serverPort = Resources.SERVER_PORT;
+    //endregion
 
     //region Get-/setters
-    public int getNumPlayersToStartGame() {
-        return this.numPlayersToStartGame;
+    /**
+     * Get the port that the server should listen on.
+     *
+     * @return Port number.
+     */
+    public int getServerPort() {
+        return serverPort;
     }
 
-    public void setNumPlayersToStartGame(int numPlayersToStartGame) {
-        this.numPlayersToStartGame = numPlayersToStartGame;
+    /**
+     * Set what port the server should listen on.
+     *
+     * @param serverPort Port number.
+     */
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
     }
 
+    /**
+     * Get how many games the server should run simultaneously.
+     *
+     * @return amount of games to run.
+     */
     public int getNumGamesToRun() {
         return numGamesToRun;
     }
 
+    /**
+     * Set how many games the server should run simultaneously.
+     *
+     * @param numGamesToRun amount of games to run.
+     */
     public void setNumGamesToRun(int numGamesToRun) {
         this.numGamesToRun = numGamesToRun;
     }
 
     //endregion
 
-
+    //region Public methods
     /**
      * Save the all settings in this object to a .ini-file.
      *
      * @param filename Filename to save to without file extension.
      */
-    public void saveSettingsToFile(String filename){
+    public void saveSettingsToFile(String filename) {
         PrintWriter fout = null;
         try {
             fout = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./" + filename + ".ini"))), true);
@@ -60,15 +82,18 @@ public class ServerSettings {
      *
      * @param filename Name of file to load settings from without file extension.
      */
-    public void loadSettingsFromFile(String filename){
+    public void loadSettingsFromFile(String filename) {
         try {
+            File fin = new File(filename + ".ini");
+            if (!fin.isFile())
+                return;
             //Read entire settings file into a string
-            String file = new String(Files.readAllBytes(Paths.get("./" + filename + ".ini")));
+            String file = new String(Files.readAllBytes(Paths.get(fin.getPath())));
             //Remove all linefeed and newline characters
             file = file.replaceAll("[\\r\\n]{1,2}", "");
 
             String[] settings = file.split(";|GameSettings");
-            for(String str : settings){
+            for (String str : settings) {
                 //Skip if line is a comment
                 if (!str.startsWith("#")) {
                     String[] subStrings = str.split("=");
@@ -83,18 +108,27 @@ public class ServerSettings {
 
         }
     }
+    //endregion
 
+    //region Object overrides
     @Override
     public String toString() {
         return "#GameSettings\n" +
-                "numGamesToRun=" + numGamesToRun+ ";\n" +
-                "numPlayersToStartGame=" + numPlayersToStartGame+ ";";
+                "numGamesToRun=" + numGamesToRun + ";\n" +
+                "serverPort=" + serverPort + ";";
     }
+    //endregion
 
-    private void readSettingFromString(String field, String value){
-        switch (field){
-            case "numGamesToRun": numGamesToRun = Integer.parseInt(value); break;
-            case "numPlayersToStartGame": numPlayersToStartGame = Integer.parseInt(value); break;
+    //region Private methods
+    private void readSettingFromString(String field, String value) {
+        switch (field) {
+            case "numGamesToRun":
+                numGamesToRun = Integer.parseInt(value);
+                break;
+            case "serverPort":
+                serverPort = Integer.parseInt(value);
+                break;
         }
     }
+    //endregion
 }

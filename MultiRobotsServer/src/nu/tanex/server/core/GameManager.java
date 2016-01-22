@@ -26,6 +26,9 @@ public class GameManager {
     //endregion
 
     //region Constructors
+    /**
+     * Initializes a new GameManager with a Game object but doesn't start the game thread.
+     */
     public GameManager() {
         this.game = new Game();
         this.gameRunning = false;
@@ -33,23 +36,73 @@ public class GameManager {
     }
     //endregion
 
+    //region Getters
+
+    /**
+     * Gets whether this game is running.
+     *
+     * @return is the game running.
+     */
     public boolean isGameRunning() {
         return gameRunning;
     }
 
+    /**
+     * Gets the Game object that is managed.
+     *
+     * @return managed Game object.
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Gets the list of all the players that are queued for this managers game.
+     *
+     * @return list of queued players.
+     */
     public ClientList getPlayerQueue() {
         return playerQueue;
     }
 
-    public int numPlayersQueued(){
+    /**
+     * Gets how many players are queued for this managers game.
+     *
+     * @return how many players are queued.
+     */
+    public int numPlayersQueued() {
         return playerQueue.size();
     }
-    //region Public methods
 
+    /**
+     * Get a string representing all the settings for the game that is managed by this Game Manager.
+     *
+     * @return string with all settings.
+     */
+    public String getGameSettings() {
+        GameSettings gs = game.getSettings();
+        return "\tInitial Robots - " + gs.getNumInitialRobots() + ">" +
+                "\tInitial Rubble - " + gs.getNumInitialRubble() + ">" +
+                "\tAdditional Robots Per Level - " + gs.getNumAdditionalRobotsPerLevel() + ">" +
+                "\tRobot Collision Mode - " + gs.getRobotCollisions() + ">" +
+                "\tSafe Teleports Awarded - " + gs.getNumSafeTeleportsAwarded() + ">" +
+                "\tAttacks Awarded - " + gs.getNumAttacksAwarded() + ">" +
+                "\tAttack Mode - " + gs.getPlayerAttacks() + ">" +
+                "\tRobot AI Mode - " + gs.getRobotAiMode() + ">" +
+                "\tGrid Size - " + gs.getGridWidth() + " x " + gs.getGridHeight();
+    }
+
+    /**
+     * Gets how many players are currently queueing for the game.
+     *
+     * @return amount of players queueing.
+     */
+    public int getNumPlayersToStartGame() {
+        return game.getSettings().getNumPlayersToStartGame();
+    }
+    //endregion
+
+    //region Public methods
     /**
      * Starts a thread to handle playing the game with the given clients as players.
      *
@@ -104,6 +157,55 @@ public class GameManager {
             ServerEngine.getInstance().clientDisconnected(client);
         }
     }
+
+    /**
+     * Tell all the players in the game that they've lost.
+     */
+    public void playersLost() {
+        sendMsgToAllPlayers("PlayersLost");
+    }
+
+    /**
+     * Update the settings for the managed game if it isn't running.
+     *
+     * @param newSettings new settings for managed game.
+     */
+    public void updateGameSettings(SettingsInfo newSettings) {
+        if (gameRunning)
+            return;
+        game.getSettings().setNumInitialRobots(newSettings.numInitialRobots);
+        game.getSettings().setNumAdditionalRobotsPerLevel(newSettings.numAdditionalRobotsPerLevel);
+        game.getSettings().setNumInitialRubble(newSettings.numInitialRubble);
+        game.getSettings().setRobotCollisions(newSettings.robotCollisions);
+        game.getSettings().setNumSafeTeleportsAwarded(newSettings.numSafeTeleportsAwarded);
+        game.getSettings().setNumRandomTeleportsAwarded(newSettings.numRandomTeleportsAwarded);
+        game.getSettings().setNumAttacksAwarded(newSettings.numAttacksAwarded);
+        game.getSettings().setPlayerAttacks(newSettings.playerAttacks);
+        game.getSettings().setRobotAiMode(newSettings.robotAiMode);
+        game.getSettings().setGridWidth(newSettings.gridWidth);
+        game.getSettings().setGridHeight(newSettings.gridHeight);
+        game.getSettings().setNumPlayersToStartGame(newSettings.numPlayersToStartGame);
+    }
+
+    /**
+     * Kick a player that is either queueing or playing the game that is managed.
+     *
+     * @param player Player to kick.
+     */
+    public void kickPlayer(PlayerInfo player){
+        Client playerToKick = null;
+        if (isGameRunning())
+            playerToKick = game.getPlayers().find(p -> p.getPlayerIP().equals(player.getIPAddress()) && p.getName().equals(player.getName()));
+        else
+            playerToKick = playerQueue.find(p -> p.getPlayerIP().equals(player.getIPAddress()) && p.getName().equals(player.getName()));
+
+        if (playerToKick != null) {
+            playerToKick.sendMessage("Kicked");
+            msgHandler(playerToKick, "LeaveGame");
+            if (game.getPlayers().stream().allMatch(Client::isAlive))
+                threadInstance.interrupt();
+        }
+    }
     //endregion
 
     //region Private methods
@@ -125,10 +227,6 @@ public class GameManager {
         }
 
         game.getPlayers().stream().filter(Client::isAwaitingAction).forEach(Client::blockActions);
-    }
-
-    public void playersLost() {
-        sendMsgToAllPlayers("PlayersLost");
     }
 
     private void sendPlayerList(){
@@ -159,6 +257,10 @@ public class GameManager {
     //endregion
 
     //region Threading
+
+    /**
+     * Function that should be passed to a Thread object and ran to manage a Game instance that players can play.
+     */
     public void threadFunc() {
         while (gameRunning) {
             GameState gameState;
@@ -184,46 +286,6 @@ public class GameManager {
             }
         }
         ServerEngine.getInstance().returnClientsToServer(game.getPlayers());
-    }
-
-    public String getGameSettings() {
-        GameSettings gs = game.getSettings();
-        return "\tInitial Robots - " + gs.getNumInitialRobots() + ">" +
-                "\tInitial Rubble - " + gs.getNumInitialRubble() + ">" +
-                "\tAdditional Robots Per Level - " + gs.getNumAdditionalRobotsPerLevel() + ">" +
-                "\tRobot Collision Mode - " + gs.getRobotCollisions() + ">" +
-                "\tSafe Teleports Awarded - " + gs.getNumSafeTeleportsAwarded() + ">" +
-                "\tAttacks Awarded - " + gs.getNumAttacksAwarded() + ">" +
-                "\tAttack Mode - " + gs.getPlayerAttacks() + ">" +
-                "\tRobot AI Mode - " + gs.getRobotAiMode() + ">" +
-                "\tGrid Size - " + gs.getGridWidth() + " x " + gs.getGridHeight();
-    }
-
-    public void updateGameSettings(SettingsInfo newSettings) {
-        game.getSettings().setNumInitialRobots(newSettings.numInitialRobots);
-        game.getSettings().setNumAdditionalRobotsPerLevel(newSettings.numAdditionalRobotsPerLevel);
-        game.getSettings().setNumInitialRubble(newSettings.numInitialRubble);
-        game.getSettings().setRobotCollisions(newSettings.robotCollisions);
-        game.getSettings().setNumSafeTeleportsAwarded(newSettings.numSafeTeleportsAwarded);
-        game.getSettings().setNumRandomTeleportsAwarded(newSettings.numRandomTeleportsAwarded);
-        game.getSettings().setNumAttacksAwarded(newSettings.numAttacksAwarded);
-        game.getSettings().setPlayerAttacks(newSettings.playerAttacks);
-        game.getSettings().setRobotAiMode(newSettings.robotAiMode);
-        game.getSettings().setGridWidth(newSettings.gridWidth);
-        game.getSettings().setGridHeight(newSettings.gridHeight);
-    }
-
-    public void kickPlayer(PlayerInfo player){
-        Client playerToKick = null;
-        if (isGameRunning())
-            playerToKick = game.getPlayers().find(p -> p.getPlayerIP().equals(player.getIPAddress()) && p.getName().equals(player.getName()));
-        else
-            playerToKick = playerQueue.find(p -> p.getPlayerIP().equals(player.getIPAddress()) && p.getName().equals(player.getName()));
-
-        if (playerToKick != null) {
-            playerToKick.sendMessage("Kicked");
-            msgHandler(playerToKick, "LeaveGame");
-        }
     }
     //endregion
 }

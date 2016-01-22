@@ -18,6 +18,7 @@ import nu.tanex.client.resources.GuiState;
 import nu.tanex.client.resources.RegexCheck;
 import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.core.resources.PlayerAction;
+import nu.tanex.core.resources.Resources;
 
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -25,19 +26,19 @@ import java.util.Random;
 
 /**
  * @author Victor Hedlund
- * @version 0.1
+ * @version 0.5
  * @since 2016-01-05
  */
 public class ClientController implements IClientGuiController {
-    private static final int CELL_SIZE = 15;
 
+    //region Member variables
     private int playerNum = -1;
     private int playerX = -1;
     private int playerY = -1;
     private int xOffset = 0;
     private int yOffset = 0;
-
     private HashMap<Integer, Color> playerColors = new HashMap<>();
+    //endregion
 
     //region GUI controls
     public Canvas playerListCanvas;
@@ -79,17 +80,31 @@ public class ClientController implements IClientGuiController {
 
     //region Interface IClientGuiController
 
-
+    /**
+     * Tells the gui what height the game board has so that it can be used to center it on screen.
+     *
+     * @param height Number of squares high.
+     */
     @Override
     public void setBoardHeight(int height) {
-        yOffset = (int)gameCanvas.getHeight() / 2 - height * CELL_SIZE / 2;
+        yOffset = (int)gameCanvas.getHeight() / 2 - height * Resources.CELL_SIZE / 2;
     }
 
+    /**
+     * Tells the gui what width the game board has so that it can be used to center it on screen.
+     *
+     * @param width Number of squares wide.
+     */
     @Override
     public void setBoardWidth(int width) {
-        xOffset = (int)gameCanvas.getWidth() / 2 - width * CELL_SIZE / 2;
+        xOffset = (int)gameCanvas.getWidth() / 2 - width * Resources.CELL_SIZE / 2;
     }
 
+    /**
+     * Updates the game board to display the current game state.
+     *
+     * @param gameState New game state.
+     */
     @Override
     public void updateGameState(String gameState) {
         Platform.runLater(() -> {
@@ -97,11 +112,21 @@ public class ClientController implements IClientGuiController {
         });
     }
 
+    /**
+     * Controls whether the player can give input or not.
+     *
+     * @param disabled Is the input disabled.
+     */
     @Override
     public void setInputDisabled(boolean disabled) {
         Platform.runLater(() -> playerControls.setDisable(disabled));
     }
 
+    /**
+     * Sets up the gui with login information if there was any stored to disk.
+     *
+     * @param info Loaded login info.
+     */
     @Override
     public void loadConnectScreenInfo(ConnectScreenInfo info) {
         Platform.runLater(() -> {
@@ -113,18 +138,24 @@ public class ClientController implements IClientGuiController {
         });
     }
 
+    /**
+     * Updates the list of all games available to queue for.
+     *
+     * @param gameList String with a list of all available games.
+     */
     @Override
     public void updateGamesList(String gameList) {
         Platform.runLater(() -> {
             String games[] = gameList.split("@");
-            GameInfo selected = gamesList.getSelectionModel().getSelectedItem();
 
+            //Perform all the hacks
+            GameInfo selected = gamesList.getSelectionModel().getSelectedItem();
             gamesList.getItems().clear();
             for (String gameInfo : games) {
                 gamesList.getItems().add(new GameInfo(gameInfo));
             }
-
             gamesList.getSelectionModel().select(selected);
+
             GameInfo selectedGame = gamesList.getSelectionModel().getSelectedItem();
             if (selectedGame != null)
                 gameInfoLabel.setText(selectedGame.getGameInfoString());
@@ -133,6 +164,11 @@ public class ClientController implements IClientGuiController {
         });
     }
 
+    /**
+     * Called in order to change the view being displayed to the user.
+     *
+     * @param newState The view to go to.
+     */
     @Override
     public void changeGuiState(GuiState newState) {
         Platform.runLater(() -> {
@@ -159,6 +195,11 @@ public class ClientController implements IClientGuiController {
         });
     }
 
+    /**
+     * Updates the list of all the players that are in the game.
+     *
+     * @param playerList String with list of all players in the game.
+     */
     @Override
     public void updatePlayerList(String playerList) {
         Platform.runLater(() -> {
@@ -168,36 +209,11 @@ public class ClientController implements IClientGuiController {
         });
     }
 
-    private void drawPlayerList(GraphicsContext gc, String playerList) {
-        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-
-        String players[] = playerList.split("@");
-        gc.setStroke(Color.BLACK);
-        for (int i = 0; i < players.length; i++) {
-            //<playerNum>,<playerName>,<playerStatus>@
-            String info[] = players[i].split(",");
-            gc.setFill(playerColors.get(Integer.parseInt(info[0])));
-            gc.fillOval(5, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            gc.strokeOval(5, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            gc.setFill(Color.BLACK);
-            gc.fillText(info[1] +  " - " + info[2], 10 + CELL_SIZE, (i + 1) * CELL_SIZE );
-        }
-    }
-
-    private void generatePlayerColors(String playerList) {
-        String players[] = playerList.split("@");
-        for (String player : players) {
-            //<playerNum>,<playerName>,<playerStatus>@
-            String info[] = player.split(",");
-            Color newColor;
-            Random rng = new Random(System.currentTimeMillis());
-            do {
-                newColor = Color.rgb(Math.abs(rng.nextInt() % 256), Math.abs(rng.nextInt() % 256), Math.abs(rng.nextInt() % 256));
-            } while (newColor.equals(Color.BLACK) || playerColors.containsValue(newColor));
-            playerColors.put(Integer.parseInt(info[0]), newColor);
-        }
-    }
-
+    /**
+     * Updates the player info (all the players stats being displayed)
+     *
+     * @param playerInfo String with all the new stats.
+     */
     @Override
     public void updatePlayerInfo(String playerInfo) {
         Platform.runLater(() -> {
@@ -208,6 +224,12 @@ public class ClientController implements IClientGuiController {
                                     "Score: " + info[3]);
         });
     }
+
+    /**
+     * Handles player keyboard input.
+     *
+     * @param code Key that was pressed.
+     */
     @Override
     public void keyPressed(KeyCode code){
         if (!GameGroup.isVisible() || playerControls.isDisabled())
@@ -229,6 +251,32 @@ public class ClientController implements IClientGuiController {
         }
     }
 
+    /**
+     * Displays a popup alert showing the highscores.
+     *
+     * @param highScoreList String with list of all high scores to be displayed.
+     */
+    @Override
+    public void showHighScoreList(String highScoreList){
+        Platform.runLater(() -> {
+            Alert highScoreAlert = new Alert(Alert.AlertType.NONE);
+            highScoreAlert.setTitle("High scores");
+            highScoreAlert.setHeaderText("Top scores of all time:");
+            highScoreAlert.setContentText(highScoreList.replace("<", "\n"));
+            highScoreAlert.getButtonTypes().setAll(ButtonType.OK);
+            highScoreAlert.show();
+        });
+    }
+
+    /**
+     * Sets the players Id in the gui.
+     * <p>
+     * This information is used later when parsing the game state in order to be able
+     * to store away the players X and Y coordinates so that they can be used when the
+     * player clicks the game board with their mouse.
+     *
+     * @param playerNum The players Id number.
+     */
     @Override
     public void setPlayerNum(int playerNum) {
         this.playerNum = playerNum;
@@ -236,6 +284,11 @@ public class ClientController implements IClientGuiController {
     //endregion
 
     //region Button-handlers
+    /**
+     * Handles all player game input.
+     *
+     * @param actionEvent event.
+     */
     public void playerInput(ActionEvent actionEvent) {
         PlayerAction playerAction = null;
         if (actionEvent.getSource().equals(buttonMoveUpLeft))
@@ -266,6 +319,11 @@ public class ClientController implements IClientGuiController {
         ClientEngine.getInstance().performAction(playerAction);
     }
 
+    /**
+     * Handles the up-down buttons on the connect screen.
+     *
+     * @param actionEvent event.
+     */
     public void nickButtons(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(nick1Up))
             changeLabelText(+1, nick1);
@@ -281,6 +339,11 @@ public class ClientController implements IClientGuiController {
             changeLabelText(-1, nick3);
     }
 
+    /**
+     * Handles the buttons on the game queueing screen.
+     *
+     * @param actionEvent event.
+     */
     public void gamesQueueButtons(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(queueForGame)) {
             GameInfo selectedGame = gamesList.getSelectionModel().getSelectedItem();
@@ -292,7 +355,8 @@ public class ClientController implements IClientGuiController {
             queueForGame.setDisable(true);
             leaveQueue.setDisable(false);
             gamesList.setDisable(true);
-        } else if (actionEvent.getSource().equals(leaveQueue)) {
+        }
+        else if (actionEvent.getSource().equals(leaveQueue)) {
             ClientEngine.getInstance().leaveGame();
             waitingForPlayersLabel.setVisible(false);
             queueForGame.setDisable(false);
@@ -301,6 +365,11 @@ public class ClientController implements IClientGuiController {
         }
     }
 
+    /**
+     * Fired when the user clicks the connect button on the connect screen.
+     *
+     * @param actionEvent event.
+     */
     public void serverConnect(ActionEvent actionEvent) {
         if (!RegexCheck.ValidIpAndPort(ipText.getText())){
             (new Alert(Alert.AlertType.ERROR, "Invalid IP entered.\nPlease enter an IP following this formatting:\n192.168.1.2:2000")).showAndWait();
@@ -319,9 +388,14 @@ public class ClientController implements IClientGuiController {
         ClientEngine.getInstance().loginToServer(nick1.getText(), nick2.getText(), nick3.getText(), ipText.getText());
     }
 
+    /**
+     * Triggered when the user clicks the game board so that the players client can be moved.
+     *
+     * @param mouseEvent event.
+     */
     public void gameBoardClicked(MouseEvent mouseEvent) {
-        int xCoordClicked = (int)(mouseEvent.getX() / CELL_SIZE);
-        int yCoordClicked = (int)(mouseEvent.getY() / CELL_SIZE);
+        int xCoordClicked = (int)(mouseEvent.getX() / Resources.CELL_SIZE);
+        int yCoordClicked = (int)(mouseEvent.getY() / Resources.CELL_SIZE);
         Program.debug("Mouse clicked game board at X: " + xCoordClicked + ", Y: " + yCoordClicked);
         int xDist = xCoordClicked - playerX;
         int yDist = yCoordClicked - playerY;
@@ -342,16 +416,26 @@ public class ClientController implements IClientGuiController {
             case 10: buttonMoveDownRight.fire(); break;
         }
     }
-    //endregion
 
+    /**
+     * Handles when either of the leave game buttons are pressed.
+     *
+     * @param actionEvent event.
+     */
     public void leaveGameHandler(ActionEvent actionEvent) {
         ClientEngine.getInstance().leaveGame();
         //changeGuiState();
     }
 
+    /**
+     * Triggered when the user clicks on the games list to select a game to queue for.
+     *
+     * @param event event.
+     */
     public void gamesListClicked(Event event) {
         if (!event.getSource().equals(gamesList))
             return;
+
         GameInfo selectedGame = gamesList.getSelectionModel().getSelectedItem();
         if (selectedGame == null)
             return;
@@ -364,6 +448,7 @@ public class ClientController implements IClientGuiController {
             queueForGame.setDisable(false);
         }
     }
+    //endregion
 
     //region Private methods
     private void changeLabelText(int change, Label label){
@@ -387,6 +472,7 @@ public class ClientController implements IClientGuiController {
                 x = 0;
             }
             else {
+                //Keep reading the entire numeric ID of the player
                 if (gameState.charAt(i) == '[') {
                     String buf = "";
                     i++;
@@ -411,10 +497,10 @@ public class ClientController implements IClientGuiController {
                             break;
                     }
                 }
-                gc.strokeRect(x++ * CELL_SIZE + xOffset,    //top left X
-                              y * CELL_SIZE + yOffset,      //top left Y
-                              CELL_SIZE,                    //width
-                              CELL_SIZE);                   //height
+                gc.strokeRect(x++ * Resources.CELL_SIZE + xOffset,    //top left X
+                              y * Resources.CELL_SIZE + yOffset,      //top left Y
+                              Resources.CELL_SIZE,                    //width
+                              Resources.CELL_SIZE);                   //height
             }
         }
     }
@@ -423,50 +509,81 @@ public class ClientController implements IClientGuiController {
         gc.setFill(Color.BLACK);
         gc.setLineWidth(3.0);
         //diagonal 1
-        gc.strokeLine(x * CELL_SIZE + xOffset,              //top left X
-                      y * CELL_SIZE + yOffset,              //top left Y
-                      x * CELL_SIZE + CELL_SIZE + xOffset,  //bottom right X
-                      y * CELL_SIZE + CELL_SIZE + yOffset); //bottom right Y
+        gc.strokeLine(x * Resources.CELL_SIZE + xOffset,              //top left X
+                      y * Resources.CELL_SIZE + yOffset,              //top left Y
+                      x * Resources.CELL_SIZE + Resources.CELL_SIZE + xOffset,  //bottom right X
+                      y * Resources.CELL_SIZE + Resources.CELL_SIZE + yOffset); //bottom right Y
         //diagonal 2
-        gc.strokeLine(x * CELL_SIZE + xOffset,              //bottom left X
-                      y * CELL_SIZE + CELL_SIZE + yOffset,  //bottom left Y
-                      x * CELL_SIZE + CELL_SIZE + xOffset,  //top right X
-                      y * CELL_SIZE + yOffset);             //top right Y
+        gc.strokeLine(x * Resources.CELL_SIZE + xOffset,              //bottom left X
+                      y * Resources.CELL_SIZE + Resources.CELL_SIZE + yOffset,  //bottom left Y
+                      x * Resources.CELL_SIZE + Resources.CELL_SIZE + xOffset,  //top right X
+                      y * Resources.CELL_SIZE + yOffset);             //top right Y
         gc.setLineWidth(1.0);
     }
 
     private void renderRobot(GraphicsContext gc, int x, int y){
         gc.setFill(Color.RED);
         //color fill
-        gc.fillPolygon(new double[]{ x * CELL_SIZE + xOffset,                   //top left X
-                                     x * CELL_SIZE + CELL_SIZE + xOffset,       //top right X
-                                     x * CELL_SIZE + CELL_SIZE / 2 + xOffset},  //bottom center X
-                       new double[]{ y * CELL_SIZE + yOffset,                   //top left Y
-                                     y * CELL_SIZE + yOffset,                   //top right Y
-                                     y * CELL_SIZE + CELL_SIZE  + yOffset},     //bottom center Y
+        gc.fillPolygon(new double[]{ x * Resources.CELL_SIZE + xOffset,                   //top left X
+                                     x * Resources.CELL_SIZE + Resources.CELL_SIZE + xOffset,       //top right X
+                                     x * Resources.CELL_SIZE + Resources.CELL_SIZE / 2 + xOffset},  //bottom center X
+                       new double[]{ y * Resources.CELL_SIZE + yOffset,                   //top left Y
+                                     y * Resources.CELL_SIZE + yOffset,                   //top right Y
+                                     y * Resources.CELL_SIZE + Resources.CELL_SIZE  + yOffset},     //bottom center Y
                        3);                                                      //num vertices
         //outline
-        gc.strokePolygon(new double[]{ x * CELL_SIZE + xOffset,                 //top left X
-                                       x * CELL_SIZE + CELL_SIZE + xOffset,     //top right X
-                                       x * CELL_SIZE + CELL_SIZE / 2 + xOffset},//bottom center X
-                         new double[]{ y * CELL_SIZE + yOffset,                 //top left Y
-                                       y * CELL_SIZE + yOffset,                 //top right Y
-                                       y * CELL_SIZE + CELL_SIZE  + yOffset},   //bottom center Y
+        gc.strokePolygon(new double[]{ x * Resources.CELL_SIZE + xOffset,                 //top left X
+                                       x * Resources.CELL_SIZE + Resources.CELL_SIZE + xOffset,     //top right X
+                                       x * Resources.CELL_SIZE + Resources.CELL_SIZE / 2 + xOffset},//bottom center X
+                         new double[]{ y * Resources.CELL_SIZE + yOffset,                 //top left Y
+                                       y * Resources.CELL_SIZE + yOffset,                 //top right Y
+                                       y * Resources.CELL_SIZE + Resources.CELL_SIZE  + yOffset},   //bottom center Y
                          3);                                                    //num vertices
     }
 
     private void renderPlayer(GraphicsContext gc, int x, int y, Color playerColor){
         gc.setFill(playerColor);
         //color fill
-        gc.fillOval(x * CELL_SIZE + xOffset,    //top left X
-                    y * CELL_SIZE + yOffset,    //top left Y
-                    CELL_SIZE,                  //X-radius
-                    CELL_SIZE);                 //Y-radius
+        gc.fillOval(x * Resources.CELL_SIZE + xOffset,    //top left X
+                    y * Resources.CELL_SIZE + yOffset,    //top left Y
+                    Resources.CELL_SIZE,                  //X-radius
+                    Resources.CELL_SIZE);                 //Y-radius
         //outline
-        gc.strokeOval(x * CELL_SIZE + xOffset,  //top left X
-                      y * CELL_SIZE + yOffset,  //top left Y
-                      CELL_SIZE,                //X-radius
-                      CELL_SIZE);               //Y-radius
+        gc.strokeOval(x * Resources.CELL_SIZE + xOffset,  //top left X
+                      y * Resources.CELL_SIZE + yOffset,  //top left Y
+                      Resources.CELL_SIZE,                //X-radius
+                      Resources.CELL_SIZE);               //Y-radius
+    }
+
+
+    private void drawPlayerList(GraphicsContext gc, String playerList) {
+        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
+        String players[] = playerList.split("@");
+        gc.setStroke(Color.BLACK);
+        for (int i = 0; i < players.length; i++) {
+            //<playerNum>,<playerName>,<playerStatus>@
+            String info[] = players[i].split(",");
+            gc.setFill(playerColors.get(Integer.parseInt(info[0])));
+            gc.fillOval(5, i * Resources.CELL_SIZE, Resources.CELL_SIZE, Resources.CELL_SIZE);
+            gc.strokeOval(5, i * Resources.CELL_SIZE, Resources.CELL_SIZE, Resources.CELL_SIZE);
+            gc.setFill(Color.BLACK);
+            gc.fillText(info[1] +  " - " + info[2], 10 + Resources.CELL_SIZE, (i + 1) * Resources.CELL_SIZE );
+        }
+    }
+
+    private void generatePlayerColors(String playerList) {
+        String players[] = playerList.split("@");
+        for (String player : players) {
+            //<playerNum>,<playerName>,<playerStatus>@
+            String info[] = player.split(",");
+            Color newColor;
+            Random rng = new Random(System.currentTimeMillis());
+            do {
+                newColor = Color.rgb(Math.abs(rng.nextInt() % 256), Math.abs(rng.nextInt() % 256), Math.abs(rng.nextInt() % 256));
+            } while (newColor.equals(Color.BLACK) || playerColors.containsValue(newColor));
+            playerColors.put(Integer.parseInt(info[0]), newColor);
+        }
     }
     //endregion
 }

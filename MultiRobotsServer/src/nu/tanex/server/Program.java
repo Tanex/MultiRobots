@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nu.tanex.core.exceptions.TcpEngineException;
+import nu.tanex.core.resources.Resources;
 import nu.tanex.server.core.ServerEngine;
 import nu.tanex.server.core.ServerThread;
 import nu.tanex.server.io.ServerTcpEngine;
@@ -18,8 +19,6 @@ import nu.tanex.server.io.ServerTcpEngine;
  * @since       2015-11-26
  */
 public class Program extends Application {
-    private static final boolean DO_DEBUG_PRINTOUT = true;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/ServerFormMain.fxml"));
@@ -35,7 +34,7 @@ public class Program extends Application {
      * */
     public static void main(String[] args) throws TcpEngineException {
         ServerEngine.getInstance().setTcpEngine(new ServerTcpEngine());
-        ServerEngine.getInstance().setServerThread(new ServerThread("serverDefault"));
+        ServerEngine.getInstance().setServerThread(new ServerThread(Resources.SERVER_DEFAULT_CONFIG));
 
         launch(args);
 
@@ -49,10 +48,11 @@ public class Program extends Application {
      * Gives printout in the format:
      * Debug - <calling class>: <message>
      *
+     * @see Resources
      * @param msg Message to be printed.
      */
     public static void debug(String msg){
-        if (!DO_DEBUG_PRINTOUT)
+        if (!Resources.DO_DEBUG_PRINTOUT)
             return;
         String caller = new Exception().getStackTrace()[1].getClassName();
         System.out.println("Debug - " + caller + ": " + msg);

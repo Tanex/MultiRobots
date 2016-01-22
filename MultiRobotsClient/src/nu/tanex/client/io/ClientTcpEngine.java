@@ -9,7 +9,7 @@ import java.net.Socket;
 
 /**
  * @author Victor Hedlund
- * @version 0.1
+ * @version 0.2
  * @since 2015-12-30
  */
 public class ClientTcpEngine extends Thread {
@@ -21,13 +21,23 @@ public class ClientTcpEngine extends Thread {
     private boolean alive;
     //endregion
 
-    public ClientTcpEngine() {
-    }
-
-    public synchronized void sendMsg(String msg){
+    //region Public methods
+    /**
+     * Starts a new thread that will send the message to the server.
+     *
+     * @param msg Message to send.
+     */
+    public synchronized void sendMsg(String msg) {
         (new Thread(() -> this.outStream.println(msg))).start();
     }
 
+    /**
+     * Connects to a server over the internet.
+     *
+     * @param address IPAddress of the server.
+     * @param port    Port that the server is listening on.
+     * @throws TcpEngineException Thrown if a connection cannot be formed.
+     */
     public void connectToServer(InetAddress address, int port) throws TcpEngineException {
         try {
             socket = new Socket(address, port);
@@ -52,7 +62,10 @@ public class ClientTcpEngine extends Thread {
         }
     }
 
-    public void disconnectFromServer(){
+    /**
+     * Disconnects from the server.
+     */
+    public void disconnectFromServer() {
         outStream.println("Disconnect");
         try {
             socket.close();
@@ -60,7 +73,9 @@ public class ClientTcpEngine extends Thread {
             e.printStackTrace();
         }
     }
+    //endregion
 
+    //region Superclass Thread
     @Override
     public void run() {
         try {
@@ -79,4 +94,5 @@ public class ClientTcpEngine extends Thread {
             }
         }
     }
+    //endregion
 }

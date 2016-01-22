@@ -9,6 +9,7 @@ import nu.tanex.core.resources.CollisionOutcome;
  * @since 2015-12-21
  */
 public class CollisionBehaviour {
+    //region Memeber variables
     private static CollisionBehaviour robotCollisionBehaviour = null;
     private static CollisionBehaviour playerCollisionBehaviour = null;
     private static CollisionBehaviour rubbleCollisionBehaviour = null;
@@ -18,9 +19,10 @@ public class CollisionBehaviour {
     private CollisionOutcome playerCollision = null;
     private CollisionOutcome robotCollision = null;
     private CollisionOutcome rubbleCollision = null;
+    //endregion
 
-    public CollisionBehaviour(){
-
+    //region Constructors
+    public CollisionBehaviour() {
     }
 
     public CollisionBehaviour(CollisionObjectType objectType, CollisionOutcome playerCollision, CollisionOutcome robotCollision, CollisionOutcome rubbleCollision) {
@@ -29,17 +31,38 @@ public class CollisionBehaviour {
         this.robotCollision = robotCollision;
         this.rubbleCollision = rubbleCollision;
     }
+    //endregion
 
-    public CollisionOutcome collideWith(GameObject object){
+    //region Public methods
+    /**
+     * Collides with the other GameObject and calculates the outcome of said collision.
+     *
+     * @see CollisionOutcome
+     * @param object Object to collide with.
+     * @return The outcome of the Collision.
+     */
+    public CollisionOutcome collideWith(GameObject object) {
         switch (object.getCollisionBehaviour().objectType) {
-            case Player: return playerCollision;
-            case Robot: return robotCollision;
-            case Rubble: return rubbleCollision;
+            case Player:
+                return playerCollision;
+            case Robot:
+                return robotCollision;
+            case Rubble:
+                return rubbleCollision;
         }
         return CollisionOutcome.NA;
     }
+    //endregion
 
-    public static CollisionBehaviour getPlayerCollisionBehaviour(){
+    //region Factories
+    /**
+     * Factory function for getting a players collision behaviour.
+     * <p>
+     * Will return a static object so that it can be reused for all objects that need Player collision behaviour.
+     *
+     * @return CollisionBehaviour object setup for a Player-agent.
+     */
+    public static CollisionBehaviour getPlayerCollisionBehaviour() {
         if (playerCollisionBehaviour == null)
             playerCollisionBehaviour = new CollisionBehaviour(
                     CollisionObjectType.Player,
@@ -49,8 +72,15 @@ public class CollisionBehaviour {
 
         return playerCollisionBehaviour;
     }
-
-    public static CollisionBehaviour getRobotCollisionBehaviour(){
+    /**
+     *
+     * Factory function for getting a robots collision behaviour.
+     * <p>
+     * Will return a static object so that it can be reused for all objects that need Robot collision behaviour.
+     *
+     * @return CollisionBehaviour object setup for a Robot-agent.
+     */
+    public static CollisionBehaviour getRobotCollisionBehaviour() {
         if (robotCollisionBehaviour == null)
             robotCollisionBehaviour = new CollisionBehaviour(
                     CollisionObjectType.Robot,
@@ -61,7 +91,14 @@ public class CollisionBehaviour {
         return robotCollisionBehaviour;
     }
 
-    public static CollisionBehaviour getRubbleCollisionBehaviour(){
+    /**
+     * Factory function for getting a rubbles collision behaviour.
+     * <p>
+     * Will return a static object so that it can be reused for all objects that need Rubble collision behaviour.
+     *
+     * @return CollisionBehaviour object setup for a Rubble-agent.
+     */
+    public static CollisionBehaviour getRubbleCollisionBehaviour() {
         if (rubbleCollisionBehaviour == null)
             rubbleCollisionBehaviour = new CollisionBehaviour(
                     CollisionObjectType.Rubble,
@@ -71,4 +108,5 @@ public class CollisionBehaviour {
 
         return rubbleCollisionBehaviour;
     }
+    //endregion
 }

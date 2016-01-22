@@ -40,4 +40,11 @@ public class PlayerInfo {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PlayerInfo))
+            return false;
+        return ((PlayerInfo)obj).IPAddress.equals(this.IPAddress) && ((PlayerInfo)obj).name.equals(this.name);
+    }
 }

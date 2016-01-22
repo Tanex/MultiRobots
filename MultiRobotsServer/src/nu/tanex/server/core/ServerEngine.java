@@ -1,6 +1,7 @@
 package nu.tanex.server.core;
 
 import nu.tanex.core.exceptions.TcpEngineException;
+import nu.tanex.core.resources.Resources;
 import nu.tanex.server.Program;
 import nu.tanex.server.aggregates.ClientList;
 import nu.tanex.server.exceptions.ServerThreadException;
@@ -39,15 +40,59 @@ public class ServerEngine {
     private IServerGuiController guiController;
     //endregion
 
-    //region Get-/setters
+    //region Setters
+
+    /**
+     * Set the tcp engine that the server should use for communication with the clients.
+     * <p>
+     * if server settings are loaded this will start the server so that it can listen for clients.
+     *
+     * @see ServerTcpEngine
+     * @param tcpEngine tcp engine to use.
+     */
     public void setTcpEngine(ServerTcpEngine tcpEngine){
         this.tcpEngine = tcpEngine;
+
+        if (serverThread != null){
+            try {
+                tcpEngine.startServer(serverThread.getSettings().getServerPort());
+            } catch (TcpEngineException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+    /**
+     * Set the server thread that the server should use for handling all running games.
+     * <p>
+     * If the tcp engines listen thread hasn't been started yet it is by this.
+     * If the UI is loaded it is updated.
+     *
+     * @see ServerThread
+     * @param serverThread server thread to use
+     */
     public void setServerThread(ServerThread serverThread) {
         this.serverThread = serverThread;
+        if (!tcpEngine.isAlive()){
+            try {
+                tcpEngine.startServer(serverThread.getSettings().getServerPort());
+            } catch (TcpEngineException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (guiController != null)
             updateGui();
     }
+
+    /**
+     * Set the gui controller that the server should use.
+     * <p>
+     * If the ServerThread is already loaded the UI is updated.
+     *
+     * @see IServerGuiController
+     * @param guiController controller to use
+     */
     public void setGuiController(IServerGuiController guiController) {
         this.guiController = guiController;
         if (serverThread != null)
@@ -118,14 +163,27 @@ public class ServerEngine {
         connectedClients.remove(client);
     }
 
+    /**
+     * Returns all the client to the server (lobby) by calling returnClientToServer for every client
+     *
+     * @param clients clients that should be returned to the server (lobby)
+     */
     public void returnClientsToServer(ClientList clients){
         clients.forEach(this::returnClientToServer);
+        clients.forEach(c -> c.sendMessage(serverThread.getHighScores().toString()));
         clients.clear();
         updateGui();
     }
 
+    /**
+     * Returns all the client to the server (lobby) by redirecting their message handlers to ServerEngine and adding
+     * them to the connectedClients list.
+     *
+     * @param client client to return to the server (lobby)
+     */
     public void returnClientToServer(Client client){
         if (!client.isDummy()) {
+            serverThread.getHighScores().submitScore(client);
             client.setMsgHandler(this::msgHandler);
             if (!connectedClients.contains(client) && !client.isDummy())
                 this.connectedClients.add(client);
@@ -135,18 +193,38 @@ public class ServerEngine {
         connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
 
+    /**
+     * Called when the program is closed to properly close everything.
+     */
     public void exit() {
         // TODO: 2016-01-21 add exit logic
+        serverThread.getHighScores().saveToFile(Resources.HIGH_SCORE_FILE);
     }
 
+    /**
+     * Updates all the information in the GUI.
+     */
     public void updateGui() {
         guiController.updateGameList(serverThread.getGameManagers(), connectedClients.size());
     }
 
+    /**
+     * Sends settings information to the proper GameManager so that it can update its games settings.
+     *
+     * @param game game that should get new settings.
+     * @param newSettings new settings to be applied.
+     */
     public void updateGameSetting(GameInfo game, SettingsInfo newSettings) {
         serverThread.getGameManagers().get(game.getGameNum()).updateGameSettings(newSettings);
+        updateGui();
     }
 
+    /**
+     * Kicks a player from the that it is playing or queueing for.
+     *
+     * @param player player to kick.
+     * @param game game that the player is in
+     */
     public void kickPlayer(PlayerInfo player, GameInfo game) {
         Program.debug("Kicking player " + player);
         serverThread.getGameManagers().get(game.getGameNum()).kickPlayer(player);

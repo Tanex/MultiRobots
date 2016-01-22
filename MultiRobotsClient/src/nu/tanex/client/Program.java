@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import nu.tanex.client.core.ClientEngine;
 import nu.tanex.client.io.ClientTcpEngine;
+import nu.tanex.core.resources.Resources;
 
 import java.io.IOException;
 
@@ -19,7 +20,6 @@ import java.io.IOException;
  * @since       2015-11-26
  */
 public class Program extends Application {
-    private static final boolean DO_DEBUG_PRINTOUT = true;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -52,10 +52,11 @@ public class Program extends Application {
      * Gives printout in the format:
      * Debug - <calling class>: <message>
      *
+     * @see Resources
      * @param msg Message to be printed.
      */
     public static void debug(String msg){
-        if (!DO_DEBUG_PRINTOUT)
+        if (!Resources.DO_DEBUG_PRINTOUT)
             return;
         String caller = new Exception().getStackTrace()[1].getClassName();
         System.out.println("Debug - " + caller + ": " + msg);

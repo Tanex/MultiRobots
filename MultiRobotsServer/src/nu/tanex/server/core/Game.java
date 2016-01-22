@@ -18,9 +18,6 @@ import java.util.Optional;
  * @since       2015-11-26
  */
 public class Game {
-    //How full is the GameGrid allowed to be (given in percentage)
-    public static final double MAX_GRID_FILL_ALLOWED = 0.9;
-
     //region Member variables
     private GameSettings settings;
     private ClientList players;
@@ -30,18 +27,75 @@ public class Game {
     //endregion
 
     //region Get-/Setters
+
+    /**
+     * Gets the settings that are loaded for this game
+     *
+     * @return loaded settings
+     */
     public GameSettings getSettings() { return settings; }
+
+    /**
+     * Get the number of players that are playing this game
+     *
+     * @return amount of players
+     */
     public int getNumPlayers() { return players.size(); }
+
+    /**
+     * Get a list of all the players that are playing in this game
+     *
+     * @return list of players
+     */
     public ClientList getPlayers() { return players; }
+
+    /**
+     * Get which level the game is currently on
+     *
+     * @return games level
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * Get the amount of robots that are alive in the game
+     *
+     * @return number of robots.
+     */
+    public int getNumRobots() {
+        return robots.size();
+    }
+
+    /**
+     * get the amount of rubble present in the game
+     * @return amount of rubble
+     */
+    public int getNumRubble() {
+        return rubblePiles.size();
+    }
+
+    /**
+     * Get a string detailing the dimensions of the grid in this game.
+     *
+     * @return grid dimensions width:height
+     */
+    public String getGridDimensions() {
+        return settings.getGridWidth() + ":" + settings.getGridHeight();
+    }
     //endregion
 
     //region Constructors
+    /**
+     * Initializes the game object and loads default settings from file if available.
+     */
     public Game() {
         settings = new GameSettings();
         players = new ClientList();
         robots = new RobotList();
         rubblePiles = new RubbleList();
         level = 0;
+        settings.loadSettingsFromFile(Resources.GAME_DEFAULT_CONFIG);
     }
     //endregion
 
@@ -71,16 +125,10 @@ public class Game {
         }
     }
 
-    private Point getClosestPlayersPos(Robot robot) {
-        Point targetPoint = null;
-        double distance = 0.0;
-        for (Client player : players) {
-            if (robot.getPoint().distanceTo(player.getPoint()) > distance && player.isAlive())
-                targetPoint = player.getPoint();
-        }
-        return targetPoint;
-    }
-
+    /**
+     * Go through all the objects in the game world and check if any are occupying the same space
+     * and if they are resolve the collision.
+     */
     public void checkForCollisions(){
         HashMap<Point,GameObject> spaces = new HashMap<>();
         players.forEach(p -> checkForCollision(p, spaces));
@@ -91,6 +139,12 @@ public class Game {
         robots.removeIf(p -> !p.isAlive());
     }
 
+    /**
+     * Check the games state to see if anyone has won.
+     *
+     * @see GameState
+     * @return the games state.
+     */
     public GameState checkGameState(){
         if (robots.size() == 0)
             return GameState.PlayersWon;
@@ -100,6 +154,11 @@ public class Game {
             return GameState.Running;
     }
 
+    /**
+     * Add players to the game
+     *
+     * @param players player to add
+     */
     public void addPlayers(ClientList players){
         for (Client player : players){
             if(!this.players.contains(player))
@@ -107,21 +166,18 @@ public class Game {
         }
     }
 
+    /**
+     * Perform initial setup
+     * @throws GameException
+     */
     public void createGameGrid() throws GameException {
         //Make sure that at least 10% of the GameGrid is going to be empty
         if (players.size() + settings.getNumInitialRobots() + settings.getNumInitialRubble()
-                > settings.getGridHeight()*settings.getGridWidth()*MAX_GRID_FILL_ALLOWED)
+                > settings.getGridHeight()*settings.getGridWidth()*Resources.MAX_GRID_FILL_ALLOWED)
             throw new GameException("Grid overfilled: " + (players.size() + settings.getNumInitialRobots() + settings.getNumInitialRubble())
                     + " objects for " + (settings.getGridHeight()*settings.getGridWidth()) + "size grid.");
         players.forEach(this::initPlayer);
         generateGrid(settings.getNumInitialRobots());
-    }
-
-    private void initPlayer(Client player){
-        player.setNumAttacks(settings.getNumAttacksAwarded());
-        player.setNumRandomTeleports(settings.getNumRandomTeleportsAwarded());
-        player.setNumSafeTeleports(settings.getNumSafeTeleportsAwarded());
-        player.setScore(0);
     }
 
     /**
@@ -136,6 +192,14 @@ public class Game {
             ;
     }
 
+    /**
+     * Moves a game object in the game world to a new point
+     *
+     * @param gameObject GameObject that should be moved
+     * @param point The point to place the game object at
+     * @param overWriteExisting if it is allowed to create a collision through the moving
+     * @return if the object was successfully placed
+     */
     public boolean moveGameObject(GameObject gameObject, Point point, boolean overWriteExisting){
         if (point.getX() < 0 || point.getX() >= settings.getGridWidth() ||
                 point.getY() < 0 || point.getY() >= settings.getGridHeight()) {
@@ -144,6 +208,90 @@ public class Game {
         return placeGameObject(gameObject, point, overWriteExisting);
     }
 
+    /**
+     * Progress the game to the next level generating a new game board.
+     */
+    public void nextLevel() {
+        level++;
+        for (Player player : players){
+            if (player.isAlive()){
+                player.addAttacks(settings.getNumAttacksAwarded());
+                player.addRandomTeleports(settings.getNumRandomTeleportsAwarded());
+                player.addSafeeleports(settings.getNumSafeTeleportsAwarded());
+                player.addScore(25);
+            }
+            //else
+                //player.setAlive(true);
+        }
+        generateGrid(settings.getNumInitialRobots() + settings.getNumAdditionalRobotsPerLevel() * level);
+    }
+
+    /**
+     * Let a Client object perform an action in the game.
+     *
+     * @see PlayerAction
+     * @param client Player performing the action.
+     * @param playerAction action to perform.
+     */
+    public void playerPerformAction(Client client, PlayerAction playerAction) {
+        switch (playerAction) {
+            case Attack:
+                if (client.getNumAttacks() < 1)
+                    break;
+                client.takeAttacks(1);
+                for (Robot robot : robots) {
+                    if (robot.getPoint().isWithinOneMove(client.getPoint())) {
+                        client.addScore(10);
+                        robot.setAlive(false);
+                        if (settings.getPlayerAttacks() == PlayerAttacks.KillOne)
+                            break;
+                    }
+                }
+                break;
+            case MoveUp:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Up), true);
+                break;
+            case MoveRight:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Right), true);
+                break;
+            case MoveLeft:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Left), true);
+                break;
+            case MoveDown:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Down), true);
+                break;
+            case MoveUpRight:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.UpRight), true);
+                break;
+            case MoveUpLeft:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.UpLeft), true);
+                break;
+            case MoveDownRight:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.DownRight), true);
+                break;
+            case MoveDownLeft:
+                moveGameObject(client, client.getPoint().getPointInDirection(Direction.DownLeft), true);
+                break;
+            case Wait:
+                break;
+            case RandomTeleport:
+                if (client.getNumRandomTeleports() < 1)
+                    break;
+                client.takeRandomTeleports(1);
+                randomlyPlaceGameObject(client);
+                break;
+            case SafeTeleport:
+                if (client.getNumSafeTeleports() < 1)
+                    break;
+                // TODO: 2016-01-20 smarter system for this
+                do{
+                    randomlyPlaceGameObject(client);
+                } while(!isPlayerSafe(client));
+                client.takeSafeTeleports(1);
+                break;
+        }
+        System.out.println(client + " performed action: " + playerAction);
+    }
     //endregion
 
     //region Private methods
@@ -162,6 +310,25 @@ public class Game {
 
         gameObject.getPoint().set(point);
         return true;
+    }
+
+
+    private void initPlayer(Client player){
+        player.setNumAttacks(settings.getNumAttacksAwarded());
+        player.setNumRandomTeleports(settings.getNumRandomTeleportsAwarded());
+        player.setNumSafeTeleports(settings.getNumSafeTeleportsAwarded());
+        player.setScore(0);
+    }
+
+    private Point getClosestPlayersPos(Robot robot) {
+        Point targetPoint = null;
+        double distance = 0.0;
+        for (Client player : players) {
+            double distanceToPlayer = robot.getPoint().distanceTo(player.getPoint());
+            if (distanceToPlayer < Resources.MAX_CHASE_DISTANCE && distanceToPlayer > distance && player.isAlive())
+                targetPoint = player.getPoint();
+        }
+        return targetPoint;
     }
 
     private boolean isOccupied(Point point){
@@ -234,10 +401,17 @@ public class Game {
         players.forEach(this::randomlyPlaceGameObject);
         rubblePiles.forEach(this::randomlyPlaceGameObject);
     }
+
+    private boolean isPlayerSafe(Client client) {
+        for (Robot robot : robots) {
+            if (client.getPoint().isWithinOneMove(robot.getPoint()))
+                return false;
+        }
+        return true;
+    }
     //endregion
 
     //region Object overrides
-
     @Override
     public String toString() {
         StringBuilder rows[] = new StringBuilder[settings.getGridHeight()];
@@ -261,105 +435,5 @@ public class Game {
             str += row;
         return str;
     }
-
-    public void nextLevel() {
-        level++;
-        for (Player player : players){
-            if (player.isAlive()){
-                player.addAttacks(settings.getNumAttacksAwarded());
-                player.addRandomTeleports(settings.getNumRandomTeleportsAwarded());
-                player.addSafeeleports(settings.getNumSafeTeleportsAwarded());
-                player.addScore(25);
-            }
-            else
-                player.setAlive(true);
-        }
-        generateGrid(settings.getNumInitialRobots() + settings.getNumAdditionalRobotsPerLevel() * level);
-    }
-
-    public void playerPerformAction(Client client, PlayerAction playerAction) {
-        switch (playerAction) {
-            case Attack:
-                if (client.getNumAttacks() < 1)
-                    break;
-                client.takeAttacks(1);
-                for (Robot robot : robots) {
-                    if (robot.getPoint().isWithinOneMove(client.getPoint())) {
-                        client.addScore(10);
-                        robot.setAlive(false);
-                        if (settings.getPlayerAttacks() == PlayerAttacks.KillOne)
-                            break;
-                    }
-                }
-                break;
-            case MoveUp:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Up), true);
-                break;
-            case MoveRight:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Right), true);
-                break;
-            case MoveLeft:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Left), true);
-                break;
-            case MoveDown:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.Down), true);
-                break;
-            case MoveUpRight:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.UpRight), true);
-                break;
-            case MoveUpLeft:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.UpLeft), true);
-                break;
-            case MoveDownRight:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.DownRight), true);
-                break;
-            case MoveDownLeft:
-                moveGameObject(client, client.getPoint().getPointInDirection(Direction.DownLeft), true);
-                break;
-            case Wait:
-                break;
-            case RandomTeleport:
-                if (client.getNumRandomTeleports() < 1)
-                    break;
-                client.takeRandomTeleports(1);
-                randomlyPlaceGameObject(client);
-                break;
-            case SafeTeleport:
-                if (client.getNumSafeTeleports() < 1)
-                    break;
-                // TODO: 2016-01-20 smarter system for this
-                do{
-                    randomlyPlaceGameObject(client);
-                } while(!isPlayerSafe(client));
-                client.takeSafeTeleports(1);
-                break;
-        }
-        System.out.println(client + " performed action: " + playerAction);
-    }
-
-    private boolean isPlayerSafe(Client client) {
-        for (Robot robot : robots) {
-            if (client.getPoint().isWithinOneMove(robot.getPoint()))
-                return false;
-        }
-        return true;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public int getNumRobots() {
-        return robots.size();
-    }
-
-    public int getNumRubble() {
-        return rubblePiles.size();
-    }
-
-    public String getGridDimensions() {
-        return settings.getGridWidth() + ":" + settings.getGridHeight();
-    }
-
     //endregion
 }

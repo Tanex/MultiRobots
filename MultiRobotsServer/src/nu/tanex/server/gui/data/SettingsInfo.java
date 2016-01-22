@@ -11,6 +11,7 @@ import nu.tanex.core.resources.RobotCollisions;
  * @since 2016-01-19
  */
 public class SettingsInfo {
+    //region Member variables
     public int numInitialRobots;
     public int numAdditionalRobotsPerLevel;
     public int numInitialRubble;
@@ -22,7 +23,26 @@ public class SettingsInfo {
     public RobotAiMode robotAiMode;
     public int gridWidth;
     public int gridHeight;
+    public int numPlayersToStartGame;
+    //endregion
 
+    //region Getters
+    /**
+     * Gets the total size of the game grid.
+     *
+     * @return total size, width * height
+     */
+    public int getGridSize() {
+        return gridWidth * gridHeight;
+    }
+    //endregion
+
+    //region Constructors
+    /**
+     * Initializes the object by loading all the settings from the settings object.
+     *
+     * @param settings settings object to load settings from
+     */
     public SettingsInfo(GameSettings settings) {
         this.numInitialRobots = settings.getNumInitialRobots();
         this.numAdditionalRobotsPerLevel = settings.getNumAdditionalRobotsPerLevel();
@@ -35,12 +55,13 @@ public class SettingsInfo {
         this.robotAiMode = settings.getRobotAiMode();
         this.gridWidth = settings.getGridWidth();
         this.gridHeight = settings.getGridHeight();
+        this.numPlayersToStartGame = settings.getNumPlayersToStartGame();
     }
 
+    /**
+     * Initializes an empty object.
+     */
     public SettingsInfo() {
     }
-
-    public int getGridSize() {
-        return gridWidth*gridHeight;
-    }
+    //endregion
 }

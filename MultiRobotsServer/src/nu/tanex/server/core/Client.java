@@ -17,12 +17,20 @@ import java.net.Socket;
  * @since 2015-11-26
  */
 public class Client extends Player {
-
+    //region Member variables
     private ClientThread clientThread = null;
     private boolean awaitingAction;
     private String playerIP;
+    //endregion
 
     //region Get-/setters
+    /**
+     * Get whether this Client is a dummy client used as a placeholder for a disconnected player.
+     * <p>
+     * This basically checks whether the Client actually has a thread running for network communication.
+     *
+     * @return Whether this is a dummy client or not.
+     */
     public boolean isDummy() {
         return clientThread == null;
     }
@@ -34,24 +42,55 @@ public class Client extends Player {
      */
     public void setMsgHandler(IMsgHandler msgHandler) { this.clientThread.msgHandler = msgHandler; }
 
-    public void sendPlayerInfo(){
-        sendMessage("PlayerInfo:" + this.getNumAttacks() + ","+ this.getNumRandomTeleports() + ","+ this.getNumSafeTeleports() + ","+ this.getScore());
-    }
-
+    /**
+     * Gets whether the server has requested input from this Client and the client has yet to respond.
+     *
+     * @return if the server is still waiting for input from this client.
+     */
     public boolean isAwaitingAction() {
         return awaitingAction;
     }
 
+    /**
+     * Set whether the server is waiting for an action to be received from this player.
+     *
+     * @param awaitingAction is the server waiting.
+     */
     public void setAwaitingAction(boolean awaitingAction) {
         this.awaitingAction = awaitingAction;
+    }
+
+    /**
+     * Get the ip address for this client.
+     *
+     * @return the ip address as a strnig.
+     */
+    public String getPlayerIP() {
+        return playerIP;
     }
     //endregion
 
     //region Constructors
+    /**
+     * Initialize a client that will use the ServerEngines msgHandler.
+     *
+     * @see ServerEngine
+     * @see IMsgHandler
+     * @param clientSocket Socket that this client is connecting through.
+     * @throws TcpEngineException Thrown if a thread for communicating with the client can not be started.
+     */
     public Client(Socket clientSocket) throws TcpEngineException {
         this(clientSocket, ServerEngine.getInstance()::msgHandler);
     }
 
+    /**
+     * Initializes a client setting the msgHandler that should be used by this client.
+     *
+     * @see IMsgHandler
+     * @param clientSocket Socket that this client is connecting through.
+     * @param msgHandler Function that should handle incoming messages.
+     * @throws TcpEngineException Thrown if a thread for communicating with the client can not be started.
+     */
     public Client(Socket clientSocket, IMsgHandler msgHandler) throws TcpEngineException {
         super();
         //if (clientSocket != null)
@@ -60,6 +99,11 @@ public class Client extends Player {
         awaitingAction = false;
     }
 
+    /**
+     * Creates a dummy client that can be used as a placeholder for a player that has left a game.
+     *
+     * @param other Client to create a dummy from.
+     */
     public Client(Client other){
         this.setName(other.getName());
         this.setAlive(false);
@@ -67,30 +111,50 @@ public class Client extends Player {
     }
     //endregion
 
-    public void requestAction(){
+    //region Public methods
+
+    /**
+     * Send the players stats to the client.
+     */
+    public void sendPlayerInfo() {
+        sendMessage("PlayerInfo:" + this.getNumAttacks() + "," + this.getNumRandomTeleports() + "," + this.getNumSafeTeleports() + "," + this.getScore());
+    }
+
+    /**
+     * Request player input from this client.
+     */
+    public void requestAction() {
         this.awaitingAction = true;
         this.sendMessage("GiveInput");
     }
 
-    public void blockActions(){
+    /**
+     * Block this client from giving player input.
+     */
+    public void blockActions() {
         this.awaitingAction = false;
         this.sendMessage("NoMoreInput");
     }
 
-    public void disconnect(){
+    /**
+     * Forcefully disconnect this client.
+     */
+    public void disconnect() {
         this.clientThread.alive = false;
     }
 
-    public synchronized void sendMessage(String msg){
+    /**
+     * Spawns a new thread to send a message to this client.
+     *
+     * @param msg message to send.
+     */
+    public synchronized void sendMessage(String msg) {
         if (this.clientThread == null)
             return;
 
         (new Thread(() -> this.clientThread.outStream.println(msg))).start();
     }
-
-    public String getPlayerIP() {
-        return playerIP;
-    }
+    //endregion
 
     //region Innerclass ClientThread
     private class ClientThread extends Thread {

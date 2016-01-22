@@ -20,33 +20,24 @@ public class ServerTcpEngine extends Thread {
     private ServerSocket serverSocket;
     //endregion
 
-    //region Constructors
+    //region Public methods
 
     /**
-     * Default constructor, launches the server listening on port 2000
-     */
-    public ServerTcpEngine() throws TcpEngineException {
-        this(2000);
-    }
-
-    /**
-     * Starts a server listening on @code port and launches a thread that
-     * accepts client trying to connect to the server.
+     * Starts the servers listening thread listening on the given port.
      *
-     * @param port Port that the server should listen on
+     * @param port port to listen on
+     * @throws TcpEngineException Thrown if the socket can not be opened.
      */
-    public ServerTcpEngine(int port) throws TcpEngineException {
+    public void startServer(int port)  throws TcpEngineException {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             throw new TcpEngineException("Error opening server socket", e);
         }
         this.start();
-        Program.debug("Server started");
+        Program.debug("Server started on port " + port);
     }
-    //endregion
 
-    //region Public functions
     /**
      * Stops the server thread
      */

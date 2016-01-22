@@ -21,4 +21,5 @@ public interface IClientGuiController {
     void setPlayerNum(int playerNum);
     void setBoardWidth(int width);
     void setBoardHeight(int height);
+    void showHighScoreList(String highScoreList);
 }

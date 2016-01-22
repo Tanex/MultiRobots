@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+
 <Pane id="basePane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nu.tanex.server.gui.ServerController">
    <children>
       <SplitPane dividerPositions="0.95" orientation="VERTICAL" prefHeight="720.0" prefWidth="1280.0">
@@ -85,6 +88,13 @@
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />
+                                    <HBox layoutX="25.0" layoutY="165.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Players To Start Game" />
+                                          <Slider fx:id="playersToStartSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="playersToStartTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
                                     <HBox>
                                        <children>
                                           <Label contentDisplay="RIGHT" prefWidth="175.0" text="Initial Amount of Robots" />

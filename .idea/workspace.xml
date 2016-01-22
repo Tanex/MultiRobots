@@ -2,21 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eee9a754-99f3-4c8d-ab40-6ca05d39e593" name="Default" comment="More basic classes and more work done on Tcp engine">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/HighScoreList.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/HighScore.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/Resources.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/docs/Network_commands.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/Program.java" afterPath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/Program.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/core/ClientEngine.java" afterPath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/core/ClientEngine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientController.java" afterPath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientFormMain.fxml" afterPath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientFormMain.fxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/IClientGuiController.java" afterPath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/IClientGuiController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/ClientTcpEngine.java" afterPath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/ClientTcpEngine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/RegexCheck.java" afterPath="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/RegexCheck.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/PlayerList.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/PlayerList.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RobotList.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RobotList.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RubbleList.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RubbleList.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/CollisionBehaviour.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/CollisionBehaviour.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/GameObject.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/GameObject.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Player.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Player.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Robot.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Robot.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Rubble.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Rubble.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/GameSettings.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/GameSettings.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/ServerSettings.java" afterPath="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/ServerSettings.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/Program.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/Program.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/ClientList.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/ClientList.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Client.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Client.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Game.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Game.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/GameManager.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/GameManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerEngine.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerEngine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerThread.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerThread.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerController.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerFormMain.fxml" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerFormMain.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/TODO.txt" afterPath="$PROJECT_DIR$/docs/TODO.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/SettingsInfo.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/SettingsInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/playerInfo.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/playerInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerTcpEngine.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerTcpEngine.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/RegexCheck.java" afterPath="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/RegexCheck.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/serverDefault.ini" afterPath="$PROJECT_DIR$/serverDefault.ini" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/default.ini" afterPath="$PROJECT_DIR$/gameDefault.ini" />
     </list>
     <ignored path="MultiRobots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,7 +64,7 @@
     <favorites_list name="MultiRobots" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -78,57 +99,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/MainServerThread.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/ServerSettings.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/MainServer.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerComHandler.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/exceptions/ServerThreadException.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerEngine.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/oLDClientTcpEngine.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/NewClientTcpEngine.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/ClientComHandler.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/core/ClientComHandler.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientGui.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/IClientController.java" />
         <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/GuiState.java" />
         <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/JavaIsRetarded.java" />
         <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/data/GameInfo.java" />
         <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/exceptions/TargetPlayerDeadException.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/PlayerList.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Robot.java" />
         <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/OldClientTcpEngine.java" />
         <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Point.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/RegexCheck.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerTcpEngine.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/Program.java" />
         <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/GameManagerList.java" />
         <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/gameInfo.java" />
         <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/playerInfo.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Client.java" />
         <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/IServerGuiController.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerThread.java" />
         <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/data/ConnectScreenInfo.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/Program.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/ClientTcpEngine.java" />
         <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientFormMain.fxml" />
-        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Player.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerFormMain.fxml" />
         <option value="$PROJECT_DIR$/default.ini" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/SettingsInfo.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/GameInfo.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/GameSettings.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/ClientList.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/PlayerInfo.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerController.java" />
-        <option value="$PROJECT_DIR$/serverDefault.ini" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/RegexCheck.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Game.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/core/ClientEngine.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/IClientGuiController.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientController.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/GameManager.java" />
-        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerEngine.java" />
         <option value="$PROJECT_DIR$/docs/TODO.txt" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/Resources.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/Program.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/Program.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/IClientGuiController.java" />
+        <option value="$PROJECT_DIR$/serverDefault.ini" />
+        <option value="$PROJECT_DIR$/gameDefault.ini" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerFormMain.fxml" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/PlayerInfo.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientController.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/ClientTcpEngine.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/RegexCheck.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/HighScoreList.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/PlayerList.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RobotList.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RubbleList.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/core/ClientEngine.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/CollisionBehaviour.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/GameObject.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/HighScore.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Player.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Robot.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Rubble.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/exceptions/GameException.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/GameSettings.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/ServerSettings.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/ClientList.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Client.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerEngine.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerThread.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/GameInfo.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/SettingsInfo.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerController.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerTcpEngine.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/RegexCheck.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/Resources.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Game.java" />
+        <option value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/GameManager.java" />
       </list>
     </option>
   </component>
@@ -142,8 +163,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="886" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -195,6 +216,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Problems" />
         <subPane subId="Project Files">
@@ -216,6 +238,16 @@
             <PATH_ELEMENT USER_OBJECT="MultiRobotsEngine">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MultiRobots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -732,15 +764,22 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane">
-        <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="MultiRobots" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MultiRobots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JavaDoc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -752,7 +791,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex" />
-    <property name="settings.editor.selected.configurable" value="preferences.JavaFX" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
@@ -766,7 +805,7 @@
       <recent name="D:\Dev\MultiRobots" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MultiRobotsClient">
+  <component name="RunManager" selected="Application.MultiRobotsServer">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
@@ -955,6 +994,36 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Specs2RunConfiguration" factoryName="Specs2">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -1009,6 +1078,21 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="uTestRunConfiguration" factoryName="utest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
       <method />
     </configuration>
     <configuration default="false" name="MultiRobotsServer" type="Application" factoryName="Application">
@@ -1090,21 +1174,22 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="886" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32802126" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3273196" sideWeight="0.4936034" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32802126" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271028" sideWeight="0.4936034" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3273196" sideWeight="0.5063966" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31075698" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958034" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31048805" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917964" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19344473" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32474226" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19296375" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32398754" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1113,9 +1198,8 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997923" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914045" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914045" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1140,13 +1224,13 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Game.java</url>
-          <line>280</line>
+          <url>file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/Resources.java</url>
+          <line>15</line>
           <properties />
-          <option name="timeStamp" value="92" />
+          <option name="timeStamp" value="98" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="95" />
+      <option name="time" value="100" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1155,224 +1239,33 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/exceptions/TcpEngineException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22727273">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="22" selection-end-column="1" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerFormMain.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/exceptions/ServerThreadException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="32" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/PlayerAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31825274">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/Direction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/IMsgHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17745303">
-          <caret line="10" column="46" selection-start-line="10" selection-start-column="46" selection-end-line="10" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/com/sun/javafx/application/LauncherImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6043614">
-          <caret line="916" column="0" selection-start-line="916" selection-start-column="0" selection-end-line="916" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/lang/Runnable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.788162">
-          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/GuiState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/GameGrid.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55636364">
-          <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
-          <folding>
-            <element signature="e#498#499#0" expanded="false" />
-            <element signature="e#526#527#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/com/sun/javafx/event/EventHandlerManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="190" column="0" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/com/sun/javafx/event/CompositeEventHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="1656" column="0" selection-start-line="1656" selection-start-column="0" selection-end-line="1656" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/application/Platform.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3317757">
-          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-          <folding>
-            <element signature="e#2657#2658#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8146418">
-          <caret line="45" column="41" selection-start-line="45" selection-start-column="41" selection-end-line="45" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#339#340#0" expanded="false" />
-            <element signature="e#365#366#0" expanded="false" />
-            <element signature="e#1440#1441#0" expanded="false" />
-            <element signature="e#1488#1489#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/PlayerList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.317757">
-          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.63511187">
+          <caret line="37" column="62" selection-start-line="37" selection-start-column="62" selection-end-line="37" selection-end-column="62" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/exceptions/TargetPlayerDeadException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29127726">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/data/GameInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.317757">
-          <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.6525157">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="58" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/PlayerInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.759434">
+          <caret line="47" column="108" selection-start-line="47" selection-start-column="108" selection-end-line="47" selection-end-column="108" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="e#900#901#0" expanded="false" />
+            <element signature="e#927#928#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/OldClientTcpEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55987054">
-          <caret line="94" column="40" selection-start-line="94" selection-start-column="40" selection-end-line="94" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/RegexCheck.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
-          <folding>
-            <element signature="e#768#769#0" expanded="false" />
-            <element signature="e#844#845#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/net/SocketInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33229813">
-          <caret line="115" column="0" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerTcpEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="74" column="36" selection-start-line="74" selection-start-column="36" selection-end-line="74" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/Program.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/GameManagerList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/IServerGuiController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="45" selection-start-line="10" selection-start-column="45" selection-end-line="10" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/ServerSettings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.026397515">
-          <caret line="35" column="7" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/data/ConnectScreenInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="104" selection-start-line="22" selection-start-column="104" selection-end-line="22" selection-end-column="104" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.016155088">
-          <caret line="42" column="89" selection-start-line="42" selection-start-column="89" selection-end-line="42" selection-end-column="89" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1381,226 +1274,576 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25976232">
-          <caret line="33" column="102" selection-start-line="33" selection-start-column="102" selection-end-line="33" selection-end-column="102" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
-          <folding>
-            <element signature="e#2267#2268#0" expanded="false" />
-            <element signature="e#2314#2315#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19292605">
-          <caret line="25" column="43" selection-start-line="25" selection-start-column="43" selection-end-line="25" selection-end-column="43" />
-          <folding>
-            <element signature="e#1780#1781#0" expanded="false" />
-            <element signature="e#1833#1834#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Point.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6304348">
-          <caret line="127" column="0" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
-          <folding>
-            <element signature="e#3258#3259#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/GameObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12888199">
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding>
-            <element signature="e#1064#1065#0" expanded="false" />
-            <element signature="e#1092#1093#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/default.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27552673">
-          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/ClientList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39596274">
-          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/PlayerInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.78881985">
-          <caret line="39" column="17" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="17" />
-          <folding>
-            <element signature="e#837#838#0" expanded="true" />
-            <element signature="e#869#870#0" expanded="true" />
-            <element signature="e#900#901#0" expanded="true" />
-            <element signature="e#927#928#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerFormMain.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="84" selection-start-line="17" selection-start-column="84" selection-end-line="17" selection-end-column="84" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.9772727">
-          <caret line="87" column="8" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/SettingsInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75">
-          <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
-          <folding>
-            <element signature="e#1554#1555#0" expanded="false" />
-            <element signature="e#1597#1598#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/GameSettings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.0681818">
-          <caret line="131" column="43" selection-start-line="131" selection-start-column="43" selection-end-line="131" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/serverDefault.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14147018">
-          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/RegexCheck.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.85745615">
-          <caret line="35" column="57" selection-start-line="35" selection-start-column="57" selection-end-line="35" selection-end-column="57" />
-          <folding>
-            <element signature="method#ValidIpAndPort#0;class#RegexCheck#0" expanded="false" />
-            <element signature="e#1428#1429#0" expanded="true" />
-            <element signature="e#1501#1502#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6644737">
-          <caret line="360" column="43" selection-start-line="360" selection-start-column="43" selection-end-line="360" selection-end-column="43" />
-          <folding>
-            <element signature="e#14036#14037#0" expanded="true" />
-            <element signature="e#14115#14116#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/GameInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37280703">
-          <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/core/ClientEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40936863">
-          <caret line="81" column="39" selection-start-line="81" selection-start-column="26" selection-end-line="81" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.2719449">
+          <caret line="33" column="39" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/IClientGuiController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.62321794">
-          <caret line="20" column="37" selection-start-line="20" selection-start-column="37" selection-end-line="22" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.5613208">
+          <caret line="23" column="49" selection-start-line="23" selection-start-column="49" selection-end-line="23" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/ClientTcpEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7824268">
-          <caret line="60" column="9" selection-start-line="60" selection-start-column="9" selection-end-line="60" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.16037735">
+          <caret line="11" column="15" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
+          <folding>
+            <element signature="n#!!doc;n#socket#0;n#ClientTcpEngine#0" expanded="false" />
+            <element signature="e#512#535#0" expanded="false" />
+            <element signature="e#712#713#0" expanded="false" />
+            <element signature="e#783#784#0" expanded="false" />
+            <element signature="n#!!doc;n#run#0;n#ClientTcpEngine#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/io/OldClientTcpEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.3789308">
+          <caret line="94" column="40" selection-start-line="94" selection-start-column="40" selection-end-line="94" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/GuiState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2672956">
+          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/Program.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4665272">
-          <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
+        <state vertical-scroll-proportion="-0.28301886">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerEngine.java">
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/HighScoreList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5460251">
-          <caret line="138" column="43" selection-start-line="138" selection-start-column="43" selection-end-line="138" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.42767295">
+          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc;n#HighScoreList#0;n#HighScoreList#0" expanded="false" />
+            <element signature="e#404#405#0" expanded="true" />
+            <element signature="e#453#454#0" expanded="true" />
+            <element signature="e#476#499#0" expanded="false" />
+            <element signature="n#!!doc;n#toString#0;n#HighScoreList#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RubbleList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24056605">
+          <caret line="12" column="38" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/TODO.txt">
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/PlayerList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21338913">
-          <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.24056605">
+          <caret line="12" column="38" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/GameManager.java">
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/aggregates/RobotList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.5564854">
-          <caret line="118" column="25" selection-start-line="118" selection-start-column="25" selection-end-line="118" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.24056605">
+          <caret line="12" column="37" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/core/ClientEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4009434">
+          <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#tcpEngine#0;n#ClientEngine#0" expanded="false" />
+            <element signature="n#!!doc;n#ourInstance#0;n#ClientEngine#0" expanded="false" />
+            <element signature="e#1107#1123#0" expanded="false" />
+            <element signature="e#2201#2224#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/gui/ClientController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42677826">
-          <caret line="94" column="33" selection-start-line="94" selection-start-column="33" selection-end-line="94" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.16037735">
+          <caret line="28" column="15" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="n#!!doc;n#playerNum#0;n#ClientController#0" expanded="false" />
             <element signature="n#!!doc;n#playerListCanvas#0;n#ClientController#0" expanded="false" />
+            <element signature="e#9239#9263#0" expanded="false" />
+            <element signature="n#!!doc;n#changeLabelText#0;n#ClientController#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/CollisionBehaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4544025">
+          <caret line="111" column="1" selection-start-line="111" selection-start-column="1" selection-end-line="111" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!doc;n#robotCollisionBehaviour#0;n#CollisionBehaviour#0" expanded="false" />
+            <element signature="n#!!doc;n#CollisionBehaviour#0;n#CollisionBehaviour#0" expanded="false" />
+            <element signature="e#1146#1169#0" expanded="false" />
+            <element signature="e#1788#1806#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/GameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16037735">
+          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding>
+            <element signature="n#!!doc;n#point#0;n#GameObject#0" expanded="false" />
+            <element signature="e#391#412#0" expanded="false" />
+            <element signature="e#1243#1264#0" expanded="false" />
+            <element signature="e#1359#1360#0" expanded="true" />
+            <element signature="e#1390#1391#0" expanded="true" />
+            <element signature="n#!!doc;n#toString#0;n#GameObject#0" expanded="false" />
+            <element signature="e#1971#1972#0" expanded="true" />
+            <element signature="e#1999#2000#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/HighScore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3207547">
+          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#playerName#0;n#HighScore#0" expanded="false" />
+            <element signature="e#352#373#0" expanded="false" />
+            <element signature="n#!!doc;n#compareTo#0;n#HighScore#0" expanded="false" />
+            <element signature="e#1132#1148#0" expanded="false" />
+            <element signature="e#1294#1295#0" expanded="true" />
+            <element signature="e#1327#1328#0" expanded="true" />
+            <element signature="e#1456#1457#0" expanded="true" />
+            <element signature="e#1484#1485#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16037735">
+          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding>
+            <element signature="n#!!doc;n#numAttacks#0;n#Player#0" expanded="false" />
+            <element signature="e#421#442#0" expanded="false" />
+            <element signature="e#2392#2415#0" expanded="false" />
+            <element signature="e#2638#2639#0" expanded="true" />
+            <element signature="e#2700#2701#0" expanded="true" />
+            <element signature="e#2918#2919#0" expanded="true" />
+            <element signature="e#2978#2979#0" expanded="true" />
+            <element signature="e#3171#3172#0" expanded="true" />
+            <element signature="e#3223#3224#0" expanded="true" />
+            <element signature="e#3430#3431#0" expanded="true" />
+            <element signature="e#3475#3476#0" expanded="true" />
+            <element signature="e#3696#3697#0" expanded="true" />
+            <element signature="e#3751#3752#0" expanded="true" />
+            <element signature="e#3965#3966#0" expanded="true" />
+            <element signature="e#4018#4019#0" expanded="true" />
+            <element signature="e#4209#4210#0" expanded="true" />
+            <element signature="e#4254#4255#0" expanded="true" />
+            <element signature="e#4277#4298#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Robot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+          <folding>
+            <element signature="n#!!doc;n#targetPlayer#0;n#Robot#0" expanded="false" />
+            <element signature="e#371#387#0" expanded="false" />
+            <element signature="e#576#577#0" expanded="true" />
+            <element signature="e#624#625#0" expanded="true" />
+            <element signature="e#647#668#0" expanded="false" />
+            <element signature="e#890#891#0" expanded="true" />
+            <element signature="e#916#917#0" expanded="true" />
+            <element signature="e#1257#1280#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/data/Rubble.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3474843">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+          <folding>
+            <element signature="e#214#215#0" expanded="true" />
+            <element signature="e#290#291#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/exceptions/GameException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6147799">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding>
+            <element signature="e#333#334#0" expanded="true" />
+            <element signature="e#359#360#0" expanded="true" />
+            <element signature="e#403#404#0" expanded="true" />
+            <element signature="e#431#432#0" expanded="true" />
+            <element signature="e#487#488#0" expanded="true" />
+            <element signature="e#520#521#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/CollisionObjectType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/CollisionOutcome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/Direction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/GameSettings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16037735">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+          <folding>
+            <element signature="n#!!doc;n#numInitialRobots#0;n#GameSettings#0" expanded="false" />
+            <element signature="n#!!doc;n#getNumPlayersToStartGame#0;n#GameSettings#0" expanded="false" />
+            <element signature="e#3687#3708#0" expanded="false" />
+            <element signature="e#4671#4694#0" expanded="false" />
+            <element signature="n#!!doc;n#toString#0;n#GameSettings#0" expanded="false" />
+            <element signature="n#!!doc;n#readSettingFromString#0;n#GameSettings#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/PlayerAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/PlayerAttacks.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/RobotAiMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/RobotCollisions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18710692">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/ServerSettings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5078616">
+          <caret line="133" column="1" selection-start-line="133" selection-start-column="1" selection-end-line="133" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!doc;n#numGamesToRun#0;n#ServerSettings#0" expanded="false" />
+            <element signature="e#373#394#0" expanded="false" />
+            <element signature="e#531#532#0" expanded="true" />
+            <element signature="e#564#565#0" expanded="true" />
+            <element signature="e#724#725#0" expanded="true" />
+            <element signature="e#768#769#0" expanded="true" />
+            <element signature="e#931#932#0" expanded="true" />
+            <element signature="e#967#968#0" expanded="true" />
+            <element signature="e#1161#1162#0" expanded="true" />
+            <element signature="e#1211#1212#0" expanded="true" />
+            <element signature="e#1235#1258#0" expanded="false" />
+            <element signature="n#!!doc;n#toString#0;n#ServerSettings#0" expanded="false" />
+            <element signature="n#!!doc;n#readSettingFromString#0;n#ServerSettings#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/ClientList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37421384">
+          <caret line="17" column="41" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/aggregates/GameManagerList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24056605">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3474843">
+          <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+          <folding>
+            <element signature="n#!!doc;n#clientThread#0;n#Client#0" expanded="false" />
+            <element signature="e#644#665#0" expanded="false" />
+            <element signature="e#1989#1990#0" expanded="true" />
+            <element signature="e#2020#2021#0" expanded="true" />
+            <element signature="e#2043#2064#0" expanded="false" />
+            <element signature="e#3576#3599#0" expanded="false" />
+            <element signature="e#4309#4310#0" expanded="true" />
+            <element signature="e#4356#4357#0" expanded="true" />
+            <element signature="n#!!doc;n#ClientThread#0;n#Client#0" expanded="false" />
+            <element signature="n#!!doc;n#clientSocket#0;n#ClientThread#0;n#Client#0" expanded="false" />
+            <element signature="e#5065#5086#0" expanded="false" />
+            <element signature="n#!!doc;n#run#0;n#ClientThread#0;n#Client#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21818182">
+          <caret line="102" column="4" selection-start-line="102" selection-start-column="4" selection-end-line="102" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#ourInstance#0;n#ServerEngine#0" expanded="false" />
+            <element signature="n#!!doc;n#connectedClients#0;n#ServerEngine#0" expanded="false" />
+            <element signature="e#1199#1215#0" expanded="false" />
+            <element signature="e#3018#3041#0" expanded="false" />
+            <element signature="e#6899#6900#0" expanded="true" />
+            <element signature="e#7000#7001#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/ServerThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25454545">
+          <caret line="53" column="4" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#settings#0;n#ServerThread#0" expanded="false" />
+            <element signature="e#632#648#0" expanded="false" />
+            <element signature="e#808#809#0" expanded="true" />
+            <element signature="e#839#840#0" expanded="true" />
+            <element signature="e#1048#1049#0" expanded="true" />
+            <element signature="e#1081#1082#0" expanded="true" />
+            <element signature="e#1252#1253#0" expanded="true" />
+            <element signature="e#1287#1288#0" expanded="true" />
+            <element signature="e#1310#1331#0" expanded="false" />
+            <element signature="e#2925#2948#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/exceptions/ServerThreadException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12727273">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/GameInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21818182">
+          <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#playersToStart#0;n#GameInfo#0" expanded="false" />
+            <element signature="e#612#628#0" expanded="false" />
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#838#839#0" expanded="true" />
+            <element signature="e#1004#1005#0" expanded="true" />
+            <element signature="e#1058#1059#0" expanded="true" />
+            <element signature="e#1168#1169#0" expanded="true" />
+            <element signature="e#1203#1204#0" expanded="true" />
+            <element signature="e#2190#2191#0" expanded="true" />
+            <element signature="e#2221#2222#0" expanded="true" />
+            <element signature="e#2403#2404#0" expanded="true" />
+            <element signature="e#2436#2437#0" expanded="true" />
+            <element signature="e#2459#2479#0" expanded="false" />
+            <element signature="n#!!doc;n#toString#0;n#GameInfo#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/data/SettingsInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21818182">
+          <caret line="28" column="4" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#numInitialRobots#0;n#SettingsInfo#0" expanded="false" />
+            <element signature="e#806#822#0" expanded="false" />
+            <element signature="e#962#963#0" expanded="true" />
+            <element signature="e#1007#1008#0" expanded="true" />
+            <element signature="e#1030#1051#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/IServerGuiController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16363636">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/gui/ServerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29090908">
+          <caret line="117" column="4" selection-start-line="117" selection-start-column="4" selection-end-line="117" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#gamesList#0;n#ServerController#0" expanded="false" />
+            <element signature="e#2117#2156#0" expanded="false" />
+            <element signature="e#3397#3429#0" expanded="false" />
+            <element signature="e#4657#4680#0" expanded="false" />
+            <element signature="n#!!doc;n#setupGridFillCalc#0;n#ServerController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/IMsgHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16363636">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/io/ServerTcpEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3090909">
+          <caret line="69" column="15" selection-start-line="69" selection-start-column="15" selection-end-line="69" selection-end-column="15" />
+          <folding>
+            <element signature="n#!!doc;n#serverSocket#0;n#ServerTcpEngine#0" expanded="false" />
+            <element signature="e#577#600#0" expanded="false" />
+            <element signature="n#!!doc;n#run#0;n#ServerTcpEngine#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/GameState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12727273">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsClient/src/nu/tanex/client/resources/RegexCheck.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21818182">
+          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#GAME_STATE_PATTERN#0;n#RegexCheck#0" expanded="false" />
+            <element signature="e#1254#1272#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/resources/RegexCheck.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21818182">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc;n#DISCONNECT_MSG_PATTERN#0;n#RegexCheck#0" expanded="false" />
+            <element signature="e#689#707#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/Program.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7090909">
+          <caret line="50" column="21" selection-start-line="50" selection-start-column="21" selection-end-line="50" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21818182">
+          <caret line="28" column="4" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc;n#settings#0;n#Game#0" expanded="false" />
+            <element signature="e#745#766#0" expanded="false" />
+            <element signature="e#2080#2101#0" expanded="false" />
+            <element signature="e#2489#2512#0" expanded="false" />
+            <element signature="e#10449#10473#0" expanded="false" />
+            <element signature="n#!!doc;n#toString#0;n#Game#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsServer/src/nu/tanex/server/core/GameManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36363637">
+          <caret line="289" column="15" selection-start-line="289" selection-start-column="15" selection-end-line="289" selection-end-column="15" />
+          <folding>
+            <element signature="n#!!doc;n#game#0;n#GameManager#0" expanded="false" />
+            <element signature="e#755#776#0" expanded="false" />
+            <element signature="e#1044#1060#0" expanded="false" />
+            <element signature="e#3043#3066#0" expanded="false" />
+            <element signature="n#!!doc;n#processTurn#0;n#GameManager#0" expanded="false" />
+            <element signature="e#9032#9050#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiRobotsCore/src/nu/tanex/core/resources/Resources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.76363635">
+          <caret line="47" column="61" selection-start-line="47" selection-start-column="61" selection-end-line="47" selection-end-column="61" />
+          <folding>
+            <element signature="e#134#158#0" expanded="false" />
+            <element signature="e#1368#1392#0" expanded="false" />
+            <element signature="e#1539#1597#0" expanded="false" />
+            <element signature="e#1875#1931#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/JavaDoc/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1661,6 +1904,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

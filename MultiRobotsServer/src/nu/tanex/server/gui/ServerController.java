@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import nu.tanex.core.resources.PlayerAttacks;
 import nu.tanex.core.resources.RobotAiMode;
 import nu.tanex.core.resources.RobotCollisions;
@@ -23,6 +24,7 @@ import java.util.ResourceBundle;
  * @since 2016-01-19
  */
 public class ServerController implements IServerGuiController, Initializable {
+    //region GUI controls
     public ListView<GameInfo> gamesList;
     public Label gameNameLabel;
     public Button saveButton;
@@ -52,11 +54,20 @@ public class ServerController implements IServerGuiController, Initializable {
     public TextField gridWidthTextField;
     public Slider gridHeightSlider;
     public TextField gridHeightTextField;
+    public Slider playersToStartSlider;
+    public TextField playersToStartTextField;
+    //endregion
 
+    //region Interface IServerGuiController
 
+    /**
+     * Updates the list of games that are displayed in the GUI.
+     *
+     * @param games List of games running on the server.
+     * @param numConnectedClients The number of connected clients on the server
+     */
     @Override
     public void updateGameList(GameManagerList games, int numConnectedClients) {
-        // TODO: 2016-01-20 follow through and update everything else too
         Platform.runLater(() -> {
             //Perform all the hacks
             GameInfo selected = gamesList.getSelectionModel().getSelectedItem();
@@ -68,9 +79,22 @@ public class ServerController implements IServerGuiController, Initializable {
             int numQueueing = gamesList.getItems().stream().mapToInt(GameInfo::getNumQueueing).sum();
             serverInfoLabel.setText("Clients connected: " + numConnectedClients + " --- Players in games: " + numPlaying + " --- Players queueing: " + numQueueing);
             gamesList.getSelectionModel().select(selected);
+
+            if (selected != null) {
+                updateGameInfo();
+                updatePlayerList();
+            }
         });
     }
+    //endregion
 
+    //region Interface Initializable
+    /**
+     * Initializes a bunch of change listeners and data sources in the gui.
+     *
+     * @param location location
+     * @param resources resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         attackModeComboBox.getItems().addAll(PlayerAttacks.values());
@@ -85,11 +109,61 @@ public class ServerController implements IServerGuiController, Initializable {
         setupSliderAndTextField(initialRubbleSlider, initialRubbleTextField);
         setupSliderAndTextField(gridWidthSlider, gridWidthTextField);
         setupSliderAndTextField(gridHeightSlider, gridHeightTextField);
-        
+        setupSliderAndTextField(playersToStartSlider, playersToStartTextField);
+
         setupGridFillCalc();
     }
+    //endregion
 
-    private void setupGridFillCalc(){
+    //region Public methods
+
+    /**
+     * Handles when the users clicks either the game or the player list
+     * @param event event
+     */
+    public void listClicked(Event event) {
+        if (event.getSource().equals(gamesList))
+            updateGameInfo();
+        else if (event.getSource().equals(playerList))
+            updatePlayerList();
+    }
+
+    /**
+     * Handles when the player clicks any button in the gui
+     *
+     * @param actionEvent event
+     */
+    public void buttonClicked(ActionEvent actionEvent) {
+        if (actionEvent.getSource().equals(kickButton)) {
+            PlayerInfo selectedPlayer = playerList.getSelectionModel().getSelectedItem();
+            if (selectedPlayer == null)
+                return;
+            ServerEngine.getInstance().kickPlayer(selectedPlayer, gamesList.getSelectionModel().getSelectedItem());
+        } else if (actionEvent.getSource().equals(saveButton)) {
+            SettingsInfo newSettings = new SettingsInfo();
+
+            newSettings.numInitialRobots = (int) initialRobotsSlider.getValue();
+            newSettings.numAdditionalRobotsPerLevel = (int) initialRobotsSlider.getValue();
+            newSettings.numInitialRubble = (int) initialRubbleSlider.getValue();
+            newSettings.robotCollisions = robotCollisionModeComboBox.getValue();
+            newSettings.numSafeTeleportsAwarded = (int) safeTeleportsSlider.getValue();
+            newSettings.numRandomTeleportsAwarded = (int) randomTeleportsSlider.getValue();
+            newSettings.numAttacksAwarded = (int) attacksAwardedSlider.getValue();
+            newSettings.playerAttacks = attackModeComboBox.getValue();
+            newSettings.robotAiMode = robotAIModeComboBox.getValue();
+            newSettings.gridWidth = (int) gridWidthSlider.getValue();
+            newSettings.gridHeight = (int) gridHeightSlider.getValue();
+            newSettings.numPlayersToStartGame = (int) playersToStartSlider.getValue();
+
+            ServerEngine.getInstance().updateGameSetting(gamesList.getSelectionModel().getSelectedItem(), newSettings);
+        } else if (actionEvent.getSource().equals(discardButton)) {
+            loadGameSettings(gamesList.getSelectionModel().getSelectedItem().getSettingsInfo());
+        }
+    }
+    //endregion
+
+    //region Private methods
+    private void setupGridFillCalc() {
         initialRobotsSlider.valueProperty().addListener((o, ov, nv) -> updateGridFill());
         initialRobotsTextField.textProperty().addListener((o, ov, nv) -> updateGridFill());
         initialRubbleSlider.valueProperty().addListener((o, ov, nv) -> updateGridFill());
@@ -98,40 +172,44 @@ public class ServerController implements IServerGuiController, Initializable {
         gridWidthTextField.textProperty().addListener((o, ov, nv) -> updateGridFill());
         gridHeightSlider.valueProperty().addListener((o, ov, nv) -> updateGridFill());
         gridHeightTextField.textProperty().addListener((o, ov, nv) -> updateGridFill());
+        playersToStartTextField.textProperty().addListener((o, ov, nv) -> updateGridFill());
     }
-    
-    private void updateGridFill(){
+
+    private void updateGridFill() {
         int robots = Integer.parseInt(initialRobotsTextField.getText());
         int rubble = Integer.parseInt(initialRubbleTextField.getText());
         int width = Integer.parseInt(gridWidthTextField.getText());
         int height = Integer.parseInt(gridHeightTextField.getText());
+        int players = Integer.parseInt(playersToStartTextField.getText());
 
-        double fillPercent = (100.0 * (robots + rubble + GameInfo.getPlayersToStart())) / (width * height);
+        double fillPercent = (100.0 * (robots + rubble + players)) / (width * height);
 
         gridFillLabel.setText(String.format("Grid Fill: %.2f %%", fillPercent));
     }
-    
-    private void setupSliderAndTextField(Slider slider, TextField textField){
+
+    private void setupSliderAndTextField(Slider slider, TextField textField) {
         slider.valueProperty().addListener((o, ov, nv) -> textField.setText(Integer.toString(nv.intValue())));
         textField.textProperty().addListener((o, ov, nv) -> slider.valueProperty().set(Integer.parseInt(nv)));
-        textField.setText(Integer.toString((int)slider.valueProperty().get()));
+        textField.setText(Integer.toString((int) slider.valueProperty().get()));
     }
 
-    public void listClicked(Event event) {
-        if (event.getSource().equals(gamesList)) {
-            GameInfo selectedGame = gamesList.getSelectionModel().getSelectedItem();
-            if (selectedGame == null)
-                return;
+    private void updateGameInfo() {
+        GameInfo selectedGame = gamesList.getSelectionModel().getSelectedItem();
+        if (selectedGame == null)
+            return;
 
-            playerList.getItems().clear();
-            playerList.getItems().addAll(selectedGame.getPlayerList());
-            gameInfoLabel.setText(selectedGame.getInfoString());
-            loadGameSettings(selectedGame.getSettingsInfo());
-        }
-        else if (event.getSource().equals(playerList)){
-            PlayerInfo selectedPlayer = playerList.getSelectionModel().getSelectedItem();
+        playerList.getItems().clear();
+        playerList.getItems().addAll(selectedGame.getPlayerList());
+        gameInfoLabel.setText(selectedGame.getInfoString());
+        loadGameSettings(selectedGame.getSettingsInfo());
+    }
+
+    private void updatePlayerList() {
+        PlayerInfo selectedPlayer = playerList.getSelectionModel().getSelectedItem();
+        if (selectedPlayer == null)
+            playerInfoLabel.setText("");
+        else
             playerInfoLabel.setText(selectedPlayer.getInfoString());
-        }
     }
 
     private void loadGameSettings(SettingsInfo settingsInfo) {
@@ -146,34 +224,7 @@ public class ServerController implements IServerGuiController, Initializable {
         initialRubbleSlider.setValue(settingsInfo.numInitialRubble);
         gridWidthSlider.setValue(settingsInfo.gridWidth);
         gridHeightSlider.setValue(settingsInfo.gridHeight);
+        playersToStartSlider.setValue(settingsInfo.numPlayersToStartGame);
     }
-
-    public void buttonClicked(ActionEvent actionEvent) {
-        if (actionEvent.getSource().equals(kickButton)){
-            PlayerInfo selectedPlayer = playerList.getSelectionModel().getSelectedItem();
-            if (selectedPlayer == null)
-                return;
-            ServerEngine.getInstance().kickPlayer(selectedPlayer, gamesList.getSelectionModel().getSelectedItem());
-        }
-        else if (actionEvent.getSource().equals(saveButton)){
-            SettingsInfo newSettings = new SettingsInfo();
-            
-            newSettings.numInitialRobots = (int)initialRobotsSlider.getValue();
-            newSettings.numAdditionalRobotsPerLevel = (int)initialRobotsSlider.getValue();
-            newSettings.numInitialRubble = (int)initialRubbleSlider.getValue();
-            newSettings.robotCollisions = robotCollisionModeComboBox.getValue();
-            newSettings.numSafeTeleportsAwarded = (int)safeTeleportsSlider.getValue();
-            newSettings.numRandomTeleportsAwarded = (int)randomTeleportsSlider.getValue();
-            newSettings.numAttacksAwarded = (int)attacksAwardedSlider.getValue();
-            newSettings.playerAttacks = attackModeComboBox.getValue();
-            newSettings.robotAiMode = robotAIModeComboBox.getValue();
-            newSettings.gridWidth = (int)gridWidthSlider.getValue();
-            newSettings.gridHeight = (int)gridHeightSlider.getValue();
-
-            ServerEngine.getInstance().updateGameSetting(gamesList.getSelectionModel().getSelectedItem(), newSettings);
-        }
-        else if (actionEvent.getSource().equals(discardButton)){
-            loadGameSettings(gamesList.getSelectionModel().getSelectedItem().getSettingsInfo());
-        }
-    }
+    //endregion
 }
