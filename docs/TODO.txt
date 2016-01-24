@@ -1,0 +1,7 @@
+All players take turn simultaneously, update grid for all clients as quickly as possible.
+After all player movement is done, move robots.
+
+check for synchronize need
+    point
+    gamesettings
+    ?

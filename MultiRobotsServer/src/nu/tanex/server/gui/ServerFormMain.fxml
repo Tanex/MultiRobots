@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<Pane id="basePane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nu.tanex.server.gui.ServerController">
+   <children>
+      <SplitPane dividerPositions="0.95" orientation="VERTICAL" prefHeight="720.0" prefWidth="1280.0">
+        <items>
+            <SplitPane dividerPositions="0.34" prefHeight="720.0" prefWidth="1280.0">
+              <items>
+                  <ListView fx:id="gamesList" onMouseClicked="#listClicked">
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                  </ListView>
+                  <TabPane>
+                     <tabs>
+                        <Tab text="Info">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="gameInfoLabel" layoutX="14.0" layoutY="14.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
+                        <Tab fx:id="settingsTab" text="Settings">
+                           <content>
+                              <VBox layoutX="219.0" layoutY="204.0" prefHeight="278.0" prefWidth="233.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label fx:id="gameNameLabel" text="Settings for Game #0" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="25.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox>
+                                       <children>
+                                          <Label alignment="TOP_LEFT" contentDisplay="RIGHT" prefWidth="175.0" text="PlayerAttack Mode" />
+                                          <ComboBox fx:id="attackModeComboBox" prefWidth="200.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label contentDisplay="RIGHT" layoutX="10.0" layoutY="10.0" prefWidth="175.0" text="Robot AI Mode" />
+                                          <ComboBox fx:id="robotAIModeComboBox" prefWidth="200.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label contentDisplay="RIGHT" layoutX="25.0" layoutY="105.0" prefWidth="175.0" text="Robot Collision Mode" />
+                                          <ComboBox fx:id="robotCollisionModeComboBox" prefWidth="200.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="25.0" layoutY="310.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Attacks Awarded" />
+                                          <Slider fx:id="attacksAwardedSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="attacksAwardedTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="25.0" layoutY="225.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Safe Teleports Awarded" />
+                                          <Slider fx:id="safeTeleportsSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="safeTeleportsTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="25.0" layoutY="195.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="RandomTeleports Awarded" />
+                                          <Slider fx:id="randomTeleportsSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="randomTeleportsTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Additional Robots per Level" />
+                                          <Slider fx:id="additionalRobotsSlider" blockIncrement="1.0" majorTickUnit="1.0" max="20.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="additionalRobotsTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <Separator prefWidth="200.0" />
+                                    <HBox layoutX="25.0" layoutY="165.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Players To Start Game" />
+                                          <Slider fx:id="playersToStartSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="playersToStartTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Initial Amount of Robots" />
+                                          <Slider fx:id="initialRobotsSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="initialRobotsTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="25.0" layoutY="135.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Initial Amount of Rubble" />
+                                          <Slider fx:id="initialRubbleSlider" blockIncrement="1.0" majorTickUnit="1.0" max="20.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="initialRubbleTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="25.0" layoutY="340.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Grid Width" />
+                                          <Slider fx:id="gridWidthSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="gridWidthTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="25.0" layoutY="370.0">
+                                       <children>
+                                          <Label contentDisplay="RIGHT" prefWidth="175.0" text="Grid Height" />
+                                          <Slider fx:id="gridHeightSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <TextField fx:id="gridHeightTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <Label fx:id="gridFillLabel" alignment="TOP_RIGHT" prefHeight="17.0" prefWidth="375.0" text="Grid Fill: 50%" />
+                                    <Separator layoutX="25.0" layoutY="255.0" prefWidth="200.0" />
+                                    <HBox alignment="TOP_RIGHT" maxHeight="25.0" maxWidth="375.0" prefHeight="24.0" prefWidth="375.0" spacing="5.0" VBox.vgrow="NEVER">
+                                       <children>
+                                          <Button fx:id="saveButton" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#buttonClicked" text="Save">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Button fx:id="discardButton" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#buttonClicked" text="Discard">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </Tab>
+                        <Tab text="Player Control">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <SplitPane dividerPositions="0.8" layoutX="230.0" layoutY="303.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <items>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                             <children>
+                                                <SplitPane dividerPositions="0.5" layoutX="277.0" layoutY="173.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <items>
+                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                         <children>
+                                                            <ListView fx:id="playerList" layoutX="146.0" layoutY="89.0" onMouseClicked="#listClicked" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <padding>
+                                                                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                               </padding>
+                                                            </ListView>
+                                                         </children>
+                                                      </AnchorPane>
+                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label fx:id="playerInfoLabel" layoutX="14.0" layoutY="14.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                  </items>
+                                                </SplitPane>
+                                             </children>
+                                          </AnchorPane>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                             <children>
+                                                <HBox alignment="TOP_RIGHT" layoutX="14.0" layoutY="14.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <Button fx:id="kickButton" alignment="TOP_RIGHT" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#buttonClicked" text="Kick Player" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets right="25.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </AnchorPane>
+                                      </items>
+                                    </SplitPane>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+              </items>
+            </SplitPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Label fx:id="serverInfoLabel" layoutX="14.0" layoutY="6.0" text="Label" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</Pane>

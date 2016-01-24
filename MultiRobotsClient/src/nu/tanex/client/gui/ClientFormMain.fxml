@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane id="basePane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nu.tanex.client.gui.ClientController">
+   <children>
+      <Group fx:id="GameGroup">
+         <children>
+            <SplitPane dividerPositions="0.85" prefHeight="720.0" prefWidth="1280.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                <items>
+                  <SplitPane dividerPositions="0.75" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Canvas fx:id="gameCanvas" height="536.0" layoutX="108.0" layoutY="57.0" onMouseClicked="#gameBoardClicked" width="1083.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <Label fx:id="levelLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="491.0" layoutY="14.0" text="LEVEL 1" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
+                                 <font>
+                                    <Font name="Monospaced Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="giveInputLabel" alignment="CENTER" layoutX="426.0" layoutY="494.0" text="Perform Your Action 9.9" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <font>
+                                    <Font name="Monospaced Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Label fx:id="playerInfoLabel" layoutX="14.0" layoutY="14.0" text="Label" />
+                              <Label fx:id="deathLabel" layoutX="455.0" layoutY="14.0" text="You Died" textFill="RED">
+                                 <font>
+                                    <Font name="Monospaced Bold" size="36.0" />
+                                 </font>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                              </Label>
+                           </children></AnchorPane>
+                    </items>
+                  </SplitPane>
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <SplitPane dividerPositions="0.9" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                    <ScrollPane hbarPolicy="NEVER" prefHeight="197.0" prefWidth="157.0">
+                                      <content>
+                                        <AnchorPane>
+                                             <children>
+                                                <Canvas fx:id="playerListCanvas" height="316.0" width="187.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </ScrollPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <Button alignment="CENTER" layoutX="14.0" layoutY="4.0" mnemonicParsing="false" onAction="#leaveGameHandler" prefHeight="25.0" prefWidth="160.0" text="Leave Game" />
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children></AnchorPane>
+                        <SplitPane fx:id="playerControls" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                 <children>
+                                      <GridPane alignment="CENTER" hgap="5.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <children>
+                                      <Button fx:id="buttonMoveUpLeft" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="\\" textAlignment="JUSTIFY" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonMoveUp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="|" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonMoveUpRight" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="/" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonMoveLeft" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="-" textAlignment="JUSTIFY" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonWait" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="W" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonMoveRight" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="-" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonMoveDownLeft" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="/" textAlignment="JUSTIFY" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonMoveDown" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="|" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      <Button fx:id="buttonMoveDownRight" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#playerInput" prefHeight="40.0" prefWidth="40.0" text="\\" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                             <font>
+                                                <Font name="Monospaced Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                      </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints />
+                                          <ColumnConstraints />
+                                          <ColumnConstraints />
+                                          <ColumnConstraints />
+                                          <ColumnConstraints />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                       </rowConstraints>
+                                  </GridPane>
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="216.0" prefWidth="337.0">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER" layoutY="-2.0" spacing="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.0">
+                                       <children>
+                              
+                                                                    <Button fx:id="buttonAttack" onAction="#playerInput" text="Attack" />
+                                      <Button fx:id="buttonTeleport" onAction="#playerInput" text="Teleport" />
+                                      <Button fx:id="buttonSafeTeleport" onAction="#playerInput" text="Safe Teleport" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                    </items>
+                  </SplitPane>
+                </items>
+            </SplitPane>
+         </children>
+      </Group>
+      <Group fx:id="ConnectGroup" visible="false">
+         <children>
+            <GridPane prefHeight="720.0" prefWidth="1280.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="2.0" GridPane.columnIndex="1">
+                     <children>
+                        <Label text="MultiRobots">
+                           <font>
+                              <Font name="Monospaced Bold" size="36.0" />
+                           </font>
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#04709a" />
+                           </effect>
+                        </Label>
+                        <TextField fx:id="ipText" prefHeight="25.0" prefWidth="200.0" promptText="Server IP-address:Port">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin></TextField>
+                        <HBox alignment="CENTER">
+                           <padding>
+                              <Insets left="50.0" right="50.0" />
+                           </padding>
+                           <children>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Button fx:id="nick1Up" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nickButtons" prefHeight="15.0" prefWidth="45.0" text="^" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="nick1" alignment="CENTER" contentDisplay="CENTER" text="A">
+                                       <font>
+                                          <Font name="Monospaced Bold" size="36.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="nick1Down" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nickButtons" prefHeight="15.0" prefWidth="45.0" text="v" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" layoutX="60.0" layoutY="10.0">
+                                 <children>
+                                    <Button fx:id="nick2Up" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nickButtons" prefHeight="15.0" prefWidth="45.0" text="^" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="nick2" alignment="CENTER" contentDisplay="CENTER" text="A">
+                                       <font>
+                                          <Font name="Monospaced Bold" size="36.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="nick2Down" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nickButtons" prefHeight="15.0" prefWidth="45.0" text="v" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" layoutX="105.0" layoutY="10.0">
+                                 <children>
+                                    <Button fx:id="nick3Up" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nickButtons" prefHeight="15.0" prefWidth="45.0" text="^" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="nick3" alignment="CENTER" contentDisplay="CENTER" text="A">
+                                       <font>
+                                          <Font name="Monospaced Bold" size="36.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="nick3Down" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nickButtons" prefHeight="15.0" prefWidth="45.0" text="v" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Button fx:id="connectButton" alignment="CENTER" mnemonicParsing="false" onAction="#serverConnect" prefHeight="25.0" prefWidth="93.0" text="Connect">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></Button>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+         </children>
+      </Group>
+      <Group fx:id="LobbyGroup" visible="false">
+         <children>
+            <SplitPane dividerPositions="0.4" prefHeight="720.0" prefWidth="1280.0">
+              <items>
+                  <ListView fx:id="gamesList" onMouseClicked="#gamesListClicked" prefHeight="730.0" prefWidth="508.0">
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                  </ListView>
+                  <SplitPane dividerPositions="0.75" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Label fx:id="gameInfoLabel" alignment="CENTER" layoutY="6.0" prefHeight="529.0" prefWidth="764.0" text="Label" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Button fx:id="queueForGame" disable="true" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#gamesQueueButtons" prefHeight="25.0" prefWidth="86.0" text="Queue" />
+                              <Button fx:id="leaveQueue" disable="true" layoutX="105.0" layoutY="14.0" mnemonicParsing="false" onAction="#gamesQueueButtons" prefHeight="25.0" prefWidth="86.0" text="Leave" />
+                              <Label fx:id="waitingForPlayersLabel" layoutX="14.0" layoutY="53.0" text="Waiting for players..." />
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+              </items>
+            </SplitPane>
+         </children>
+      </Group>
+   </children>
+</Pane>
