@@ -56,10 +56,10 @@ public class ServerController implements IServerGuiController, Initializable {
     public TextField gridHeightTextField;
     public Slider playersToStartSlider;
     public TextField playersToStartTextField;
+    public Tab settingsTab;
     //endregion
 
     //region Interface IServerGuiController
-
     /**
      * Updates the list of games that are displayed in the GUI.
      *
@@ -116,7 +116,6 @@ public class ServerController implements IServerGuiController, Initializable {
     //endregion
 
     //region Public methods
-
     /**
      * Handles when the users clicks either the game or the player list
      * @param event event
@@ -138,7 +137,15 @@ public class ServerController implements IServerGuiController, Initializable {
             PlayerInfo selectedPlayer = playerList.getSelectionModel().getSelectedItem();
             if (selectedPlayer == null)
                 return;
-            ServerEngine.getInstance().kickPlayer(selectedPlayer, gamesList.getSelectionModel().getSelectedItem());
+
+            Alert kickAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            kickAlert.setTitle("Kicking player");
+            kickAlert.setContentText("You are about to kick " + selectedPlayer.getName() + "from the game.");
+            kickAlert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+            kickAlert.showAndWait();
+
+            if (kickAlert.getResult() == ButtonType.OK)
+                ServerEngine.getInstance().kickPlayer(selectedPlayer, gamesList.getSelectionModel().getSelectedItem());
         } else if (actionEvent.getSource().equals(saveButton)) {
             SettingsInfo newSettings = new SettingsInfo();
 
@@ -201,6 +208,11 @@ public class ServerController implements IServerGuiController, Initializable {
         playerList.getItems().clear();
         playerList.getItems().addAll(selectedGame.getPlayerList());
         gameInfoLabel.setText(selectedGame.getInfoString());
+        gameNameLabel.setText("Settings for Game #" + (selectedGame.getGameNum() + 1));
+        if (selectedGame.getGameRunning())
+            settingsTab.setDisable(true);
+        else
+            settingsTab.setDisable(false);
         loadGameSettings(selectedGame.getSettingsInfo());
     }
 

@@ -263,7 +263,7 @@ public class GameSettings {
             case "gridHeight":
                 gridHeight = Integer.parseInt(value);
                 break;
-            case "numPlayersToStartGame=":
+            case "numPlayersToStartGame":
                 numPlayersToStartGame = Integer.parseInt(value);
                 break;
         }

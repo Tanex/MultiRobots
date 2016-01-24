@@ -12,7 +12,7 @@ public abstract class RegexCheck {
     private static final Pattern GAME_STATE_PATTERN = Pattern.compile("^GameState:.*$");
     private static final Pattern GIVE_INPUT_PATTERN = Pattern.compile("^GiveInput$");
     private static final Pattern NO_MORE_INPUT_PATTERN = Pattern.compile("^NoMoreInput$");
-    private static final Pattern VALID_IP_AND_PORT_PATTERN = Pattern.compile("^([0-9]{1,3}\\.){3}[0-9]{1,3}:[0-9]{1,5}$");
+    private static final Pattern VALID_IP_AND_PORT_PATTERN = Pattern.compile("^((([0-9]{1,3}\\.){3}[0-9]{1,3})|(([a-zA-z0-9]+\\.)+[A-za-z]+)):[0-9]{1,5}$");
     private static final Pattern GAMES_LIST_PATTERN = Pattern.compile("^GamesList:.*$");
     private static final Pattern WELCOME_PATTERN = Pattern.compile("^Welcome$");
     private static final Pattern GAME_START_PATTERN = Pattern.compile("^GameStart:[0-9]+:[0-9]+:[0-9]+$");
@@ -20,6 +20,10 @@ public abstract class RegexCheck {
     private static final Pattern PLAYER_INFO_PATTERN = Pattern.compile("^PlayerInfo:.*$");
     private static final Pattern KICKED_PATTERN = Pattern.compile("^Kicked$");
     private static final Pattern HIGH_SCORE_LIST_PATTERN = Pattern.compile("^(> [A-Z]{3}: [0-9]+<){0,10}$");
+    private static final Pattern NEW_LEVEL_PATTERN = Pattern.compile("^Level:[0-9]+$");
+    private static final Pattern PLAYER_DEATH_PATTERN = Pattern.compile("^YouDied$");
+    private static final Pattern PLAYERS_LOST_PATTERN = Pattern.compile("^PlayersLost");
+    private static final Pattern SERVER_CLOSED_PATTERN = Pattern.compile("^ServerClosing");
     //endregion
 
     //region Functions
@@ -121,6 +125,42 @@ public abstract class RegexCheck {
      */
     public static boolean HighScoreList(String msg) {
         return HIGH_SCORE_LIST_PATTERN.matcher(msg).matches();
+    }
+
+    /**
+     * Matches a message from the server that the game has progressed to the next level.
+     * @param msg Message to match
+     * @return If the message is a match or not
+     */
+    public static boolean NewLevel(String msg) {
+        return NEW_LEVEL_PATTERN.matcher(msg).matches();
+    }
+
+    /**
+     * Matches a message from the server that the player died in the game.
+     * @param msg Message to match
+     * @return If the message is a match or not
+     */
+    public static boolean PlayerDeath(String msg) {
+        return PLAYER_DEATH_PATTERN.matcher(msg).matches();
+    }
+
+    /**
+     * Matches a message from the server that the players lost game.
+     * @param msg Message to match
+     * @return If the message is a match or not
+     */
+    public static boolean PlayersLost(String msg) {
+        return PLAYERS_LOST_PATTERN.matcher(msg).matches();
+    }
+
+    /**
+     * Matches a message from the server closed
+     * @param msg Message to match
+     * @return If the message is a match or not
+     */
+    public static boolean ServerClosed(String msg) {
+        return SERVER_CLOSED_PATTERN.matcher(msg).matches();
     }
     //endregion
 }

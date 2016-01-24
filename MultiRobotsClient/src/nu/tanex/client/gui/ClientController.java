@@ -1,8 +1,15 @@
 package nu.tanex.client.gui;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import nu.tanex.client.Program;
 import nu.tanex.client.core.ClientEngine;
 import nu.tanex.client.gui.data.ConnectScreenInfo;
@@ -20,17 +28,18 @@ import nu.tanex.core.exceptions.TcpEngineException;
 import nu.tanex.core.resources.PlayerAction;
 import nu.tanex.core.resources.Resources;
 
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 /**
  * @author Victor Hedlund
  * @version 0.5
  * @since 2016-01-05
  */
-public class ClientController implements IClientGuiController {
-
+public class ClientController implements IClientGuiController, Initializable {
     //region Member variables
     private int playerNum = -1;
     private int playerX = -1;
@@ -38,9 +47,16 @@ public class ClientController implements IClientGuiController {
     private int xOffset = 0;
     private int yOffset = 0;
     private HashMap<Integer, Color> playerColors = new HashMap<>();
+    private FadeTransition levelAnnounce = null;
+    private DoubleProperty inputTime = null;
+    private Timeline inputTimeline = null;
+    private String highScoreList = "";
     //endregion
 
     //region GUI controls
+    public Label deathLabel;
+    public Label levelLabel;
+    public Label giveInputLabel;
     public Canvas playerListCanvas;
     public Button buttonMoveUpLeft;
     public Button buttonMoveUp;
@@ -78,7 +94,98 @@ public class ClientController implements IClientGuiController {
     public Button connectButton;
     //endregion
 
+    //region Interface Initializable
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        levelAnnounce = new FadeTransition(Duration.millis(5000), levelLabel);
+        levelLabel.setOpacity(0.0);
+        levelAnnounce.setFromValue(1.0);
+        levelAnnounce.setToValue(0.1);
+
+        inputTime = new SimpleDoubleProperty();
+        giveInputLabel.textProperty().bind(inputTime.asString("Perform Your Action: %.2f"));
+        giveInputLabel.setDisable(true);
+    }
+    //endregion
+
     //region Interface IClientGuiController
+    /**
+     * Tell the user that they were kicked from the game and returns them to the lobby
+     */
+    @Override
+    public void kickedFromGame() {
+        changeGuiState(GuiState.LobbyScreen);
+        Platform.runLater(() -> {
+            Alert kickedAlert = new Alert(Alert.AlertType.WARNING);
+            kickedAlert.setTitle("Kicked");
+            kickedAlert.setContentText("You were kicked from the game by the server admin.");
+            kickedAlert.getButtonTypes().setAll(ButtonType.OK);
+            kickedAlert.show();
+        });
+    }
+
+    /**
+     * Tells the client that the server closed and returns them to the connect screen.
+     */
+    @Override
+    public void serverClosed() {
+        changeGuiState(GuiState.ConnectScreen);
+        Platform.runLater(() -> {
+            Alert serverClosedAlert = new Alert(Alert.AlertType.WARNING);
+            serverClosedAlert.setTitle("Server Closed");
+            serverClosedAlert.setContentText("The server closed.");
+            serverClosedAlert.getButtonTypes().setAll(ButtonType.OK);
+            serverClosedAlert.show();
+        });
+    }
+
+    /**
+     * Tells the player that the game is over and that the robots won the game.
+     */
+    @Override
+    public void gameOver() {
+        Platform.runLater(() -> {
+            Alert gameOverAlert = new Alert(Alert.AlertType.WARNING);
+            gameOverAlert.setTitle("Game Over");
+            gameOverAlert.setHeaderText("The players lost the game...");
+            gameOverAlert.setContentText("Now the robot overlords have taken over the world.\n" +
+                                         "The human race is no more...\n\n\n" +
+                                         "Would you like to view the high score list to take\n" +
+                                         "your mind of the tragedy that you brought onto mankind?");
+            gameOverAlert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+            gameOverAlert.showAndWait();
+
+            if (gameOverAlert.getResult() == ButtonType.YES) {
+                Alert highScoreAlert = new Alert(Alert.AlertType.NONE);
+                highScoreAlert.setTitle("High scores");
+                highScoreAlert.setHeaderText("Top scores of all time:");
+                highScoreAlert.setContentText(highScoreList);
+                highScoreAlert.getButtonTypes().setAll(ButtonType.OK);
+                highScoreAlert.show();
+            }
+        });
+    }
+
+    /**
+     * Tell the player that they died.
+     */
+    @Override
+    public void playerDied() {
+        Platform.runLater(() -> deathLabel.setVisible(true));
+    }
+
+    /**
+     * Announces to the user what level the game is on.
+     *
+     * @param level level number.
+     */
+    @Override
+    public void newLevel(int level) {
+        Platform.runLater(() -> {
+            levelLabel.setText("LEVEL" + (level + 1));
+            levelAnnounce.play();
+        });
+    }
 
     /**
      * Tells the gui what height the game board has so that it can be used to center it on screen.
@@ -119,7 +226,23 @@ public class ClientController implements IClientGuiController {
      */
     @Override
     public void setInputDisabled(boolean disabled) {
-        Platform.runLater(() -> playerControls.setDisable(disabled));
+        Platform.runLater(() -> {
+            playerControls.setDisable(disabled);
+
+            if(disabled){
+                giveInputLabel.setVisible(false);
+                if (inputTimeline != null)
+                    inputTimeline.stop();
+            }
+            else {
+                giveInputLabel.setVisible(true);
+                inputTime.set(10.0);
+                giveInputLabel.setDisable(false);
+                inputTimeline = new Timeline();
+                inputTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(10), new KeyValue(inputTime,0.0)));
+                inputTimeline.playFromStart();
+            }
+        });
     }
 
     /**
@@ -190,6 +313,7 @@ public class ClientController implements IClientGuiController {
                     break;
                 case GameScreen:
                     GameGroup.setVisible(true);
+                    deathLabel.setVisible(false);
                     break;
             }
         });
@@ -258,14 +382,7 @@ public class ClientController implements IClientGuiController {
      */
     @Override
     public void showHighScoreList(String highScoreList){
-        Platform.runLater(() -> {
-            Alert highScoreAlert = new Alert(Alert.AlertType.NONE);
-            highScoreAlert.setTitle("High scores");
-            highScoreAlert.setHeaderText("Top scores of all time:");
-            highScoreAlert.setContentText(highScoreList.replace("<", "\n"));
-            highScoreAlert.getButtonTypes().setAll(ButtonType.OK);
-            highScoreAlert.show();
-        });
+        Platform.runLater(() -> this.highScoreList = highScoreList.replace("<", "\n"));
     }
 
     /**
@@ -394,8 +511,8 @@ public class ClientController implements IClientGuiController {
      * @param mouseEvent event.
      */
     public void gameBoardClicked(MouseEvent mouseEvent) {
-        int xCoordClicked = (int)(mouseEvent.getX() / Resources.CELL_SIZE);
-        int yCoordClicked = (int)(mouseEvent.getY() / Resources.CELL_SIZE);
+        int xCoordClicked = ((int)(mouseEvent.getX() - xOffset) / Resources.CELL_SIZE);
+        int yCoordClicked = ((int)(mouseEvent.getY() - yOffset) / Resources.CELL_SIZE);
         Program.debug("Mouse clicked game board at X: " + xCoordClicked + ", Y: " + yCoordClicked);
         int xDist = xCoordClicked - playerX;
         int yDist = yCoordClicked - playerY;
@@ -485,7 +602,7 @@ public class ClientController implements IClientGuiController {
                         playerX = x;
                         playerY = y;
                     }
-                    renderPlayer(gc, x, y, playerColors.get(playerId));
+                    renderPlayer(gc, x, y, playerColors.get(playerId), playerId == playerNum);
                 }
                 else {
                     switch (gameState.charAt(i)) {
@@ -524,24 +641,24 @@ public class ClientController implements IClientGuiController {
     private void renderRobot(GraphicsContext gc, int x, int y){
         gc.setFill(Color.RED);
         //color fill
-        gc.fillPolygon(new double[]{ x * Resources.CELL_SIZE + xOffset,                   //top left X
+        gc.fillPolygon(new double[]{ x * Resources.CELL_SIZE + xOffset,                             //top left X
                                      x * Resources.CELL_SIZE + Resources.CELL_SIZE + xOffset,       //top right X
                                      x * Resources.CELL_SIZE + Resources.CELL_SIZE / 2 + xOffset},  //bottom center X
-                       new double[]{ y * Resources.CELL_SIZE + yOffset,                   //top left Y
-                                     y * Resources.CELL_SIZE + yOffset,                   //top right Y
+                       new double[]{ y * Resources.CELL_SIZE + yOffset,                             //top left Y
+                                     y * Resources.CELL_SIZE + yOffset,                             //top right Y
                                      y * Resources.CELL_SIZE + Resources.CELL_SIZE  + yOffset},     //bottom center Y
-                       3);                                                      //num vertices
+                                     3);                                                            //num vertices
         //outline
-        gc.strokePolygon(new double[]{ x * Resources.CELL_SIZE + xOffset,                 //top left X
+        gc.strokePolygon(new double[]{ x * Resources.CELL_SIZE + xOffset,                           //top left X
                                        x * Resources.CELL_SIZE + Resources.CELL_SIZE + xOffset,     //top right X
                                        x * Resources.CELL_SIZE + Resources.CELL_SIZE / 2 + xOffset},//bottom center X
-                         new double[]{ y * Resources.CELL_SIZE + yOffset,                 //top left Y
-                                       y * Resources.CELL_SIZE + yOffset,                 //top right Y
+                         new double[]{ y * Resources.CELL_SIZE + yOffset,                           //top left Y
+                                       y * Resources.CELL_SIZE + yOffset,                           //top right Y
                                        y * Resources.CELL_SIZE + Resources.CELL_SIZE  + yOffset},   //bottom center Y
-                         3);                                                    //num vertices
+                                       3);                                                          //num vertices
     }
 
-    private void renderPlayer(GraphicsContext gc, int x, int y, Color playerColor){
+    private void renderPlayer(GraphicsContext gc, int x, int y, Color playerColor, boolean isUserControlled){
         gc.setFill(playerColor);
         //color fill
         gc.fillOval(x * Resources.CELL_SIZE + xOffset,    //top left X
@@ -553,6 +670,13 @@ public class ClientController implements IClientGuiController {
                       y * Resources.CELL_SIZE + yOffset,  //top left Y
                       Resources.CELL_SIZE,                //X-radius
                       Resources.CELL_SIZE);               //Y-radius
+        if (isUserControlled){
+            gc.setFill(playerColor.invert());
+            gc.fillOval(x * Resources.CELL_SIZE + Resources.CELL_SIZE / 4 + xOffset,  //top left X
+                        y * Resources.CELL_SIZE + Resources.CELL_SIZE / 4 + yOffset,  //top left Y
+                        Resources.CELL_SIZE / 2,                                      //X-radius
+                        Resources.CELL_SIZE / 2);                                     //Y-radius
+        }
     }
 
 
@@ -564,10 +688,19 @@ public class ClientController implements IClientGuiController {
         for (int i = 0; i < players.length; i++) {
             //<playerNum>,<playerName>,<playerStatus>@
             String info[] = players[i].split(",");
-            gc.setFill(playerColors.get(Integer.parseInt(info[0])));
+            int playerId = Integer.parseInt(info[0]);
+            Color playerColor = playerColors.get(playerId);
+            gc.setFill(playerColor);
             gc.fillOval(5, i * Resources.CELL_SIZE, Resources.CELL_SIZE, Resources.CELL_SIZE);
             gc.strokeOval(5, i * Resources.CELL_SIZE, Resources.CELL_SIZE, Resources.CELL_SIZE);
-            gc.setFill(Color.BLACK);
+            if (playerId == this.playerNum){
+                gc.setFill(playerColor.invert());
+                gc.fillOval(5 + Resources.CELL_SIZE / 4,
+                            i * Resources.CELL_SIZE + Resources.CELL_SIZE / 4,
+                            Resources.CELL_SIZE / 2,
+                            Resources.CELL_SIZE / 2);
+        }
+        gc.setFill(Color.BLACK);
             gc.fillText(info[1] +  " - " + info[2], 10 + Resources.CELL_SIZE, (i + 1) * Resources.CELL_SIZE );
         }
     }

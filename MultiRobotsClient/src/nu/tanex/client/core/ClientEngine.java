@@ -21,7 +21,6 @@ import java.net.UnknownHostException;
  * @since       2015-11-26
  */
 public class ClientEngine {
-
     //region Memeber variables
     private ClientTcpEngine tcpEngine;
     private IClientGuiController guiController;
@@ -103,6 +102,7 @@ public class ClientEngine {
             guiController.setPlayerNum(Integer.parseInt(msg.split(":")[1]));
             guiController.setBoardWidth(Integer.parseInt(msg.split(":")[2]));
             guiController.setBoardHeight(Integer.parseInt(msg.split(":")[3]));
+            guiController.newLevel(1);
         }
         else if (RegexCheck.PlayerList(msg)) {
             guiController.updatePlayerList(msg.split(":")[1]);
@@ -111,10 +111,23 @@ public class ClientEngine {
             guiController.updatePlayerInfo(msg.split(":")[1]);
         }
         else if (RegexCheck.Kicked(msg)) {
-            guiController.changeGuiState(GuiState.LobbyScreen);
+            guiController.kickedFromGame();
         }
         else if (RegexCheck.HighScoreList(msg)) {
             guiController.showHighScoreList(msg);
+        }
+        else if (RegexCheck.NewLevel(msg)){
+            guiController.newLevel(Integer.parseInt(msg.split(":")[1]));
+        }
+        else if (RegexCheck.PlayerDeath(msg)){
+            guiController.playerDied();
+        }
+        else if (RegexCheck.PlayersLost(msg)){
+            guiController.gameOver();
+        }
+        else if (RegexCheck.ServerClosed(msg)){
+            tcpEngine.disconnectFromServer();
+            guiController.serverClosed();
         }
     }
 

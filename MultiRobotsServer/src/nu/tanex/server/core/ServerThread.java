@@ -123,5 +123,19 @@ public class ServerThread {
             gameManager.getPlayerQueue().remove(client);
         }
     }
+
+    /**
+     * Called to safely shut every client down, will disconnect players playing games.
+     */
+    public void exit() {
+        for (GameManager gameManager : gameManagers) {
+            for (Client client : gameManager.getGame().getPlayers()) {
+                client.sendMessage("ServerClosing");
+            }
+            for (Client client : gameManager.getPlayerQueue()) {
+                client.sendMessage("ServerClosing");
+            }
+        }
+    }
     //endregion
 }

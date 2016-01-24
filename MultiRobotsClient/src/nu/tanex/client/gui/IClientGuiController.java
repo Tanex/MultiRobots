@@ -22,4 +22,9 @@ public interface IClientGuiController {
     void setBoardWidth(int width);
     void setBoardHeight(int height);
     void showHighScoreList(String highScoreList);
+    void newLevel(int level);
+    void playerDied();
+    void gameOver();
+    void serverClosed();
+    void kickedFromGame();
 }

@@ -108,7 +108,7 @@ public class ServerEngine {
      * @param msg The message that was received
      * */
     public void msgHandler(Client client, String msg) {
-        Program.debug("ServerEngine: " + client + " sent " + msg);
+        Program.debug("ServerEngine: " + client.getName() + " sent " + msg);
         if (RegexCheck.disconnectMsg(msg))
             clientDisconnected(client);
         else if(RegexCheck.queueForGame(msg)) {
@@ -199,6 +199,8 @@ public class ServerEngine {
     public void exit() {
         // TODO: 2016-01-21 add exit logic
         serverThread.getHighScores().saveToFile(Resources.HIGH_SCORE_FILE);
+        serverThread.exit();
+        connectedClients.forEach( c -> c.sendMessage("ServerClosing"));
     }
 
     /**
@@ -217,6 +219,7 @@ public class ServerEngine {
     public void updateGameSetting(GameInfo game, SettingsInfo newSettings) {
         serverThread.getGameManagers().get(game.getGameNum()).updateGameSettings(newSettings);
         updateGui();
+        connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
 
     /**
@@ -228,6 +231,7 @@ public class ServerEngine {
     public void kickPlayer(PlayerInfo player, GameInfo game) {
         Program.debug("Kicking player " + player);
         serverThread.getGameManagers().get(game.getGameNum()).kickPlayer(player);
+        updateGui();
         connectedClients.forEach(c -> c.sendMessage("GamesList:" + serverThread.getGamesInfo()));
     }
     //endregion

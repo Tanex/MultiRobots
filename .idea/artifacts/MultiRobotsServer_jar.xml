@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="MultiRobotsServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MultiRobotsServer_jar</output-path>
+    <root id="archive" name="MultiRobotsServer.jar">
+      <element id="module-output" name="MultiRobotsServer" />
+      <element id="module-output" name="MultiRobotsCore" />
+    </root>
+  </artifact>
+</component>

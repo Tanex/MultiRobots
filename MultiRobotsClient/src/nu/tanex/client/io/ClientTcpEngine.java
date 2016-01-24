@@ -1,5 +1,6 @@
 package nu.tanex.client.io;
 
+import nu.tanex.client.Program;
 import nu.tanex.client.core.ClientEngine;
 import nu.tanex.core.exceptions.TcpEngineException;
 
@@ -12,13 +13,13 @@ import java.net.Socket;
  * @version 0.2
  * @since 2015-12-30
  */
-public class ClientTcpEngine extends Thread {
-
+public class ClientTcpEngine {
     //region Member variables
     private Socket socket = null;
     private BufferedReader inStream = null;
     private PrintWriter outStream = null;
     private boolean alive;
+    private Thread tcpThread = null;
     //endregion
 
     //region Public methods
@@ -44,11 +45,13 @@ public class ClientTcpEngine extends Thread {
             inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
             alive = true;
-            this.start();
+            tcpThread = new Thread(this::threadFunc);
+            tcpThread.start();
         } catch (IOException e) {
             //Cleanup if construction failed
             try {
-                this.socket.close();
+                if (socket != null)
+                    socket.close();
                 if (inStream != null)
                     inStream.close();
                 if (outStream != null)
@@ -75,9 +78,8 @@ public class ClientTcpEngine extends Thread {
     }
     //endregion
 
-    //region Superclass Thread
-    @Override
-    public void run() {
+    //region Threading
+    public void threadFunc() {
         try {
             while (alive) {
                 String buf = inStream.readLine();
@@ -93,6 +95,7 @@ public class ClientTcpEngine extends Thread {
                 e.printStackTrace();
             }
         }
+        Program.debug("tcpThread dying..");
     }
     //endregion
 }

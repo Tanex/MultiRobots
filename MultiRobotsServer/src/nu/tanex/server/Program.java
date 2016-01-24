@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nu.tanex.core.exceptions.TcpEngineException;
+import nu.tanex.core.resources.GameSettings;
 import nu.tanex.core.resources.Resources;
 import nu.tanex.server.core.ServerEngine;
 import nu.tanex.server.core.ServerThread;
@@ -33,6 +34,9 @@ public class Program extends Application {
      * Main entry point of server program
      * */
     public static void main(String[] args) throws TcpEngineException {
+        GameSettings settings = new GameSettings();
+        settings.loadSettingsFromFile("gameDefault");
+
         ServerEngine.getInstance().setTcpEngine(new ServerTcpEngine());
         ServerEngine.getInstance().setServerThread(new ServerThread(Resources.SERVER_DEFAULT_CONFIG));
 

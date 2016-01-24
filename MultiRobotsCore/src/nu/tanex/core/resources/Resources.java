@@ -47,14 +47,14 @@ public class Resources {
     /**
      * How full is the game board allowed to be when created.
      */
-    public static final double MAX_GRID_FILL_ALLOWED = 0.9;
+    public static final double MAX_GRID_FILL_ALLOWED = 0.75;
     //endregion
 
     //region Client settings
     /**
      * Cell size to be used when drawing the grid on the client.
      */
-    public static final int CELL_SIZE = 15;
+    public static final int CELL_SIZE = 16;
     //endregion
 
     //region Default server settings (when no file is present)

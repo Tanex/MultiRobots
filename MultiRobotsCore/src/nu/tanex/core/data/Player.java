@@ -1,5 +1,6 @@
 package nu.tanex.core.data;
 
+import java.io.Reader;
 import java.io.Serializable;
 
 /**
@@ -22,7 +23,9 @@ public class Player extends GameObject implements Serializable{
      *
      * @return The players name.
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     /**
      * The number of attacks that the player can perform in game.
@@ -163,5 +166,14 @@ public class Player extends GameObject implements Serializable{
         super("H", CollisionBehaviour.getPlayerCollisionBehaviour());
         name = null;
     }
+    //endregion
+
+    //region Object overrides
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
     //endregion
 }

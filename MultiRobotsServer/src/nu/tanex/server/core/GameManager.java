@@ -211,12 +211,12 @@ public class GameManager {
     //region Private methods
     private void processTurn() {
         playersTurn();
-        game.checkForCollisions();
         game.handleRobotsTurn();
         game.checkForCollisions();
     }
 
     private void playersTurn(){
+        Program.debug("Players turn");
         game.getPlayers().stream().filter(Client::isAlive).forEach(Client::requestAction);
         sendPlayerList();
 
@@ -243,7 +243,8 @@ public class GameManager {
         sendMsgToAllPlayers(str);
     }
 
-    private void sendGameState(){
+    private synchronized void sendGameState(){
+        Program.debug(game.toString());
         sendMsgToAllPlayers("GameState:" + game);
     }
 
@@ -257,20 +258,16 @@ public class GameManager {
     //endregion
 
     //region Threading
-
     /**
      * Function that should be passed to a Thread object and ran to manage a Game instance that players can play.
      */
     public void threadFunc() {
         while (gameRunning) {
             GameState gameState;
-            System.out.println(game);
             do {
                 sendGameState();
                 processTurn();
                 gameState = game.checkGameState();
-                //Debug printout
-                Program.debug(game.toString());
                 Program.debug("GameState: " + gameState);
             } while (gameState == GameState.Running);
 
@@ -278,6 +275,7 @@ public class GameManager {
             switch (gameState) {
                 case PlayersWon:
                     game.nextLevel();
+                    sendMsgToAllPlayers("Level:" + game.getLevel());
                     break;
                 case RobotsWon:
                     playersLost();

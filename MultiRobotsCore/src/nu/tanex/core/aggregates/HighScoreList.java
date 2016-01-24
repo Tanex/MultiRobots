@@ -97,7 +97,7 @@ public class HighScoreList extends TreeSet<HighScore> {
         int i = 0;
         for (HighScore highScore : this) {
             str += "> " + highScore.getPlayerName() + ": " + highScore.getScore() + "<";
-            if (i++ > iterLimit)
+            if (++i >= iterLimit)
                 break;
         }
         return str;

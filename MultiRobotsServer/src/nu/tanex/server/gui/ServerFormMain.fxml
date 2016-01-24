@@ -29,7 +29,7 @@
                               </AnchorPane>
                           </content>
                         </Tab>
-                        <Tab text="Settings">
+                        <Tab fx:id="settingsTab" text="Settings">
                            <content>
                               <VBox layoutX="219.0" layoutY="204.0" prefHeight="278.0" prefWidth="233.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
@@ -91,7 +91,7 @@
                                     <HBox layoutX="25.0" layoutY="165.0">
                                        <children>
                                           <Label contentDisplay="RIGHT" prefWidth="175.0" text="Players To Start Game" />
-                                          <Slider fx:id="playersToStartSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <Slider fx:id="playersToStartSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
                                           <TextField fx:id="playersToStartTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
                                        </children>
                                     </HBox>
@@ -112,14 +112,14 @@
                                     <HBox layoutX="25.0" layoutY="340.0">
                                        <children>
                                           <Label contentDisplay="RIGHT" prefWidth="175.0" text="Grid Width" />
-                                          <Slider fx:id="gridWidthSlider" blockIncrement="1.0" majorTickUnit="1.0" max="30.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <Slider fx:id="gridWidthSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
                                           <TextField fx:id="gridWidthTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
                                        </children>
                                     </HBox>
                                     <HBox layoutX="25.0" layoutY="370.0">
                                        <children>
                                           <Label contentDisplay="RIGHT" prefWidth="175.0" text="Grid Height" />
-                                          <Slider fx:id="gridHeightSlider" blockIncrement="1.0" majorTickUnit="1.0" max="30.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
+                                          <Slider fx:id="gridHeightSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" minorTickCount="0" prefHeight="14.0" prefWidth="150.0" snapToTicks="true" />
                                           <TextField fx:id="gridHeightTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="50.0" />
                                        </children>
                                     </HBox>

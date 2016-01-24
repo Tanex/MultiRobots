@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
@@ -7,6 +12,7 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <Pane id="basePane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nu.tanex.client.gui.ClientController">
    <children>
       <Group fx:id="GameGroup">
@@ -18,11 +24,29 @@
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
                               <Canvas fx:id="gameCanvas" height="536.0" layoutX="108.0" layoutY="57.0" onMouseClicked="#gameBoardClicked" width="1083.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <Label fx:id="levelLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="491.0" layoutY="14.0" text="LEVEL 1" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
+                                 <font>
+                                    <Font name="Monospaced Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="giveInputLabel" alignment="CENTER" layoutX="426.0" layoutY="494.0" text="Perform Your Action 9.9" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <font>
+                                    <Font name="Monospaced Bold" size="24.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
                               <Label fx:id="playerInfoLabel" layoutX="14.0" layoutY="14.0" text="Label" />
+                              <Label fx:id="deathLabel" layoutX="455.0" layoutY="14.0" text="You Died" textFill="RED">
+                                 <font>
+                                    <Font name="Monospaced Bold" size="36.0" />
+                                 </font>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                              </Label>
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

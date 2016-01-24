@@ -25,6 +25,16 @@ public class GameInfo {
     //endregion
 
     //region Getters
+
+    /**
+     * Gets whether the game is running or not
+     *
+     * @return is the game running.
+     */
+    public boolean getGameRunning() {
+        return gameRunning;
+    }
+
     /**
      * Gets the number of players needed to start the game.
      *
@@ -66,7 +76,7 @@ public class GameInfo {
      * @return formatted string with game information.
      */
     public String getInfoString(){
-        return  "Game #" + gameNum + "\n" +
+        return  "Game #" + (gameNum + 1) + "\n" +
                 "Status: " + (gameRunning ? ( "Running..." ) : ( "Waiting for more Players...") ) + "\n" +
                 (gameRunning ? "Current level: " + currentLevel + "\n" : "") +
                 ((getFillRate() != -1 ) ? "Board fill rate: " + getFillRate() + "\n" : "") ;
@@ -126,7 +136,7 @@ public class GameInfo {
     //region Object overrides
     @Override
     public String toString() {
-        return "Game #" + gameNum + " : " + (gameRunning ? ("Running...") : (playersQueued + "/" + playersToStart + " players queued"));
+        return "Game #" + (gameNum + 1) + " : " + (gameRunning ? ("Running...") : (playersQueued + "/" + playersToStart + " players queued"));
     }
 
     @Override
