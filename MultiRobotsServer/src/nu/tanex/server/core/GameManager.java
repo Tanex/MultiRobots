@@ -221,7 +221,7 @@ public class GameManager {
         sendPlayerList();
 
         try {
-            Thread.sleep(11000);
+            Thread.sleep(10500);
         } catch (InterruptedException e) {
             //e.printStackTrace();
         }

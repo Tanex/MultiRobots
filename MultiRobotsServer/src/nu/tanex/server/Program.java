@@ -58,7 +58,9 @@ public class Program extends Application {
     public static void debug(String msg){
         if (!Resources.DO_DEBUG_PRINTOUT)
             return;
-        String caller = new Exception().getStackTrace()[1].getClassName();
-        System.out.println("Debug - " + caller + ": " + msg);
+        StackTraceElement ste = new Exception().getStackTrace()[1];
+        String callingClass = ste.getClassName();
+        String caller = ste.getMethodName();
+        System.out.println("Debug - " + callingClass + "." + caller + ": " + msg);
 }
 }

@@ -4,6 +4,7 @@ import nu.tanex.core.aggregates.HighScoreList;
 import nu.tanex.core.exceptions.GameException;
 import nu.tanex.core.resources.Resources;
 import nu.tanex.core.resources.ServerSettings;
+import nu.tanex.server.Program;
 import nu.tanex.server.aggregates.GameManagerList;
 import nu.tanex.server.exceptions.ServerThreadException;
 import nu.tanex.server.gui.data.GameInfo;
@@ -76,6 +77,7 @@ public class ServerThread {
      * @return string with info on all games.
      */
     public String getGamesInfo() {
+        Program.debug("getting games info");
         String str = "";
         for (int i = 0; i < gameManagers.size(); i++) {
             //gameId,clientsQueued,clientsNeeded,gameSettings@
